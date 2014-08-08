@@ -10,6 +10,7 @@ namespace GameServer
     {
         static void Main(string[] args)
         {
+            //comment
         }
     }
 }
