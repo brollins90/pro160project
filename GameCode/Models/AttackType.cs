@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameCode
+namespace GameCode.Models
 {
-    public class Class1
+    public enum AttackType
     {
+        Melee, Bow
     }
 }

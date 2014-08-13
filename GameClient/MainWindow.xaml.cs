@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GameCode;
+using GameCode.Models;
 
 namespace GameClient
 {
@@ -20,9 +22,26 @@ namespace GameClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GameManager _Manager;
+        public GameManager Manager
+        {
+            get { return _Manager; }
+            set { _Manager = value; }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            Manager = new GameManager();
+            this.DataContext = Manager;
+
+            Manager.World.Objects.Add(new Character());
+
+        }
+
+        private void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }
