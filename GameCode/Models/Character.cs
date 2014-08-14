@@ -30,6 +30,13 @@ namespace GameCode.Models
             set { _Experience = value; }
         }
 
+        private int _ExperienceCap;
+        public int ExperienceCap
+        {
+            get { return _ExperienceCap; }
+            set { _ExperienceCap = value; }
+        }
+
         private int _Level;
         public int Level
         {
@@ -44,19 +51,13 @@ namespace GameCode.Models
             set { _Strength = value; }
         }
 
-        public int MaxHealth
-        {
-            get { return Constitution * 20; }
-        }
-
-        public Character()
+        public Character(Point position) : base(position)
         {
             Constitution = 5;
             Defense = 6;
             Experience = 10;
             Level = 1;
             Strength = 3;
-            
         }
 
         public void Attack(Point destination)
@@ -67,6 +68,19 @@ namespace GameCode.Models
         public void Move(Point destination)
         {
             throw new NotImplementedException();
+        }
+
+        public void LevelUp()
+        {
+            this.Strength += 1;
+            this.Constitution += 2;
+            if (this.Level % 3 == 0)
+            {
+                this.Defense += 1;
+            }           
+            this.Experience = 0;
+            this.Level += 1;
+            this.ExperienceCap += 30;
         }
     }
 }
