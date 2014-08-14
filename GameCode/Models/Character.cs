@@ -51,7 +51,8 @@ namespace GameCode.Models
             set { _Strength = value; }
         }
 
-        public Character()
+        public Character(Point position)
+            : base(position)
         {
             Constitution = 5;
             Defense = 6;

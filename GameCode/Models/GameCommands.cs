@@ -8,6 +8,6 @@ namespace GameCode.Models
 {
     public enum GameCommands
     {
-        Up, Left, Down, Right, Space
+        None, Up, Left, Down, Right, Space
     }
 }

@@ -57,5 +57,10 @@ namespace GameCode.Models
             Console.WriteLine("Controller.KeyDown()");
             Manager.SubmitMove(GameObjectID, keyPressed);
         }
+
+        internal GameCommands GetMove()
+        {
+            return GameCommands.None;
+        }
     }
 }
