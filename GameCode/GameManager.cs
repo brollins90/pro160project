@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Threading;
 using System.Threading.Tasks;
 using GameCode.Models;
 using System.Drawing;
@@ -11,6 +12,8 @@ namespace GameCode
 {
     public class GameManager
     {
+        private DispatcherTimer Timer;
+
         private GameWorld _World;
 
         public GameWorld World
@@ -32,14 +35,38 @@ namespace GameCode
 
         public GameManager()
         {
+            Timer = new DispatcherTimer();
             World = new GameWorld();
+            Controllers = new ObservableCollection<Controller>();
+            Timer.Interval = TimeSpan.FromMilliseconds((1000 / 1));
+            Timer.Start();
+            Timer.Tick += Timer_Tick;
+
+        }
+
+        void Timer_Tick(object sender, EventArgs e)
+        {
+            ProcessMoves();
+        }
+
+        public void AddNPC()
+        {
+            Character newCharacter = new Character(new Point(300, 150));
+            Controller newController = new Controller()
+            {
+                GameObjectID = newCharacter.UniqueID
+            };
+            World.Objects.Add(newCharacter);
+            Controllers.Add(newController);
+
 
         }
 
         public int AddPlayer(Controller playerController)
         {
-            Character c = new Character();
+            Character c = new Character(new Point(100,100));
             World.Objects.Add(c);
+            Controllers.Add(playerController);
             return c.UniqueID;
 
         }
@@ -51,7 +78,10 @@ namespace GameCode
 
         public void ProcessMoves()
         {
-
+            foreach (Controller c in Controllers)
+            {
+                SubmitMove(c.GameObjectID, c.GetMove());
+            }
         }
 
         public void ResetGame()

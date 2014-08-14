@@ -9,9 +9,9 @@ namespace GameCode.Models
 {
     public class Sentry : GameObject, IMovingObject, IAttackingObject
     {
-        public Sentry()
+        public Sentry(Point position) : base(position)
         {
-
+            
         }
 
         public void Attack(Point destination)
