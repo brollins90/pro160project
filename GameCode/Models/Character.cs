@@ -51,6 +51,11 @@ namespace GameCode.Models
             set { _Strength = value; }
         }
 
+        public int MaxHealth
+        {
+            get { return Constitution * 20; }
+        }
+
         public Character(Point position) : base(position)
         {
             Constitution = 5;
