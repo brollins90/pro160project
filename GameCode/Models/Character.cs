@@ -30,6 +30,13 @@ namespace GameCode.Models
             set { _Experience = value; }
         }
 
+        private int _ExperienceCap;
+        public int ExperienceCap
+        {
+            get { return _ExperienceCap; }
+            set { _ExperienceCap = value; }
+        }
+
         private int _Level;
         public int Level
         {
@@ -51,6 +58,7 @@ namespace GameCode.Models
             Experience = 10;
             Level = 1;
             Strength = 3;
+            ExperienceCap = 50;
         }
 
         public void Attack(Point destination)
@@ -61,6 +69,16 @@ namespace GameCode.Models
         public void Move(Point destination)
         {
             throw new NotImplementedException();
+        }
+
+        public void LevelUp()
+        {
+            this.Strength += 1;
+            this.Constitution += 1;
+            this.Defense += 1;
+            this.Experience = 0;
+            this.Level += 1;
+            this.ExperienceCap += 50;
         }
     }
 }
