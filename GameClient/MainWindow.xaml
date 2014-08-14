@@ -22,7 +22,7 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <ListBox BorderThickness="5" BorderBrush="Black" Width="250" Height="152" Margin="574,325,0,0">
+        <ItemsControl Background="White" BorderThickness="5" BorderBrush="Black" Width="250" Height="152" Margin="574,325,0,0">
             <Canvas Height="142" Width="217">
                 <Label Canvas.Top="-5">Str:</Label>
                 <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>
@@ -38,6 +38,6 @@
                     <Rectangle Height="26" Width="80" Fill="Green"/>
                 </Canvas>
             </Canvas>
-        </ListBox>
+        </ItemsControl>
     </Grid>
 </Window>
