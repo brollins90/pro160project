@@ -42,7 +42,7 @@ namespace GameClient
         {
             InitializeComponent();
             Manager = new GameManager();
-            this.DataContext = Manager;
+            this.DataContext = this;
 
             MainGrid.Focusable = true;
             MainGrid.Focus();
