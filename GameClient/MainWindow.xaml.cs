@@ -80,5 +80,11 @@ namespace GameClient
             Console.WriteLine("KeyDown: {0}", keyPressed);
             CurrentController.KeyDown(keyPressed);
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {            
+            base.OnClosing(e);
+            Application.Current.Shutdown();
+        }
     }
 }
