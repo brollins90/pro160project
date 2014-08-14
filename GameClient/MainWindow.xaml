@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GameClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="The World We Don't Know" Height="500" Width="825">
     <Grid x:Name="MainGrid" Background="CornflowerBlue" KeyDown="Grid_KeyDown">
         <ItemsControl ItemsSource="{Binding Path=World.Objects}">
             <ItemsControl.ItemsPanel>

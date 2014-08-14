@@ -1,0 +1,23 @@
+﻿<Window x:Class="GameClient.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="The World We Don't Know" Height="500" Width="825">
+    <Grid Background="CornflowerBlue">
+        <Button x:Name="PlayGame" Margin="277,245,276,165" Click="PlayGameButton" Visibility="Visible">
+            Play Game!
+        </Button>
+        
+        <Button x:Name="ExitGame" Margin="277,331,276,79" Click="ExitGameButton" Visibility="Visible">
+            Exit Game
+        </Button>
+
+        <Button x:Name="PlayVsAI" Margin="277,245,276,165" Click="PlayVsAIButton" Visibility="Hidden">
+            Play vs. AI
+        </Button>
+        
+        <Button x:Name="PlayOnline" Margin="277,331,276,79" Click="PlayOnlineButton" Visibility="Hidden">
+            Play Online
+        </Button>
+        
+    </Grid>
+</Window>
