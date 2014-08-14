@@ -9,6 +9,13 @@ namespace GameCode.Models
 {
     public class Sentry : GameObject, IMovingObject, IAttackingObject
     {
+        private int _Health;
+        public int Health
+        {
+            get { return _Health; }
+            set { _Health = value; }
+        }
+
         public Sentry(Point position) : base(position)
         {
             base.Height = 20;
