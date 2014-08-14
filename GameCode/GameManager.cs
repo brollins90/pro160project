@@ -51,11 +51,12 @@ namespace GameCode
 
         public void AddNPC()
         {
-            Character newCharacter = new Character(new Point(300, 150));
+            GameObject newCharacter = new Sentry(new Point(300, 150));
             Controller newController = new Controller()
             {
                 GameObjectID = newCharacter.UniqueID
             };
+            newCharacter.Controller = newController;
             World.Objects.Add(newCharacter);
             Controllers.Add(newController);
 
@@ -65,6 +66,7 @@ namespace GameCode
         public int AddPlayer(Controller playerController)
         {
             Character c = new Character(new Point(100,100));
+            c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);
             return c.UniqueID;
@@ -78,9 +80,9 @@ namespace GameCode
 
         public void ProcessMoves()
         {
-            foreach (Controller c in Controllers)
+            foreach (GameObject o in World.Sentrys)
             {
-                SubmitMove(c.GameObjectID, c.GetMove());
+                SubmitMove(o.UniqueID, o.Controller.GetMove());
             }
         }
 

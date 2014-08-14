@@ -11,7 +11,8 @@ namespace GameCode.Models
     {
         public Sentry(Point position) : base(position)
         {
-            
+            base.Height = 20;
+            base.Width = 30;
         }
 
         public void Attack(Point destination)

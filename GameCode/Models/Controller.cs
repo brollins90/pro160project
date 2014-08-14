@@ -60,7 +60,7 @@ namespace GameCode.Models
 
         internal GameCommands GetMove()
         {
-            return GameCommands.None;
+            return GameCommands.Up;
         }
     }
 }

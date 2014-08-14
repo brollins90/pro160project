@@ -30,6 +30,15 @@ namespace GameCode.Models
             }
         }
 
+        private Controller _Controller;
+
+        public Controller Controller
+        {
+            get { return _Controller; }
+            set { _Controller = value; }
+        }
+        
+
         private int _Damage;
         public int Damage
         {
