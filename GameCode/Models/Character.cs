@@ -78,7 +78,7 @@ namespace GameCode.Models
             this.Defense += 1;
             this.Experience = 0;
             this.Level += 1;
-            this.ExperienceCap += 50;
+            this.ExperienceCap += 25;
         }
     }
 }
