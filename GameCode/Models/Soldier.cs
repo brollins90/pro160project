@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace GameCode.Models
 {
-    public class Sentry : GameObject, IMovingObject, IAttackingObject
+    public class Soldier : GameObject, IMovingObject, IAttackingObject
     {
         private int _Health;
         public int Health
@@ -16,10 +16,10 @@ namespace GameCode.Models
             set { _Health = value; }
         }
 
-        public Sentry(Point position) : base(position)
+        public Soldier(Point position) : base(position)
         {
-            base.Height = 20;
-            base.Width = 30;
+            base.Height = 10;
+            base.Width = 10;
         }
 
         public void Attack(Point destination)
