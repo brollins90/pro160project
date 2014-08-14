@@ -58,7 +58,7 @@ namespace GameCode.Models
             Experience = 10;
             Level = 1;
             Strength = 3;
-            ExperienceCap = 50;
+            ExperienceCap = 100;
         }
 
         public void Attack(Point destination)
@@ -74,11 +74,14 @@ namespace GameCode.Models
         public void LevelUp()
         {
             this.Strength += 1;
-            this.Constitution += 1;
-            this.Defense += 1;
+            this.Constitution += 2;
+            if (this.Level % 3 == 0)
+            {
+                this.Defense += 1;
+            }           
             this.Experience = 0;
             this.Level += 1;
-            this.ExperienceCap += 25;
+            this.ExperienceCap += 30;
         }
     }
 }
