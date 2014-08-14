@@ -30,6 +30,15 @@ namespace GameCode.Models
             }
         }
 
+        private Controller _Controller;
+
+        public Controller Controller
+        {
+            get { return _Controller; }
+            set { _Controller = value; }
+        }
+        
+
         private int _Damage;
         public int Damage
         {
@@ -103,17 +112,27 @@ namespace GameCode.Models
             private set { _UniqueID = value; }
         }
 
-        public GameObject()
+        public GameObject(
+            Point position,
+            AttackType attackType = AttackType.Melee,
+            int damage = 2,
+            float direction = 90f,
+            int health = 10,
+            int height = 50,
+            MoveType moveType = MoveType.Walk,
+            int speed = 5,
+            int width = 30
+            )
         {
-            AttackType = AttackType.Melee;
-            Damage = 2;
-            Direction = 90;
-            Health = 10;
-            Height = 50;
-            MoveType = MoveType.Walk; ;
-            Position = new Point(50, 40);
-            Speed = 5;
-            Width = 30;
+            AttackType = attackType;
+            Damage = damage;
+            Direction = direction;
+            Health = health;
+            Height = height;
+            MoveType = moveType;
+            Position = position;
+            Speed = speed;
+            Width = width;
             UniqueID = NextID++;
         }
 

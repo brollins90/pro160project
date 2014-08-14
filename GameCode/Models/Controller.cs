@@ -9,6 +9,8 @@ namespace GameCode.Models
 {
     public class Controller
     {
+
+        public Character CurrentCharacter { get; set; }
         private int _ControllerID;
 
         public int ControllerID
@@ -44,6 +46,7 @@ namespace GameCode.Models
         public void CreateCharacter()
         {
             GameObjectID = Manager.AddPlayer(this);
+            CurrentCharacter = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
         }
 
         public Controller()
@@ -56,6 +59,11 @@ namespace GameCode.Models
         {
             Console.WriteLine("Controller.KeyDown()");
             Manager.SubmitMove(GameObjectID, keyPressed);
+        }
+
+        internal GameCommands GetMove()
+        {
+            return GameCommands.Up;
         }
     }
 }

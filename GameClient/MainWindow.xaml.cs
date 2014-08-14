@@ -50,9 +50,9 @@ namespace GameClient
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
             CurrentController.CreateCharacter();
-            
 
-            Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
+            Manager.AddNPC();
+            //Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
 
         }
 
@@ -79,6 +79,12 @@ namespace GameClient
             }
             Console.WriteLine("KeyDown: {0}", keyPressed);
             CurrentController.KeyDown(keyPressed);
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {            
+            base.OnClosing(e);
+            Application.Current.Shutdown();
         }
     }
 }
