@@ -21,5 +21,23 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
+
+        <ListBox BorderThickness="5" BorderBrush="Black" Margin="574,297,0,0">
+            <Canvas Height="163" Width="217">
+                <Label Canvas.Top="-5">Str:</Label>
+                <Label Canvas.Left="32" Width="68" Content="{Binding Path=Strength}" Height="26"></Label>
+                <Label Canvas.Top="21">Def:</Label>
+                <Label Canvas.Left="32" Canvas.Top="26" Width="68" Content="{Binding Path=Defense}" Height="26"></Label>
+                <Label Canvas.Top="47">Con:</Label>
+                <Label Canvas.Left="32" Canvas.Top="52" Width="68" Content="{Binding Path=Constitution}" Height="26"></Label>
+                <Label Canvas.Top="78" Canvas.Left="-3">Health:</Label>
+                <Label Canvas.Left="49" Canvas.Top="78" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=MaxHealth}" Height="21"></Label>
+                <Label Canvas.Left="142" Width="64">Gold:</Label>
+                <Label Canvas.Left="142" Canvas.Top="31" Width="64">9999</Label>
+                <Canvas Height="26" Width="100" Canvas.Top="104" Background="Red">
+                    <Rectangle Height="26" Width="80" Fill="Green"/>
+                </Canvas>
+            </Canvas>
+        </ListBox>
     </Grid>
 </Window>

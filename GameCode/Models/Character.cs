@@ -44,6 +44,11 @@ namespace GameCode.Models
             set { _Strength = value; }
         }
 
+        public int MaxHealth
+        {
+            get { return Constitution * 20; }
+        }
+
         public Character()
         {
             Constitution = 5;
@@ -51,6 +56,7 @@ namespace GameCode.Models
             Experience = 10;
             Level = 1;
             Strength = 3;
+            
         }
 
         public void Attack(Point destination)

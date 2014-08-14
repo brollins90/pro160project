@@ -50,7 +50,7 @@ namespace GameClient
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
             CurrentController.CreateCharacter();
-
+            
 
             Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
 
