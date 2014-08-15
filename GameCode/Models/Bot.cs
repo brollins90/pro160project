@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameCode.Models
 {
+    //The main class for all Non Playable Characters
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
         private int _Health;
