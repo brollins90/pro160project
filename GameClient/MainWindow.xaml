@@ -22,7 +22,11 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <ItemsControl Background="White" BorderThickness="5" BorderBrush="Black" Width="250" Height="152" Margin="574,325,0,0">
+        <Button Margin="83,370,427,29" Click="LevelUpButton">
+            Level up!
+        </Button>
+
+        <ItemsControl x:Name="OverLay" Background="White" BorderThickness="5" BorderBrush="Black" Width="250" Height="152" Margin="574,325,0,0">
             <Canvas Height="142" Width="217">
                 <Label Canvas.Top="-5">Str:</Label>
                 <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>

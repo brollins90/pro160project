@@ -47,7 +47,7 @@ namespace GameClient
 
         private void PlayOnlineButton(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
