@@ -10,31 +10,28 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
-        public int _Speed;
-        public int Speed
-        {
-            get { return _Speed; }
-            set { _Speed = value; }
-        }
+        public enum BotClass { Shooter, Melee, Boss, Tower, Turret, Mercenary };
 
-        public bool _Team;
-        public bool Team
+        public int _Team;
+        public int Team
         {
             get { return _Team; }
             set { _Team = value; }
         }
 
-        private int _Health;
-        public int Health
+        private int _AttackDamage;
+        public int AttackDamage
         {
-            get { return _Health; }
-            set { _Health = value; }
+            get { return _AttackDamage; }
+            set { _AttackDamage = value; }
         }
 
-        public Bot(Point position) : base(position)
+        public Bot(int speed, int health, int attackDamage, int team, Point position) : base(position)
         {
-            base.Height = 20;
-            base.Width = 30;
+            this._AttackDamage = attackDamage;
+            this.Speed = speed;
+            this._Team = team;
+            this.Health = health;
         }
 
         public void Attack(Point destination)

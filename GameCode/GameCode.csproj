@@ -54,7 +54,6 @@
     <Compile Include="Models\IAttackingObject.cs" />
     <Compile Include="Models\MoveType.cs" />
     <Compile Include="Models\Sentry.cs" />
-    <Compile Include="Models\Soldier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
