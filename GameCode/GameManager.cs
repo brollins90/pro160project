@@ -123,13 +123,13 @@ namespace GameCode
                 objToProcess.Direction = 270;
             }
             else if (keyPressed == GameCommands.Left) {
-                newPosition = new Point() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y};
-                objToProcess.Direction = 180;
+                newPosition = currentPosition;// new Point() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction += objToProcess.Speed;
             }
             else if (keyPressed == GameCommands.Right)
             {
-                newPosition = new Point() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
-                objToProcess.Direction = 0;
+                newPosition = currentPosition;// new Point() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction -= objToProcess.Speed;
             }
             objToProcess.Position = newPosition;
 
