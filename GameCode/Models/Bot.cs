@@ -12,13 +12,6 @@ namespace GameCode.Models
     {
         public enum BotClass { Shooter, Melee, Boss, Tower, Turret, Mercenary };
 
-        public int _Speed;
-        public int Speed
-        {
-            get { return _Speed; }
-            set { _Speed = value; }
-        }
-
         public int _Team;
         public int Team
         {
@@ -26,26 +19,19 @@ namespace GameCode.Models
             set { _Team = value; }
         }
 
-        private int _Health;
-        public int Health
+        private int _AttackDamage;
+        public int AttackDamage
         {
-            get { return _Health; }
-            set { _Health = value; }
+            get { return _AttackDamage; }
+            set { _AttackDamage = value; }
         }
 
-        private int _Attack;
-        public int Attack
+        public Bot(int speed, int health, int attackDamage, int team, Point position) : base(position)
         {
-            get { return _Attack; }
-            set { _Attack = value; }
-        }
-
-        public Bot(int speed, int health, int attack, int team, Point position) : base(position)
-        {
-            this._Attack = attack;
-            this._Speed = speed;
+            this._AttackDamage = attackDamage;
+            this.Speed = speed;
             this._Team = team;
-            this._Health = health;
+            this.Health = health;
         }
 
         public void Attack(Point destination)
