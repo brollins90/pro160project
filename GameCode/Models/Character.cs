@@ -10,8 +10,8 @@ namespace GameCode.Models
 {
     public class Character : GameObject, IMovingObject, IAttackingObject, INotifyPropertyChanged
     {
-        public bool _Team;
-        public bool Team
+        public int _Team;
+        public int Team
         {
             get { return _Team; }
             set { _Team = value; }

@@ -10,6 +10,8 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
+        public enum BotClass { Shooter, Melee, Boss, Tower, Turret, Mercenary };
+
         public int _Speed;
         public int Speed
         {
@@ -17,8 +19,8 @@ namespace GameCode.Models
             set { _Speed = value; }
         }
 
-        public bool _Team;
-        public bool Team
+        public int _Team;
+        public int Team
         {
             get { return _Team; }
             set { _Team = value; }
@@ -31,10 +33,19 @@ namespace GameCode.Models
             set { _Health = value; }
         }
 
-        public Bot(Point position) : base(position)
+        private int _Attack;
+        public int Attack
         {
-            base.Height = 20;
-            base.Width = 30;
+            get { return _Attack; }
+            set { _Attack = value; }
+        }
+
+        public Bot(int speed, int health, int attack, int team, Point position) : base(position)
+        {
+            this._Attack = attack;
+            this._Speed = speed;
+            this._Team = team;
+            this._Health = health;
         }
 
         public void Attack(Point destination)
