@@ -95,5 +95,12 @@ namespace GameClient
 
             
         }
+
+        private void TakeDamage(object sender, RoutedEventArgs e)
+        {
+            Random rand = new Random();
+            CurrentController.CurrentCharacter.DamageTaken = rand.Next(10) + 1;
+            CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
+        }
     }
 }

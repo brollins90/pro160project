@@ -22,11 +22,18 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <Button Margin="83,370,427,29" Click="LevelUpButton">
+        <Button Width="200" HorizontalAlignment="Right" Margin="0,264,27,178" Click="LevelUpButton">
             Level up!
         </Button>
 
-        <ItemsControl x:Name="OverLay" Background="White" BorderThickness="5" BorderBrush="Black" Width="250" Height="152" Margin="574,325,0,0">
+        <Button Width="200" HorizontalAlignment="Right" Click="TakeDamage" Margin="0,145,27,295">Take Damage!</Button>
+
+        <Canvas Height="11" VerticalAlignment="Bottom" Margin="0,0,255,0" Background="Bisque">
+            <Rectangle VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
+        </Canvas>
+
+
+        <ItemsControl x:Name="OverLay" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="White" BorderThickness="5" BorderBrush="Black" Width="250" Height="152">
             <Canvas Height="142" Width="217">
                 <Label Canvas.Top="-5">Str:</Label>
                 <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>
@@ -35,7 +42,7 @@
                 <Label Canvas.Top="47">Con:</Label>
                 <Label Canvas.Left="32" Canvas.Top="47" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Height="26"></Label>
                 <Label Canvas.Top="73" Canvas.Left="-3">Health:</Label>
-                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentController.CurrentCharacter.MaxHealth}" Height="26"></Label>
+                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentController.CurrentCharacter.CurrentHealth}" Height="26"></Label>
                 <Label Canvas.Left="100" Width="50">Gold:</Label>
                 <Label Canvas.Left="154" Width="63">9999</Label>
                 <Label Canvas.Left="100" Canvas.Top="26" Width="50" Height="32">Level</Label>
