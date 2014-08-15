@@ -10,6 +10,19 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
+        public int _Speed;
+        public int Speed
+        {
+            get { return _Speed; }
+            set { _Speed = value; }
+        }
+
+        public bool _Team;
+        public bool Team
+        {
+            
+        }
+
         private int _Health;
         public int Health
         {
