@@ -9,6 +9,13 @@ namespace GameCode.Models
 {
     public class Character : GameObject, IMovingObject, IAttackingObject
     {
+        private bool _Team;
+        public bool Team
+        {
+            get { return _Team; }
+            set { _Team = value; }
+        }
+
         private int _Constitution;
         public int Constitution
         {
