@@ -20,7 +20,8 @@ namespace GameCode.Models
         public bool _Team;
         public bool Team
         {
-            
+            get { return _Team; }
+            set { _Team = value; }
         }
 
         private int _Health;
