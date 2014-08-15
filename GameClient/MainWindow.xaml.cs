@@ -54,8 +54,8 @@ namespace GameClient
             Manager.AddNPC();
             //Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
 
-            
 
+            CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -92,7 +92,7 @@ namespace GameClient
         private void LevelUpButton(object sender, RoutedEventArgs e)
         {
             CurrentController.CurrentCharacter.LevelUp();
-
+            CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
             
         }
 
@@ -101,6 +101,8 @@ namespace GameClient
             Random rand = new Random();
             CurrentController.CurrentCharacter.DamageTaken = rand.Next(10) + 1;
             CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
+            CurrentHealth.Width = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
+
         }
     }
 }

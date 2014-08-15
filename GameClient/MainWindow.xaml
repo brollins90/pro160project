@@ -47,8 +47,8 @@
                 <Label Canvas.Left="154" Width="63">9999</Label>
                 <Label Canvas.Left="100" Canvas.Top="26" Width="50" Height="32">Level</Label>
                 <Label Content="{Binding Path=CurrentController.CurrentCharacter.Level}" Canvas.Left="154" Canvas.Top="26" Height="27" Width="53"></Label>
-                <Canvas Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle Height="26" Width="80" Fill="Green"/>
+                <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
+                    <Rectangle x:Name="CurrentHealth" Height="26" Width="80" Fill="Green"/>
                 </Canvas>
             </Canvas>
         </ItemsControl>
