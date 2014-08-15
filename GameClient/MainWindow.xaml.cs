@@ -54,6 +54,8 @@ namespace GameClient
             Manager.AddNPC();
             //Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
 
+            
+
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -85,6 +87,13 @@ namespace GameClient
         {            
             base.OnClosing(e);
             Application.Current.Shutdown();
+        }
+
+        private void LevelUpButton(object sender, RoutedEventArgs e)
+        {
+            CurrentController.CurrentCharacter.LevelUp();
+
+            
         }
     }
 }
