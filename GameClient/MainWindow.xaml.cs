@@ -104,5 +104,22 @@ namespace GameClient
             CurrentHealth.Width = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
 
         }
+
+        private void ExperienceBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            CurrentExperienceBar.Width = (CurrentController.CurrentCharacter.Experience / CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+        }
+
+        private void GainExp(object sender, RoutedEventArgs e)
+        {
+            CurrentController.CurrentCharacter.Experience += 10;
+
+            if (CurrentController.CurrentCharacter.Experience == CurrentController.CurrentCharacter.ExperienceCap)
+            {
+                CurrentController.CurrentCharacter.LevelUp();
+                CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
+            }
+            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+        }
     }
 }
