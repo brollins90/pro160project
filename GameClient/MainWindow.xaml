@@ -22,11 +22,13 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,222,27,212" Click="LevelUpButton">Level up!</Button>
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,252,27,182" Click="LevelUpButton">Level up!</Button>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="TakeDamage" Margin="0,127,27,307">Take Damage!</Button>
-        
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,35,27,399">Gain Exp</Button>
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="TakeDamage" Margin="0,176,27,258">Take Damage!</Button>
+
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,102,27,332">Gain 10 Exp.</Button>
+
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,22,27,412">Gain 20 Exp.</Button>
 
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" Margin="0,0,255,0" Background="Bisque">
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
