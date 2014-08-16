@@ -56,6 +56,7 @@ namespace GameClient
 
 
             CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
+            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -93,6 +94,7 @@ namespace GameClient
         {
             CurrentController.CurrentCharacter.LevelUp();
             CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
+            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
             
         }
 
@@ -103,11 +105,6 @@ namespace GameClient
             CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
             CurrentHealth.Width = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
 
-        }
-
-        private void ExperienceBar_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            CurrentExperienceBar.Width = (CurrentController.CurrentCharacter.Experience / CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
 
         private void GainExp(object sender, RoutedEventArgs e)

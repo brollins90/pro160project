@@ -104,7 +104,7 @@ namespace GameCode.Models
         {
             Constitution = 5;
             Defense = 6;
-            Experience = 10;
+            Experience = 0;
             Level = 1;
             Strength = 3;
             ExperienceCap = 100;

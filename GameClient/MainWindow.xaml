@@ -28,7 +28,7 @@
         
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,35,27,399">Gain Exp</Button>
 
-        <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" Margin="0,0,255,0" Background="Bisque" SizeChanged="ExperienceBar_SizeChanged">
+        <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" Margin="0,0,255,0" Background="Bisque">
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
         </Canvas>
 
