@@ -22,41 +22,38 @@ namespace GameClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GameManager _Manager;
-        public GameManager Manager
-        {
-            get { return _Manager; }
-            set { _Manager = value; }
-        }
 
-        private Controller _CurrentController;
-
-        public Controller CurrentController
-        {
-            get { return _CurrentController; }
-            set { _CurrentController = value; }
-        }
-        
+        public GameManager Manager {get;set;}
+        public Controller CurrentController {get; set;}
 
         public MainWindow()
         {
+            // Init the components
             InitializeComponent();
+            // Every game needs a manager (instance of the game)
             Manager = new GameManager();
+            
             this.DataContext = this;
-
             MainGrid.Focusable = true;
             MainGrid.Focus();
 
+            // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
+
+            PopulateGame();
+
+            // create some objects to bind the HUD portion of the UI to
+            CurrentHealth.Width = ((CurrentController.CurrentObject as Character).CurrentHealth / (CurrentController.CurrentObject as Character).MaxHealth) * 100;
+            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentObject as Character).Experience / (double)(CurrentController.CurrentObject as Character).ExperienceCap) * ExperienceBar.Width;
+        }
+
+        private void PopulateGame()
+        {
             CurrentController.CreateCharacter();
 
+            // Add some Bots
             Manager.AddNPC();
-            //Manager.World.Objects.Add(new Character() { Position = new System.Drawing.Point(200,200) });
-
-
-            CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -79,6 +76,11 @@ namespace GameClient
                 case Key.Right:
                     keyPressed = GameCommands.Right;
                     break;
+
+                case Key.Space:
+                case Key.T:
+                    keyPressed = GameCommands.Space;
+                    break;
             }
             Console.WriteLine("KeyDown: {0}", keyPressed);
             CurrentController.KeyDown(keyPressed);
@@ -92,45 +94,45 @@ namespace GameClient
 
         private void LevelUpButton(object sender, RoutedEventArgs e)
         {
-            CurrentController.CurrentCharacter.LevelUp();
-            CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+            (CurrentController.CurrentObject as Character).LevelUp();
+            CurrentHealth.Width = ((CurrentController.CurrentObject as Character).CurrentHealth / (CurrentController.CurrentObject as Character).MaxHealth) * 100;
+            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentObject as Character).Experience / (double)(CurrentController.CurrentObject as Character).ExperienceCap) * ExperienceBar.Width;
             
         }
 
         private void TakeDamage(object sender, RoutedEventArgs e)
         {
             Random rand = new Random();
-            CurrentController.CurrentCharacter.DamageTaken = rand.Next(10) + 1;
-            CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
-            CurrentHealth.Width = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
+            (CurrentController.CurrentObject as Character).DamageTaken = rand.Next(10) + 1;
+            (CurrentController.CurrentObject as Character).CurrentHealth = (CurrentController.CurrentObject as Character).CurrentHealth;
+            CurrentHealth.Width = (double)((double)(CurrentController.CurrentObject as Character).CurrentHealth / (double)(CurrentController.CurrentObject as Character).MaxHealth) * 100;
 
         }
 
         private void GainExp(object sender, RoutedEventArgs e)
         {
-            CurrentController.CurrentCharacter.Experience += 10;
+            (CurrentController.CurrentObject as Character).Experience += 10;
 
-            if (CurrentController.CurrentCharacter.Experience == CurrentController.CurrentCharacter.ExperienceCap)
+            if ((CurrentController.CurrentObject as Character).Experience == (CurrentController.CurrentObject as Character).ExperienceCap)
             {
-                CurrentController.CurrentCharacter.LevelUp();
-                CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
+                (CurrentController.CurrentObject as Character).LevelUp();
+                CurrentHealth.Width = ((CurrentController.CurrentObject as Character).CurrentHealth / (CurrentController.CurrentObject as Character).MaxHealth) * 100;
             }
-            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentObject as Character).Experience / (double)(CurrentController.CurrentObject as Character).ExperienceCap) * ExperienceBar.Width;
         }
 
         private void GainMoreExp(object sender, RoutedEventArgs e)
         {
-            CurrentController.CurrentCharacter.Experience += 20;
+            (CurrentController.CurrentObject as Character).Experience += 20;
 
-            if (CurrentController.CurrentCharacter.Experience >= CurrentController.CurrentCharacter.ExperienceCap)
+            if ((CurrentController.CurrentObject as Character).Experience >= (CurrentController.CurrentObject as Character).ExperienceCap)
             {
-                int expleft = CurrentController.CurrentCharacter.Experience - CurrentController.CurrentCharacter.ExperienceCap;
-                CurrentController.CurrentCharacter.LevelUp();
-                CurrentController.CurrentCharacter.Experience = expleft;
-                CurrentHealth.Width = (CurrentController.CurrentCharacter.CurrentHealth / CurrentController.CurrentCharacter.MaxHealth) * 100;
+                int expleft = (CurrentController.CurrentObject as Character).Experience - (CurrentController.CurrentObject as Character).ExperienceCap;
+                (CurrentController.CurrentObject as Character).LevelUp();
+                (CurrentController.CurrentObject as Character).Experience = expleft;
+                CurrentHealth.Width = ((CurrentController.CurrentObject as Character).CurrentHealth / (CurrentController.CurrentObject as Character).MaxHealth) * 100;
             }
-            CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentObject as Character).Experience / (double)(CurrentController.CurrentObject as Character).ExperienceCap) * ExperienceBar.Width;
         }
     }
 }

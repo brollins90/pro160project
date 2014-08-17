@@ -24,14 +24,14 @@ namespace GameCode.Models
             Objects = new ObservableCollection<GameObject>();
         }
 
-        public List<GameObject> Sentrys
+        public List<GameObject> Bots
         {
             get { 
-                var sentrys = Objects.Where((obj, r) => { return obj.GetType() == typeof(Sentry); }).ToList();
+                var bots = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bot); }).ToList();
 
                 //var sentrys = CollectionViewSource.GetDefaultView(Objects);
                 //sentrys.Filter = s => (s as Sentry).GetType() == typeof(Sentry);
-                return sentrys;
+                return bots;
             }
         }
         

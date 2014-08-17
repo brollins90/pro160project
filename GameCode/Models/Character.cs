@@ -139,6 +139,11 @@ namespace GameCode.Models
            
         }
 
-        
+
+
+        public override void Update()
+        {
+            return;
+        }
     }
 }

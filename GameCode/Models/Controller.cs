@@ -10,23 +10,22 @@ namespace GameCode.Models
     public class Controller
     {
 
-        public Character CurrentCharacter { get; set; }
-        private int _ControllerID;
+        public GameObject CurrentObject { get; set; }
 
+        private static int NextID = 0;
+        private int _ControllerID;
         public int ControllerID
         {
             get { return _ControllerID; }
-            set { _ControllerID = value; }
+            private set { _ControllerID = value; }
         }
 
         private int _GameObjectID;
-
-	public int GameObjectID
-	{
-		get { return _GameObjectID;}
-		set { _GameObjectID = value;}
-	}
-
+	    public int GameObjectID
+	    {
+		    get { return _GameObjectID;}
+		    set { _GameObjectID = value;}
+	    }
 
         private GameManager _Manager;
 
@@ -46,24 +45,23 @@ namespace GameCode.Models
         public void CreateCharacter()
         {
             GameObjectID = Manager.AddPlayer(this);
-            CurrentCharacter = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
+            CurrentObject = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
         }
 
         public Controller()
         {
-            ControllerID = 7;
-
+            ControllerID = NextID++;
         }
 
+        public GameCommands GetMove()
+        {
+            return GameCommands.None;
+        }
         public void KeyDown(GameCommands keyPressed)
         {
             Console.WriteLine("Controller.KeyDown()");
             Manager.SubmitMove(GameObjectID, keyPressed);
         }
 
-        internal GameCommands GetMove()
-        {
-            return GameCommands.Up;
-        }
     }
 }

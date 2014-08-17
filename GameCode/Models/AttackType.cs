@@ -8,6 +8,6 @@ namespace GameCode.Models
 {
     public enum AttackType
     {
-        Melee, Bow
+        Melee, Ranged, Spell
     }
 }
