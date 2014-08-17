@@ -10,7 +10,7 @@ namespace GameCode.Models
     public class Controller
     {
 
-        public GameObject CurrentObject { get; set; }
+        public Character CurrentCharacter { get; set; }
 
         private static int NextID = 0;
         private int _ControllerID;
@@ -45,7 +45,7 @@ namespace GameCode.Models
         public void CreateCharacter()
         {
             GameObjectID = Manager.AddPlayer(this);
-            CurrentObject = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
+            CurrentCharacter = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
         }
 
         public Controller()
