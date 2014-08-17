@@ -137,7 +137,7 @@ namespace GameCode.Models
         }
 
 
-
+        public abstract void Update();
 
         internal bool CollidesWith(GameObject o)
         {

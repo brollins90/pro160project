@@ -51,14 +51,14 @@ namespace GameCode
 
         public void AddNPC()
         {
-            GameObject newCharacter = new Sentry(new Point(300, 150));
-            Controller newController = new Controller()
-            {
-                GameObjectID = newCharacter.UniqueID
-            };
-            newCharacter.Controller = newController;
+            GameObject newCharacter = new Bot(new Point(300, 150));
+            //Controller newController = new BotController()
+            //{
+            //    GameObjectID = newCharacter.UniqueID
+            //};
+            //newCharacter.Controller = newController;
             World.Objects.Add(newCharacter);
-            Controllers.Add(newController);
+            //Controllers.Add(newController);
 
 
         }
@@ -73,6 +73,12 @@ namespace GameCode
 
         }
 
+        public void AddProjectile(Projectile p)
+        {
+            World.Objects.Add(p);
+            
+        }
+
         public void LoadWorld(string filename)
         {
 
@@ -80,9 +86,10 @@ namespace GameCode
 
         public void ProcessMoves()
         {
-            foreach (GameObject o in World.Sentrys)
+            foreach (GameObject o in World.Objects)
             {
-                SubmitMove(o.UniqueID, o.Controller.GetMove());
+                o.Update();
+                //SubmitMove(o.UniqueID, o.Controller.GetMove());
             }
         }
 
@@ -130,6 +137,20 @@ namespace GameCode
             {
                 newPosition = new Point() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
                 objToProcess.Direction = 0;
+            }
+            else if (keyPressed == GameCommands.Space)
+            {
+                Console.WriteLine("recieved a space");
+                //if (objToProcess.AttackType == AttackType.Ranged)
+                //{
+                    AddProjectile(new Projectile(currentPosition, objToProcess.Direction, 10, objToProcess.Damage)
+                    {
+                        Height = 10,
+                        Width = 10,
+                        Controller = new Controller()
+
+                    });
+                //}
             }
             objToProcess.Position = newPosition;
 

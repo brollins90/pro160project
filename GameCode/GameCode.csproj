@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="GameManager.cs" />
     <Compile Include="Models\AttackType.cs" />
+    <Compile Include="Models\Debris.cs" />
+    <Compile Include="Models\Projectile.cs" />
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\GameCommands.cs" />
@@ -53,7 +55,6 @@
     <Compile Include="Models\IMovingObject.cs" />
     <Compile Include="Models\IAttackingObject.cs" />
     <Compile Include="Models\MoveType.cs" />
-    <Compile Include="Models\Sentry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
