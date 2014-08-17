@@ -49,5 +49,11 @@ namespace GameClient
         {
             
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Application.Current.Shutdown();
+        }
     }
 }
