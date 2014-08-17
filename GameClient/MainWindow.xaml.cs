@@ -61,7 +61,7 @@ namespace GameClient
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
         {
-            GameCommands keyPressed = GameCommands.Down;
+            GameCommands keyPressed = GameCommands.None;
             switch (e.Key)
             {
                 case Key.Up:
