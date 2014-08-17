@@ -100,10 +100,29 @@ namespace GameClient
 
         private void TakeDamage(object sender, RoutedEventArgs e)
         {
+
             Random rand = new Random();
             CurrentController.CurrentCharacter.DamageTaken = rand.Next(10) + 1;
+
             CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
-            CurrentHealth.Width = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
+
+            double healthleft = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
+
+            if (healthleft <= 0)
+            {
+                CurrentHealth.Width = 0;
+
+                MessageBox.Show("Game Over.");
+                MainMenu mainmenu = new MainMenu();
+                mainmenu.Show();
+                this.Hide();
+                
+            }
+            else
+            {
+                CurrentHealth.Width = healthleft;
+            }
+
 
         }
 
