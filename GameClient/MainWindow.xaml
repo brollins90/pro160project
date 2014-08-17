@@ -2,6 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="The World We Don't Know" Height="514" Width="839">
+    <Window.Background>
+        <ImageBrush ImageSource="C:\Users\Keith\Source\Repos\pro160project\Images\GameBackground.jpg"/>
+    </Window.Background>
     <Grid x:Name="MainGrid"  KeyDown="Grid_KeyDown">
         <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}">
             <ItemsControl.ItemsPanel>
