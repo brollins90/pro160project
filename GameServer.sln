@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClient", "GameClient\GameClient.csproj", "{20EDD18F-333F-4400-BC1C-AFB140025EC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{BB89A28E-5D94-4C97-B15D-6773AD44BC72}"
+	ProjectSection(SolutionItems) = preProject
+		Images\GameBackground.jpg = Images\GameBackground.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
