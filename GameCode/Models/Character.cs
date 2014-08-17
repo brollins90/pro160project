@@ -77,17 +77,8 @@ namespace GameCode.Models
             get { return _CurrentHealth; }
             set
             {
-                _CurrentHealth = value - DamageTaken;
+                _CurrentHealth = value;
                 this.FirePropertyChanged("CurrentHealth");
-            }
-        }
-
-        private int _DamageTaken;
-        public int DamageTaken
-        {
-            get { return _DamageTaken; }
-            set { _DamageTaken = value;
-            this.FirePropertyChanged("DamageTaken");
             }
         }
 
@@ -123,7 +114,6 @@ namespace GameCode.Models
 
         public void LevelUp()
         {
-            this.DamageTaken = 0;
             this.Level += 1;
             this.Strength += 1;
             this.Constitution += 2;

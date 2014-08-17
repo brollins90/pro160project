@@ -102,9 +102,8 @@ namespace GameClient
         {
 
             Random rand = new Random();
-            CurrentController.CurrentCharacter.DamageTaken = rand.Next(10) + 1;
 
-            CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth;
+            CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth - rand.Next(10) + 1;
 
             double healthleft = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
 
