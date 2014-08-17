@@ -150,5 +150,10 @@ namespace GameClient
             }
             CurrentExperienceBar.Width = (double)((double)CurrentController.CurrentCharacter.Experience / (double)CurrentController.CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
+
+        private void GainGold(object sender, RoutedEventArgs e)
+        {
+            CurrentController.CurrentCharacter.Gold += 10;
+        }
     }
 }
