@@ -79,6 +79,9 @@ namespace GameClient
                 case Key.Right:
                     keyPressed = GameCommands.Right;
                     break;
+
+                case Key.P:
+                    break;
             }
             Console.WriteLine("KeyDown: {0}", keyPressed);
             CurrentController.KeyDown(keyPressed);
@@ -111,7 +114,7 @@ namespace GameClient
             {
                 CurrentHealth.Width = 0;
 
-                MessageBox.Show("Game Over.");
+                MessageBox.Show("Game Over. You were level " + CurrentController.CurrentCharacter.Level + ", when you died");
                 MainMenu mainmenu = new MainMenu();
                 mainmenu.Show();
                 this.Hide();
