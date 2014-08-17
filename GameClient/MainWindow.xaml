@@ -14,7 +14,11 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Fill="Red" Width="{Binding Width}" Height="{Binding Height}"/>
+                    <Rectangle Width="{Binding Width}" Height="{Binding Height}">
+                        <Rectangle.Fill>
+                            <ImageBrush Stretch="None" ImageSource="C:\Users\Keith\Source\Repos\pro160project\Images\GameCharacter.jpg"/>
+                        </Rectangle.Fill>                    
+                    </Rectangle>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>

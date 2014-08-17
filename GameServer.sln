@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{BB89A28E-5D94-4C97-B15D-6773AD44BC72}"
 	ProjectSection(SolutionItems) = preProject
 		Images\GameBackground.jpg = Images\GameBackground.jpg
+		Images\GameCharacter.jpg = Images\GameCharacter.jpg
 	EndProjectSection
 EndProject
 Global
