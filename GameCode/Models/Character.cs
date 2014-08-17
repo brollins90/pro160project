@@ -77,17 +77,8 @@ namespace GameCode.Models
             get { return _CurrentHealth; }
             set
             {
-                _CurrentHealth = value - DamageTaken;
+                _CurrentHealth = value;
                 this.FirePropertyChanged("CurrentHealth");
-            }
-        }
-
-        private int _DamageTaken;
-        public int DamageTaken
-        {
-            get { return _DamageTaken; }
-            set { _DamageTaken = value;
-            this.FirePropertyChanged("DamageTaken");
             }
         }
 
@@ -100,6 +91,15 @@ namespace GameCode.Models
             }
         }
 
+        private int _Gold;
+        public int Gold
+        {
+            get { return _Gold; }
+            set { _Gold = value;
+            this.FirePropertyChanged("Gold");
+            }
+        }
+
         public Character(Point position) : base(position)
         {
             Constitution = 5;
@@ -109,6 +109,7 @@ namespace GameCode.Models
             Strength = 3;
             ExperienceCap = 100;
             CurrentHealth = 100;
+            Gold = 0;
         }
 
         public void Attack(Point destination)
@@ -123,7 +124,6 @@ namespace GameCode.Models
 
         public void LevelUp()
         {
-            this.DamageTaken = 0;
             this.Level += 1;
             this.Strength += 1;
             this.Constitution += 2;
@@ -131,10 +131,12 @@ namespace GameCode.Models
             this.ExperienceCap += 30;
             this.MaxHealth = Constitution * 20;
             this.CurrentHealth = MaxHealth;
+            this.Gold += 100;
 
             if (this.Level % 3 == 0)
             {
                 this.Defense += 1;
+                this.Gold += 150;
             }           
            
         }

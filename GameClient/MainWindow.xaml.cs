@@ -32,7 +32,7 @@ namespace GameClient
             InitializeComponent();
             // Every game needs a manager (instance of the game)
             Manager = new GameManager();
-            
+
             this.DataContext = this;
             MainGrid.Focusable = true;
             MainGrid.Focus();
@@ -102,10 +102,28 @@ namespace GameClient
 
         private void TakeDamage(object sender, RoutedEventArgs e)
         {
+
             Random rand = new Random();
-            (CurrentController.CurrentObject as Character).DamageTaken = rand.Next(10) + 1;
-            (CurrentController.CurrentObject as Character).CurrentHealth = (CurrentController.CurrentObject as Character).CurrentHealth;
-            CurrentHealth.Width = (double)((double)(CurrentController.CurrentObject as Character).CurrentHealth / (double)(CurrentController.CurrentObject as Character).MaxHealth) * 100;
+
+            CurrentController.CurrentCharacter.CurrentHealth = CurrentController.CurrentCharacter.CurrentHealth - rand.Next(10) + 1;
+
+            double healthleft = (double) ((double) CurrentController.CurrentCharacter.CurrentHealth / (double) CurrentController.CurrentCharacter.MaxHealth) * 100;
+
+            if (healthleft <= 0)
+            {
+                CurrentHealth.Width = 0;
+
+                MessageBox.Show("Game Over. You were level " + CurrentController.CurrentCharacter.Level + ", when you died");
+                MainMenu mainmenu = new MainMenu();
+                mainmenu.Show();
+                this.Hide();
+                
+            }
+            else
+            {
+                CurrentHealth.Width = healthleft;
+            }
+
 
         }
 
@@ -133,6 +151,11 @@ namespace GameClient
                 CurrentHealth.Width = ((CurrentController.CurrentObject as Character).CurrentHealth / (CurrentController.CurrentObject as Character).MaxHealth) * 100;
             }
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentObject as Character).Experience / (double)(CurrentController.CurrentObject as Character).ExperienceCap) * ExperienceBar.Width;
+        }
+
+        private void GainGold(object sender, RoutedEventArgs e)
+        {
+            CurrentController.CurrentCharacter.Gold += 10;
         }
     }
 }

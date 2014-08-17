@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer\GameServer.csproj", "{7E3E2D27-AF09-4A7D-A5D4-9F359626F426}"
 EndProject
@@ -9,7 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCode", "GameCode\GameCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClient", "GameClient\GameClient.csproj", "{20EDD18F-333F-4400-BC1C-AFB140025EC0}"
 EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "GameModels", "GameModels\GameModels.modelproj", "{285A77A7-38AA-4787-B3FC-E87D4F99B2EE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{BB89A28E-5D94-4C97-B15D-6773AD44BC72}"
+	ProjectSection(SolutionItems) = preProject
+		Images\GameBackground.jpg = Images\GameBackground.jpg
+		Images\GameCharacter.jpg = Images\GameCharacter.jpg
+		Images\GameOverlay.jpg = Images\GameOverlay.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +34,6 @@ Global
 		{20EDD18F-333F-4400-BC1C-AFB140025EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20EDD18F-333F-4400-BC1C-AFB140025EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20EDD18F-333F-4400-BC1C-AFB140025EC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{285A77A7-38AA-4787-B3FC-E87D4F99B2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{285A77A7-38AA-4787-B3FC-E87D4F99B2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{285A77A7-38AA-4787-B3FC-E87D4F99B2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{285A77A7-38AA-4787-B3FC-E87D4F99B2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
