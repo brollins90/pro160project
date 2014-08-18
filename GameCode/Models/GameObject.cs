@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel;
+using System.Windows;
 
 namespace GameCode.Models
 {
@@ -78,8 +79,8 @@ namespace GameCode.Models
             set { _MoveType = value; }
         }
 
-        private Point _Position;
-        public Point Position
+        private Vector _Position;
+        public Vector Position
         {
             get { return _Position; }
             set
@@ -113,7 +114,7 @@ namespace GameCode.Models
         }
 
         public GameObject(
-            Point position,
+            Vector position,
             AttackType attackType = AttackType.Melee,
             int damage = 2,
             float direction = 90f,
@@ -141,8 +142,8 @@ namespace GameCode.Models
 
         internal bool CollidesWith(GameObject o)
         {
-            Rectangle r1 = new Rectangle(Position.X, Position.Y, Width, Height);
-            Rectangle r2 = new Rectangle(o.Position.X, o.Position.Y, o.Width, o.Height);
+            Rectangle r1 = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+            Rectangle r2 = new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Width, o.Height);
             return !((r1.Bottom < r2.Top) || (r1.Top > r2.Bottom) || (r1.Left > r2.Right) || (r1.Right < r2.Left));
         }
     }

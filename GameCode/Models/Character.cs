@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GameCode.Models
 {
@@ -100,7 +101,8 @@ namespace GameCode.Models
             }
         }
 
-        public Character(Point position) : base(position)
+        public Character(Vector position)
+            : base(position)
         {
             Constitution = 5;
             Defense = 6;
@@ -112,12 +114,12 @@ namespace GameCode.Models
             Gold = 0;
         }
 
-        public void Attack(Point destination)
+        public void Attack(Vector destination)
         {
             throw new NotImplementedException();
         }
 
-        public void Move(Point destination)
+        public void Move(Vector destination)
         {
             throw new NotImplementedException();
         }
