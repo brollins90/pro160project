@@ -11,12 +11,6 @@ namespace GameCode.Models
 {
     public class Character : GameObject, IMovingObject, IAttackingObject, INotifyPropertyChanged
     {
-        public int _Team;
-        public int Team
-        {
-            get { return _Team; }
-            set { _Team = value; }
-        }
 
         private int _Constitution;
         public int Constitution
@@ -72,16 +66,16 @@ namespace GameCode.Models
             }
         }
 
-        private int _CurrentHealth;
-        public int CurrentHealth
-        {
-            get { return _CurrentHealth; }
-            set
-            {
-                _CurrentHealth = value;
-                this.FirePropertyChanged("CurrentHealth");
-            }
-        }
+        //private int _CurrentHealth;
+        //public int CurrentHealth
+        //{
+        //    get { return _CurrentHealth; }
+        //    set
+        //    {
+        //        _CurrentHealth = value;
+        //        this.FirePropertyChanged("CurrentHealth");
+        //    }
+        //}
 
         private int _MaxHealth;
         public int MaxHealth
@@ -110,7 +104,7 @@ namespace GameCode.Models
             Level = 1;
             Strength = 3;
             ExperienceCap = 100;
-            CurrentHealth = 100;
+            Health = 100;
             Gold = 0;
         }
 
@@ -132,7 +126,7 @@ namespace GameCode.Models
             this.Experience = 0;
             this.ExperienceCap += 30;
             this.MaxHealth = Constitution * 20;
-            this.CurrentHealth = MaxHealth;
+            this.Health = MaxHealth;
             this.Gold += 100;
 
             if (this.Level % 3 == 0)

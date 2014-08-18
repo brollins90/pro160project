@@ -100,6 +100,13 @@ namespace GameCode.Models
             set { _Speed = value; }
         }
 
+        public int _Team;
+        public int Team
+        {
+            get { return _Team; }
+            set { _Team = value; }
+        }
+
         private int _Width;
 
         public int Width
