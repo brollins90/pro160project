@@ -81,6 +81,11 @@ namespace GameCode
 
         }
 
+        public void AddDebris(Debris debris)
+        {
+            World.Objects.Add(debris);
+        }
+
         public void AddProjectile(GameProjectile p)
         {
             World.Objects.Add(p);            
@@ -125,6 +130,14 @@ namespace GameCode
 
             // Update the Players
             foreach (Character o in World.Characters) // implici cast
+            {
+                if (o.Alive)
+                {
+                    o.Update(deltaTime);
+                }
+            }
+
+            foreach (Debris o in World.Debris) 
             {
                 if (o.Alive)
                 {

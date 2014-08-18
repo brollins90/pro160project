@@ -10,10 +10,12 @@ namespace GameCode.Models
 {
     public class Debris : GameObject
     {
-        public Debris(Vector position, GameManager manager)
-            : base(position, manager)
+        public Debris(Vector position, GameManager manager, int width, int height)
+            : base(position, manager, width:width, height:height)
         {
-
+            this.Position = new Vector(400, 500);
+            this.Width = 30;
+            this.Height = 100;
         }
         public override void Update(int deltaTime)
         {

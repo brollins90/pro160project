@@ -53,6 +53,15 @@ namespace GameCode.Models
             }
         }
 
+        public List<GameObject> Debris
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Debris); }).ToList();
+                return retVal;
+            }
+        }
+
 
         internal void Remove()
         {
