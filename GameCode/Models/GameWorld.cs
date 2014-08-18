@@ -11,6 +11,9 @@ namespace GameCode.Models
 {
     public class GameWorld
     {
+        public const int WORLD_WIDTH = 1024;
+        public const int WORLD_HEIGHT = 768;
+
         private ObservableCollection<GameObject> _Objects;
         public ObservableCollection<GameObject> Objects
         {

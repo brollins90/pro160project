@@ -73,7 +73,7 @@ namespace GameCode.Models
             throw new NotImplementedException();
         }
 
-        public override void Update()
+        public override void Update(int deltaTime)
         {
             Position = new Vector(Position.X + Speed, Position.Y + Speed);
         }

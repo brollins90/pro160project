@@ -27,7 +27,7 @@ namespace GameCode
             set { _Controllers = value; }
         }
 
-
+        private int lastTime = 0;
         
 
         public GameManager()
@@ -35,15 +35,20 @@ namespace GameCode
             Timer = new DispatcherTimer();
             World = new GameWorld();
             Controllers = new ObservableCollection<Controller>();
-            Timer.Interval = TimeSpan.FromMilliseconds((100 / 1));
+            Timer.Interval = TimeSpan.FromMilliseconds((16));
             Timer.Start();
             Timer.Tick += Timer_Tick;
+
+            lastTime = GetCurrentTime();
 
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            Update();
+            int currentTime = Environment.TickCount;
+            int elapsedTime = currentTime - lastTime;
+            Update(elapsedTime);
+            lastTime = currentTime;
         }
 
         public void AddNPC()
@@ -81,8 +86,9 @@ namespace GameCode
 
         }
 
-        public void Update()
+        public void Update(int deltaTime)
         {
+            Console.WriteLine("deltatime: " + deltaTime);
             // If paused, return
             // TODO
 
@@ -94,7 +100,7 @@ namespace GameCode
             {
                 if (o.Alive)
                 {
-                    o.Update();
+                    o.Update(deltaTime);
                 }
             }
 
@@ -103,7 +109,7 @@ namespace GameCode
             {
                 if (o.Alive)
                 {
-                    o.Update();
+                    o.Update(deltaTime);
                 }
             }
 
@@ -112,7 +118,7 @@ namespace GameCode
             {
                 if (o.Alive)
                 {
-                    o.Update();
+                    o.Update(deltaTime);
                 }
             }
 
@@ -139,6 +145,11 @@ namespace GameCode
         public void SubmitMove()
         {
 
+        }
+
+        public int GetCurrentTime()
+        {
+            return Environment.TickCount;
         }
     }
 }

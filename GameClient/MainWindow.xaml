@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GameClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="The World We Don't Know" Height="514" Width="839">
+        Title="The World We Don't Know" Height="768" Width="1024">
     <Window.Background>
         <ImageBrush ImageSource="Images\GameBackground.jpg"/>
     </Window.Background>

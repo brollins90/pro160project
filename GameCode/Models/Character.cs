@@ -139,7 +139,7 @@ namespace GameCode.Models
 
 
 
-        public override void Update()
+        public override void Update(int deltaTime)
         {
             Console.WriteLine("Character.Update()");
             GameObject objToProcess = this;
@@ -172,7 +172,7 @@ namespace GameCode.Models
                 Console.WriteLine("recieved a space");
                 //if (objToProcess.AttackType == AttackType.Ranged)
                 //{
-                Manager.AddProjectile(new GameProjectile(currentPosition, this.Manager, objToProcess.Direction, 25, objToProcess.Damage)
+                Manager.AddProjectile(new GameProjectile(currentPosition, this.Manager, objToProcess.Direction, 25, objToProcess.Damage, 100)
                 {
                     Height = 10,
                     Width = 10,
