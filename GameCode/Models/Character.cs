@@ -101,8 +101,8 @@ namespace GameCode.Models
             }
         }
 
-        public Character(Vector position)
-            : base(position)
+        public Character(Vector position, GameManager manager)
+            : base(position, manager)
         {
             Constitution = 5;
             Defense = 6;
@@ -147,7 +147,59 @@ namespace GameCode.Models
 
         public override void Update()
         {
-            return;
+            Console.WriteLine("Character.Update()");
+            GameObject objToProcess = this;
+            Vector currentPosition = this.Position;
+            Vector newPosition = currentPosition;
+
+            GameCommands keyPressed = this.Controller.GetMove();
+            if (keyPressed == GameCommands.Up)
+            {
+                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - objToProcess.Speed };
+                objToProcess.Direction = 90;
+            }
+            else if (keyPressed == GameCommands.Down)
+            {
+                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y + objToProcess.Speed };
+                objToProcess.Direction = 270;
+            }
+            else if (keyPressed == GameCommands.Left)
+            {
+                newPosition = new Vector() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction = 180;
+            }
+            else if (keyPressed == GameCommands.Right)
+            {
+                newPosition = new Vector() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction = 0;
+            }
+            else if (keyPressed == GameCommands.Space)
+            {
+                Console.WriteLine("recieved a space");
+                //if (objToProcess.AttackType == AttackType.Ranged)
+                //{
+                Manager.AddProjectile(new GameProjectile(currentPosition, this.Manager, objToProcess.Direction, 25, objToProcess.Damage)
+                {
+                    Height = 10,
+                    Width = 10,
+                    Controller = new Controller()
+
+                });
+                //}
+            }
+            objToProcess.Position = newPosition;
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (objToProcess.UniqueID != o.UniqueID && objToProcess.CollidesWith(o))
+                    collided = true;
+            }
+            if (collided)
+            {
+                objToProcess.Position = currentPosition;
+                Console.WriteLine("Collided");
+            }
         }
     }
 }

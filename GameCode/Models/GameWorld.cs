@@ -26,14 +26,42 @@ namespace GameCode.Models
 
         public List<GameObject> Bots
         {
-            get { 
-                var bots = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bot); }).ToList();
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bot); }).ToList();
 
                 //var sentrys = CollectionViewSource.GetDefaultView(Objects);
                 //sentrys.Filter = s => (s as Sentry).GetType() == typeof(Sentry);
-                return bots;
+                return retVal;
             }
         }
-        
+
+        public List<GameObject> Projectiles
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(GameProjectile); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Characters
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Character); }).ToList();
+                return retVal;
+            }
+        }
+
+
+        internal void Remove()
+        {
+            var toRemove = Objects.Where(obj => obj.Alive != true).ToList();
+            foreach (var item in toRemove)
+            {
+                Objects.Remove(item);
+            }
+        }
     }
 }
