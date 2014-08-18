@@ -15,28 +15,28 @@ namespace GameClient.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Uri picture = null;
-            GameCode.Models.BotClass gen = (GameCode.Models.BotClass)values[0];
-            if (gen == GameCode.Models.BotClass.Melee)
+            GameCode.Models.BotClass gen2 = (GameCode.Models.BotClass)values[1];
+            if (gen2 == GameCode.Models.BotClass.Melee)
             {
 
             }
-            else if (gen == GameCode.Models.BotClass.Boss)
+            else if (gen2 == GameCode.Models.BotClass.Boss)
             {
 
             }
-            else if (gen == GameCode.Models.BotClass.Shooter)
+            else if (gen2 == GameCode.Models.BotClass.Shooter)
             {
 
             }
-            else if (gen == GameCode.Models.BotClass.Mercenary)
+            else if (gen2 == GameCode.Models.BotClass.Mercenary)
             {
 
             }
-            else if (gen == GameCode.Models.BotClass.Turret)
+            else if (gen2 == GameCode.Models.BotClass.Turret)
             {
 
             }
-            else if (gen == GameCode.Models.BotClass.Tower)
+            else if (gen2 == GameCode.Models.BotClass.Tower)
             {
 
             }
