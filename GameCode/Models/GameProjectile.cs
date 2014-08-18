@@ -10,24 +10,21 @@ namespace GameCode.Models
 {
 
     public class GameProjectile : GameObject
-    {   
-
-        public int _Team;
-        public int Team
-        {
-            get { return _Team; }
-            set { _Team = value; }
-        }
-
-        public GameProjectile(Vector position, GameManager manager, float direction, int speed, int damage)
+    {
+        private Vector StartPosition;
+        private double MaxDistance;
+        
+        public GameProjectile(Vector position, GameManager manager, float direction, int speed, int damage, double maxDistanceSquared)
             : base(position, manager)
         {
+            StartPosition = new Vector(position.X, position.Y);
+            MaxDistance = maxDistanceSquared;
             this.Damage = damage;
             this.Direction = direction;
             this.Speed = speed;
         }
 
-        public override void Update()
+        public override void Update(int deltaTime)
         {
             if (Direction == 0)
             {
@@ -45,7 +42,11 @@ namespace GameCode.Models
             {
                 Position = new Vector(Position.X, Position.Y + Speed);
             }
-            
+            double distance = (Position - StartPosition).Length;
+            if (distance > MaxDistance)
+            {
+                this.Alive = false;
+            }
         }
     }
 }

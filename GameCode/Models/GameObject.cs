@@ -151,7 +151,7 @@ namespace GameCode.Models
         }
 
 
-        public abstract void Update();
+        public abstract void Update(int deltaTime);
 
         internal bool CollidesWith(GameObject o)
         {

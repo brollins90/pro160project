@@ -15,7 +15,7 @@ namespace GameCode.Models
         {
 
         }
-        public override void Update()
+        public override void Update(int deltaTime)
         {
             return;
         }
