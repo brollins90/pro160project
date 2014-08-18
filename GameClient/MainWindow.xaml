@@ -16,7 +16,7 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Width}" Height="{Binding Height}">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="None" ImageSource="Images\GameCharacter.jpg"/>
+                            <ImageBrush Stretch="Fill" ImageSource="Images\GameCharacter.jpg"/>
                         </Rectangle.Fill>                    
                     </Rectangle>
                 </DataTemplate>
