@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GameCode.Models
 {
@@ -28,22 +29,15 @@ namespace GameCode.Models
             set { _Team = value; }
         }
 
-        //private int _AttackDamage;
-        //public int AttackDamage
-        //{
-        //    get { return _AttackDamage; }
-        //    set { _AttackDamage = value; }
-        //}
-
-        public Bot(int speed, int health, int attackDamage, int team, Point position) : base(position)
+        public Bot(int speed, int health, int attackDamage, int team, Vector position)
+            : base(position)
         {
-            //this._AttackDamage = attackDamage;
             this.Speed = speed;
             this._Team = team;
             this.Health = health;
         }
 
-        public Bot(Point position, BotClass type = Models.BotClass.Melee)
+        public Bot(Vector position, BotClass type = Models.BotClass.Melee)
             : base(position)
         {
             switch (type)
@@ -77,19 +71,19 @@ namespace GameCode.Models
             }
         }
 
-        public void Attack(Point destination)
+        public void Attack(Vector destination)
         {
             throw new NotImplementedException();
         }
 
-        public void Move(Point destination)
+        public void Move(Vector destination)
         {
             throw new NotImplementedException();
         }
 
         public override void Update()
         {
-            Position = new Point(Position.X + Speed, Position.Y + Speed);
+            Position = new Vector(Position.X + Speed, Position.Y + Speed);
         }
     }
 }
