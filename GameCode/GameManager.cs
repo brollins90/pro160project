@@ -132,7 +132,7 @@ namespace GameCode
             {
                 if (o.Alive)
                 {
-                    o.Update();
+                    o.Update(deltaTime);
                 }
             }
 
