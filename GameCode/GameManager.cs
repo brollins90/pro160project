@@ -13,9 +13,7 @@ namespace GameCode
     public class GameManager
     {
         private DispatcherTimer Timer;
-
         private GameWorld _World;
-
         public GameWorld World
         {
             get { return _World; }
@@ -23,7 +21,6 @@ namespace GameCode
         }
 
         private ObservableCollection<Controller> _Controllers;
-
         public ObservableCollection<Controller> Controllers
         {
             get { return _Controllers; }
@@ -38,7 +35,7 @@ namespace GameCode
             Timer = new DispatcherTimer();
             World = new GameWorld();
             Controllers = new ObservableCollection<Controller>();
-            Timer.Interval = TimeSpan.FromMilliseconds((1000 / 1));
+            Timer.Interval = TimeSpan.FromMilliseconds((100 / 1));
             Timer.Start();
             Timer.Tick += Timer_Tick;
 
@@ -46,12 +43,12 @@ namespace GameCode
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            ProcessMoves();
+            Update();
         }
 
         public void AddNPC()
         {
-            GameObject newCharacter = new Bot(new Vector(300, 150));
+            GameObject newCharacter = new Bot(new Vector(300, 150), this);
             //GameObject newCharacter = new Bot(new Point(300, 150));
             //Controller newController = new BotController()
             //{
@@ -66,7 +63,7 @@ namespace GameCode
 
         public int AddPlayer(Controller playerController)
         {
-            Character c = new Character(new Vector(100, 100));
+            Character c = new Character(new Vector(100, 100), this);
             c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);
@@ -74,10 +71,9 @@ namespace GameCode
 
         }
 
-        public void AddProjectile(Projectile p)
+        public void AddProjectile(GameProjectile p)
         {
-            World.Objects.Add(p);
-            
+            World.Objects.Add(p);            
         }
 
         public void LoadWorld(string filename)
@@ -85,13 +81,45 @@ namespace GameCode
 
         }
 
-        public void ProcessMoves()
+        public void Update()
         {
-            foreach (GameObject o in World.Objects)
+            // If paused, return
+            // TODO
+
+            // Update Pathing
+            // TODO
+
+            // Update Projectiles
+            foreach (GameProjectile o in World.Projectiles)
             {
-                o.Update();
-                //SubmitMove(o.UniqueID, o.Controller.GetMove());
+                if (o.Alive)
+                {
+                    o.Update();
+                }
             }
+
+            // Update Bots
+            foreach (Bot o in World.Bots) // implici cast
+            {
+                if (o.Alive)
+                {
+                    o.Update();
+                }
+            }
+
+            // Update the Players
+            foreach (Character o in World.Characters) // implici cast
+            {
+                if (o.Alive)
+                {
+                    o.Update();
+                }
+            }
+
+
+            // Remove the dead
+            World.Remove();
+
         }
 
         public void ResetGame()
@@ -106,67 +134,10 @@ namespace GameCode
 
         public void StartGame()
         {
-
         }
 
         public void SubmitMove()
         {
-
-        }
-
-
-        public void SubmitMove(int GameObjectID, GameCommands keyPressed)
-        {
-            Console.WriteLine("Manager.SubmitMove()");
-            GameObject objToProcess = World.Objects.First(X => X.UniqueID == GameObjectID);
-            Vector currentPosition = objToProcess.Position;
-            Vector newPosition = currentPosition;
-
-            if (keyPressed == GameCommands.Up) {
-                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - objToProcess.Speed };
-                objToProcess.Direction = 90;
-            }
-            else if (keyPressed == GameCommands.Down) {
-                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y + objToProcess.Speed };
-                objToProcess.Direction = 270;
-            }
-            else if (keyPressed == GameCommands.Left) {
-                newPosition = new Vector() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
-                objToProcess.Direction = 180;
-            }
-            else if (keyPressed == GameCommands.Right)
-            {
-                newPosition = new Vector() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
-                objToProcess.Direction = 0;
-            }
-            else if (keyPressed == GameCommands.Space)
-            {
-                Console.WriteLine("recieved a space");
-                //if (objToProcess.AttackType == AttackType.Ranged)
-                //{
-                    AddProjectile(new Projectile(currentPosition, objToProcess.Direction, 25, objToProcess.Damage)
-                    {
-                        Height = 10,
-                        Width = 10,
-                        Controller = new Controller()
-
-                    });
-                //}
-            }
-            objToProcess.Position = newPosition;
-
-            bool collided = false;
-            foreach (GameObject o in World.Objects)
-            {
-                if (objToProcess.UniqueID != o.UniqueID && objToProcess.CollidesWith(o))
-                    collided = true;
-            }
-            if (collided)
-            {
-                objToProcess.Position = currentPosition;
-                Console.WriteLine("Collided");
-            }
-
 
         }
     }

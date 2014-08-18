@@ -22,6 +22,9 @@ namespace GameCode.Models
             }
         }
 
+        public bool Alive { get; set; }
+        public GameManager Manager { get; set; }
+
         private AttackType _AttackType;
         public AttackType AttackType
         {
@@ -97,6 +100,13 @@ namespace GameCode.Models
             set { _Speed = value; }
         }
 
+        public int _Team;
+        public int Team
+        {
+            get { return _Team; }
+            set { _Team = value; }
+        }
+
         private int _Width;
 
         public int Width
@@ -115,6 +125,7 @@ namespace GameCode.Models
 
         public GameObject(
             Vector position,
+            GameManager manager,
             AttackType attackType = AttackType.Melee,
             int damage = 2,
             float direction = 90f,
@@ -125,11 +136,13 @@ namespace GameCode.Models
             int width = 30
             )
         {
+            Alive = true;
             AttackType = attackType;
             Damage = damage;
             Direction = direction;
             Health = health;
             Height = height;
+            Manager = manager;
             MoveType = moveType;
             Position = position;
             Speed = speed;

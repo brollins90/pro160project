@@ -44,7 +44,7 @@ namespace GameClient
             PopulateGame();
 
             // create some objects to bind the HUD portion of the UI to
-            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).CurrentHealth / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
         }
 
@@ -95,7 +95,7 @@ namespace GameClient
         private void LevelUpButton(object sender, RoutedEventArgs e)
         {
             (CurrentController.CurrentCharacter as Character).LevelUp();
-            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).CurrentHealth / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
             
         }
@@ -105,9 +105,9 @@ namespace GameClient
 
             Random rand = new Random();
 
-            (CurrentController.CurrentCharacter as Character).CurrentHealth = (CurrentController.CurrentCharacter as Character).CurrentHealth - rand.Next(10) + 1;
+            (CurrentController.CurrentCharacter as Character).Health = (CurrentController.CurrentCharacter as Character).Health - rand.Next(10) + 1;
 
-            double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).CurrentHealth / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+            double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).Health / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
 
             if (healthleft <= 0)
             {
@@ -134,7 +134,7 @@ namespace GameClient
             if ((CurrentController.CurrentCharacter as Character).Experience == (CurrentController.CurrentCharacter as Character).ExperienceCap)
             {
                 (CurrentController.CurrentCharacter as Character).LevelUp();
-                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).CurrentHealth / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             }
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
         }
@@ -148,7 +148,7 @@ namespace GameClient
                 int expleft = (CurrentController.CurrentCharacter as Character).Experience - (CurrentController.CurrentCharacter as Character).ExperienceCap;
                 (CurrentController.CurrentCharacter as Character).LevelUp();
                 (CurrentController.CurrentCharacter as Character).Experience = expleft;
-                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).CurrentHealth / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             }
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
         }

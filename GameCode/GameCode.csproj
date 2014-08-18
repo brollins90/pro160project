@@ -45,7 +45,7 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="Models\AttackType.cs" />
     <Compile Include="Models\Debris.cs" />
-    <Compile Include="Models\Projectile.cs" />
+    <Compile Include="Models\GameProjectile.cs" />
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\GameCommands.cs" />

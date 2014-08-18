@@ -20,25 +20,17 @@ namespace GameCode.Models
             get { return _BotClass; }
             set { _BotClass = value; }
         }
-        
 
-        public int _Team;
-        public int Team
-        {
-            get { return _Team; }
-            set { _Team = value; }
-        }
-
-        public Bot(int speed, int health, int attackDamage, int team, Vector position)
-            : base(position)
+        public Bot(int speed, int health, int attackDamage, int team, Vector position, GameManager manager)
+            : base(position, manager)
         {
             this.Speed = speed;
             this._Team = team;
             this.Health = health;
         }
 
-        public Bot(Vector position, BotClass type = Models.BotClass.Melee)
-            : base(position)
+        public Bot(Vector position, GameManager manager, BotClass type = Models.BotClass.Melee)
+            : base(position, manager)
         {
             switch (type)
             {

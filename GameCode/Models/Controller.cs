@@ -29,6 +29,8 @@ namespace GameCode.Models
 
         private GameManager _Manager;
 
+        public GameCommands Command;
+
         public GameManager Manager
         {
             get { return _Manager; }
@@ -51,16 +53,22 @@ namespace GameCode.Models
         public Controller()
         {
             ControllerID = NextID++;
+            Command = GameCommands.None;
         }
 
         public GameCommands GetMove()
         {
-            return GameCommands.None;
+            Console.WriteLine("getmove: " + Command);
+            GameCommands current = Command;
+            Command = GameCommands.None;
+            return current;
         }
+
         public void KeyDown(GameCommands keyPressed)
         {
             Console.WriteLine("Controller.KeyDown()");
-            Manager.SubmitMove(GameObjectID, keyPressed);
+            Command = keyPressed;
+            //Manager.SubmitMove(GameObjectID, keyPressed);
         }
 
     }

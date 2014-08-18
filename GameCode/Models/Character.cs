@@ -11,12 +11,6 @@ namespace GameCode.Models
 {
     public class Character : GameObject, IMovingObject, IAttackingObject, INotifyPropertyChanged
     {
-        public int _Team;
-        public int Team
-        {
-            get { return _Team; }
-            set { _Team = value; }
-        }
 
         private int _Constitution;
         public int Constitution
@@ -72,16 +66,16 @@ namespace GameCode.Models
             }
         }
 
-        private int _CurrentHealth;
-        public int CurrentHealth
-        {
-            get { return _CurrentHealth; }
-            set
-            {
-                _CurrentHealth = value;
-                this.FirePropertyChanged("CurrentHealth");
-            }
-        }
+        //private int _CurrentHealth;
+        //public int CurrentHealth
+        //{
+        //    get { return _CurrentHealth; }
+        //    set
+        //    {
+        //        _CurrentHealth = value;
+        //        this.FirePropertyChanged("CurrentHealth");
+        //    }
+        //}
 
         private int _MaxHealth;
         public int MaxHealth
@@ -101,8 +95,8 @@ namespace GameCode.Models
             }
         }
 
-        public Character(Vector position)
-            : base(position)
+        public Character(Vector position, GameManager manager)
+            : base(position, manager)
         {
             Constitution = 5;
             Defense = 6;
@@ -110,7 +104,7 @@ namespace GameCode.Models
             Level = 1;
             Strength = 3;
             ExperienceCap = 100;
-            CurrentHealth = 100;
+            Health = 100;
             Gold = 0;
         }
 
@@ -132,7 +126,7 @@ namespace GameCode.Models
             this.Experience = 0;
             this.ExperienceCap += 30;
             this.MaxHealth = Constitution * 20;
-            this.CurrentHealth = MaxHealth;
+            this.Health = MaxHealth;
             this.Gold += 100;
 
             if (this.Level % 3 == 0)
@@ -147,7 +141,59 @@ namespace GameCode.Models
 
         public override void Update()
         {
-            return;
+            Console.WriteLine("Character.Update()");
+            GameObject objToProcess = this;
+            Vector currentPosition = this.Position;
+            Vector newPosition = currentPosition;
+
+            GameCommands keyPressed = this.Controller.GetMove();
+            if (keyPressed == GameCommands.Up)
+            {
+                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - objToProcess.Speed };
+                objToProcess.Direction = 90;
+            }
+            else if (keyPressed == GameCommands.Down)
+            {
+                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y + objToProcess.Speed };
+                objToProcess.Direction = 270;
+            }
+            else if (keyPressed == GameCommands.Left)
+            {
+                newPosition = new Vector() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction = 180;
+            }
+            else if (keyPressed == GameCommands.Right)
+            {
+                newPosition = new Vector() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
+                objToProcess.Direction = 0;
+            }
+            else if (keyPressed == GameCommands.Space)
+            {
+                Console.WriteLine("recieved a space");
+                //if (objToProcess.AttackType == AttackType.Ranged)
+                //{
+                Manager.AddProjectile(new GameProjectile(currentPosition, this.Manager, objToProcess.Direction, 25, objToProcess.Damage)
+                {
+                    Height = 10,
+                    Width = 10,
+                    Controller = new Controller()
+
+                });
+                //}
+            }
+            objToProcess.Position = newPosition;
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (objToProcess.UniqueID != o.UniqueID && objToProcess.CollidesWith(o))
+                    collided = true;
+            }
+            if (collided)
+            {
+                objToProcess.Position = currentPosition;
+                Console.WriteLine("Collided");
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Windows;
 namespace GameCode.Models
 {
 
-    public class Projectile : GameObject
+    public class GameProjectile : GameObject
     {   
 
         public int _Team;
@@ -19,8 +19,8 @@ namespace GameCode.Models
             set { _Team = value; }
         }
 
-        public Projectile(Vector position, float direction, int speed, int damage)
-            : base(position)
+        public GameProjectile(Vector position, GameManager manager, float direction, int speed, int damage)
+            : base(position, manager)
         {
             this.Damage = damage;
             this.Direction = direction;

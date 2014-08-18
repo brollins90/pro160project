@@ -10,8 +10,8 @@ namespace GameCode.Models
 {
     public class Debris : GameObject
     {
-        public Debris(Vector position)
-            : base(position)
+        public Debris(Vector position, GameManager manager)
+            : base(position, manager)
         {
 
         }
