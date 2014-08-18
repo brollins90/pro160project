@@ -55,7 +55,7 @@ namespace GameClient
             CurrentController.CreateCharacter();
 
             // Add some Bots
-            Manager.AddNPC();
+            Manager.LoadWorld("");
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)

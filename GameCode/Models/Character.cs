@@ -172,7 +172,7 @@ namespace GameCode.Models
                 Console.WriteLine("recieved a space");
                 //if (objToProcess.AttackType == AttackType.Ranged)
                 //{
-                Manager.AddProjectile(new GameProjectile(currentPosition, this.Manager, objToProcess.Direction, 25, objToProcess.Damage, 100)
+                Manager.AddProjectile(new GameProjectile(currentPosition + new Vector(Width/2,Height/2), this.Manager, objToProcess.Direction, 25, objToProcess.Damage, 100)
                 {
                     Height = 10,
                     Width = 10,
