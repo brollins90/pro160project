@@ -18,11 +18,11 @@ namespace GameClient.Converters
             GameCode.Models.BotClass gen2 = (GameCode.Models.BotClass)values[1];
             if (gen2 == GameCode.Models.BotClass.Melee)
             {
-
+                picture = new Uri("Images/Entei.png", UriKind.Relative);
             }
             else if (gen2 == GameCode.Models.BotClass.Boss)
             {
-
+                picture = new Uri("Images/Pikachu.png", UriKind.Relative);
             }
             else if (gen2 == GameCode.Models.BotClass.Shooter)
             {
