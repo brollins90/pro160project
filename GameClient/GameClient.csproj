@@ -110,8 +110,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\GameBackground.jpg" />
-    <Resource Include="Images\GameCharacter.jpg" />
     <Resource Include="Images\GameOverlay.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Entei.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pikachu.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
