@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GameCode.Models
 {
@@ -18,7 +19,7 @@ namespace GameCode.Models
             set { _Team = value; }
         }
 
-        public Projectile(Point position, float direction, int speed, int damage)
+        public Projectile(Vector position, float direction, int speed, int damage)
             : base(position)
         {
             this.Damage = damage;
@@ -30,19 +31,19 @@ namespace GameCode.Models
         {
             if (Direction == 0)
             {
-                Position = new Point(Position.X + Speed,Position.Y);
+                Position = new Vector(Position.X + Speed, Position.Y);
             }
             else if (Direction == 90)
             {
-                Position = new Point(Position.X, Position.Y - Speed);
+                Position = new Vector(Position.X, Position.Y - Speed);
             }
             else if (Direction == 180)
             {
-                Position = new Point(Position.X - Speed, Position.Y);
+                Position = new Vector(Position.X - Speed, Position.Y);
             }
             else if (Direction == 270)
             {
-                Position = new Point(Position.X, Position.Y + Speed);
+                Position = new Vector(Position.X, Position.Y + Speed);
             }
             
         }
