@@ -76,9 +76,8 @@ namespace GameCode
 
         }
 
-        public void AddDebris()
+        public void AddDebris(Debris debris)
         {
-            Debris debris = new Debris(new Vector(400, 500), this, 30, 100);
             World.Objects.Add(debris);
         }
 
@@ -128,11 +127,11 @@ namespace GameCode
                 }
             }
 
-            foreach (Debris o in World.Debris)
+            foreach (Debris o in World.Debris) 
             {
                 if (o.Alive)
                 {
-                    o.Update();
+                    o.Update(deltaTime);
                 }
             }
 
