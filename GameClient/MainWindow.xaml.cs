@@ -37,6 +37,8 @@ namespace GameClient
             MainGrid.Focusable = true;
             MainGrid.Focus();
 
+            
+
             // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
