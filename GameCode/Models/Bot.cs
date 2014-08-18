@@ -97,9 +97,29 @@ namespace GameCode.Models
             throw new NotImplementedException();
         }
 
+        private int temp = 0;
         public override void Update(int deltaTime)
         {
-            Position = new Vector(Position.X + Speed, Position.Y + Speed);
+            temp++;
+            if (temp < 50) { 
+                Position = new Vector(Position.X + Speed, Position.Y + Speed);
+            }
+            else if (temp < 100)
+            {
+                Position = new Vector(Position.X - Speed, Position.Y + Speed);
+            }
+            else if (temp < 150)
+            {
+                Position = new Vector(Position.X - Speed, Position.Y - Speed);
+            }
+            else if (temp < 200)
+            {
+                Position = new Vector(Position.X + Speed, Position.Y - Speed);
+            }
+            else
+            {
+                temp = 0;
+            }
         }
 
         public Models.AttackType Melee { get; set; }
