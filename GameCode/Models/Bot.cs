@@ -10,7 +10,7 @@ namespace GameCode.Models
 {
     public enum BotClass { Shooter, Melee, Boss, Tower, Turret, Mercenary };
 
-    //The main class for all Non Playable Characters
+    //The main class for all Non Playable Characters. The information on them is based off of the information passed through the constructor.
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
         private BotClass _BotClass;
@@ -58,7 +58,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
                     break;
-                case Models.BotClass.Turret: // stationary?
+                case Models.BotClass.Turret: // stationary
                     break;
             }
         }
