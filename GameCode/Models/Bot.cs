@@ -72,7 +72,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
                     break;
-                case Models.BotClass.Turret: // stationary?
+                case Models.BotClass.Turret: // stationary
                     break;
             }
         }
