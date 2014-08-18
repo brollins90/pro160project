@@ -35,30 +35,54 @@ namespace GameCode.Models
             switch (type)
             {
                 case Models.BotClass.Boss:
-                    //this.AttackDamage;
-                    //this.AttackType;
-                    //this.BotClass = type;
                     //this.Controller;
-                    //this.Damage;
-                    //this.Direction;
-                    //this.Health;
-                    //this.Height;
                     //this.MoveType;
-                    //this.Position;
-                    //this.Speed;
-                    //this.Team;
                     //this.UniqueID;
-                    //this.Width;
+                    this.Speed = 1;
+                    this.Health = 100;
+                    this.Width = 50;
+                    this.Height = 50;
+                    this.Damage = 40;
+                    this.AttackType = Melee;
                     break;
                 case Models.BotClass.Melee:
+                    this.Speed = 3;
+                    this.Health = 25;
+                    this.Width = 20;
+                    this.Height = 20;
+                    this.Damage = 20;
+                    this.AttackType = Melee;
                     break;
                 case Models.BotClass.Mercenary: // Sentry
+                    this.Speed = 1;
+                    this.Health = 50;
+                    this.Width = 30;
+                    this.Height = 30;
+                    this.Damage = 30;
+                    this.AttackType = Melee;
                     break;
                 case Models.BotClass.Shooter: // ???
+                    this.Speed = 2;
+                    this.Health = 10;
+                    this.Width = 20;
+                    this.Height = 20;
+                    this.Damage = 15;
+                    this.AttackType = Ranged;
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
+                    this.Speed = 0;
+                    this.Health = 75;
+                    this.Width = 75;
+                    this.Height = 75;
+                    this.Damage = 0;
                     break;
                 case Models.BotClass.Turret: // stationary
+                    this.Speed = 0;
+                    this.Health = 75;
+                    this.Width = 60;
+                    this.Height = 60;
+                    this.Damage = 50;
+                    this.AttackType = Ranged;
                     break;
             }
         }
@@ -77,6 +101,10 @@ namespace GameCode.Models
         {
             Position = new Vector(Position.X + Speed, Position.Y + Speed);
         }
+
+        public Models.AttackType Melee { get; set; }
+
+        public Models.AttackType Ranged { get; set; }
     }
 }
 
