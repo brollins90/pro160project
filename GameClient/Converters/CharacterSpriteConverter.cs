@@ -26,19 +26,19 @@ namespace GameClient.Converters
             }
             else if (gen2 == GameCode.Models.BotClass.Shooter)
             {
-
+                picture = new Uri("Images/Charizard.png", UriKind.Relative);
             }
             else if (gen2 == GameCode.Models.BotClass.Mercenary)
             {
-
+                picture = new Uri("Images/Eevee.png", UriKind.Relative);
             }
             else if (gen2 == GameCode.Models.BotClass.Turret)
             {
-
+                picture = new Uri("Images/Mewtwo.png", UriKind.Relative);
             }
             else if (gen2 == GameCode.Models.BotClass.Tower)
             {
-
+                picture = new Uri("Images/Lucario.png", UriKind.Relative);
             }
 
             ImageSource image = new BitmapImage(picture);
