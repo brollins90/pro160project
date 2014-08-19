@@ -63,7 +63,10 @@ namespace GameCode.Models
         public int Health
         {
             get { return _Health; }
-            set { _Health = value; }
+            set { _Health = value;
+            this.FirePropertyChanged("Health");
+
+            }
         }
 
         private int _Height;

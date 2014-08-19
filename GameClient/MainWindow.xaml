@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="The World We Don't Know" Height="768" Width="1024">
     <Window.Background>
-        <ImageBrush ImageSource="Images\GameBackground.jpg"/>
+        <ImageBrush ImageSource="Images\GameBackground.png"/>    
     </Window.Background>
     <Grid x:Name="MainGrid"  KeyDown="Grid_KeyDown">
-        <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}">
+        <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}" Margin="-10,10,10,-10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -16,7 +16,7 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Width}" Height="{Binding Height}">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="Fill" ImageSource="Images\Mewtwo.png"/>
+                            <ImageBrush Stretch="Fill" ImageSource="Images\Pikachu.png"/>
                         </Rectangle.Fill>                    
                     </Rectangle>
                 </DataTemplate>
