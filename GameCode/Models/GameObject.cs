@@ -13,6 +13,8 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public enum ObjectType { Bot, Player, Projectile };
+
         public void FirePropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
@@ -32,6 +34,13 @@ namespace GameCode.Models
             set { _AttackType = value;
             this.FirePropertyChanged("AttackType");
             }
+        }
+
+        public ObjectType _ObjectType;
+        public ObjectType objectType
+        {
+            get { return _ObjectType; }
+            set { _ObjectType = value; }
         }
 
         private Controller _Controller;
@@ -136,7 +145,8 @@ namespace GameCode.Models
             int height = 50,
             MoveType moveType = MoveType.Walk,
             int speed = 5,
-            int width = 30
+            int width = 30,
+            ObjectType objectType = ObjectType.Bot
             )
         {
             Alive = true;
@@ -151,6 +161,7 @@ namespace GameCode.Models
             Speed = speed;
             Width = width;
             UniqueID = NextID++;
+            this.objectType = objectType;
         }
 
 
