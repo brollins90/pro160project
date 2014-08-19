@@ -1,7 +1,11 @@
 ﻿<Window x:Class="GameClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:y="clr-namespace:GameClient.Converters"
         Title="The World We Don't Know" Height="768" Width="1024">
+    <Window.Resources>
+        <y:CharacterSpriteConverter x:Key="x:CharacterSpriteConverter"/>
+    </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images\GameBackground.jpg"/>
     </Window.Background>
@@ -16,7 +20,9 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Width}" Height="{Binding Height}">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="Fill" ImageSource="Images\Mewtwo.png"/>
+                            <MultiBinding Converter="{StaticResource ResourceKey = CharacterSpriteConverter}">
+                                <Binding Path="botclass"/>
+                            </MultiBinding>
                         </Rectangle.Fill>                    
                     </Rectangle>
                 </DataTemplate>

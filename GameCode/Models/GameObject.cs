@@ -13,6 +13,8 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public enum ObjectType { Bot, Player }
+
         public void FirePropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
