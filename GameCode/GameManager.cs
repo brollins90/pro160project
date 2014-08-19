@@ -99,7 +99,14 @@ namespace GameCode
             AddNPC(new Bot(new Vector(800, 400),this, BotClass.Shooter));
             AddNPC(new Bot(new Vector(900, 500),this, BotClass.Tower));
             AddNPC(new Bot(new Vector(700, 600),this, BotClass.Turret));
-            AddDebris(new Debris(new Vector(400, 500), this, 30, 100));
+            AddDebris(new Debris(new Vector(650, 880), this, 40, 200));
+            AddDebris(new Debris(new Vector(1250, 880), this, 40, 200));
+            AddDebris(new Debris(new Vector(650, 880), this, 250, 40));
+            AddDebris(new Debris(new Vector(1000, 880), this, 250, 40));
+            AddDebris(new Debris(new Vector(650, -10), this, 40, 200));
+            AddDebris(new Debris(new Vector(1250, -10), this, 40, 200));
+            AddDebris(new Debris(new Vector(650, 180), this, 250, 40));
+            AddDebris(new Debris(new Vector(1000, 180), this, 250, 40));
         }
 
         public void Update(int deltaTime)
