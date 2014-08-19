@@ -13,7 +13,7 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public enum ObjectType { Bot, Player }
+        public enum ObjectType { Bot, Player, Projectile }
 
         public void FirePropertyChanged(String propertyName)
         {

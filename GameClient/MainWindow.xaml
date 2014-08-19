@@ -20,7 +20,10 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Width}" Height="{Binding Height}">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="Fill" ImageSource="Images\Mewtwo.png"/>
+                            <MultiBinding Converter="{StaticResource ResourceKey = x:CharacterSpriteConverter}">
+                                <Binding Path="objectType"/>
+                                <Binding Path="botClass"/>
+                            </MultiBinding>
                         </Rectangle.Fill>                    
                     </Rectangle>
                 </DataTemplate>
