@@ -9,8 +9,10 @@ using System.Windows;
 
 namespace GameCode.Models
 {
-    public class Character : GameObject, IMovingObject, IAttackingObject, INotifyPropertyChanged
+    public class Character : Bot
     {
+        private float RotationSpeed = 3;
+        private float acceleration = 5;
 
         private int _Constitution;
         public int Constitution
@@ -66,26 +68,6 @@ namespace GameCode.Models
             }
         }
 
-        //private int _CurrentHealth;
-        //public int CurrentHealth
-        //{
-        //    get { return _CurrentHealth; }
-        //    set
-        //    {
-        //        _CurrentHealth = value;
-        //        this.FirePropertyChanged("CurrentHealth");
-        //    }
-        //}
-
-        private int _MaxHealth;
-        public int MaxHealth
-        {
-            get { return Constitution * 20; }
-            set { _MaxHealth = Constitution * 20;
-            this.FirePropertyChanged("MaxHealth");
-            }
-        }
-
         private int _Gold;
         public int Gold
         {
@@ -95,28 +77,30 @@ namespace GameCode.Models
             }
         }
 
+        private Weapon _Weapon;
+
+        public Weapon Weapon
+        {
+            get { return _Weapon; }
+            set { _Weapon = value; }
+        }
+
+
         public Character(Vector position, GameManager manager)
             : base(position, manager)
         {
             Constitution = 5;
             Defense = 6;
             Experience = 0;
-            Level = 1;
-            Strength = 3;
             ExperienceCap = 100;
-            Health = 100;
             Gold = 0;
+            Health = 100;
+            Level = 1;
+            Size = new Vector(50, 50);
+            Strength = 3;
+            Weapon = new Weapon(this, 1, 200, 20);
         }
 
-        public void Attack(Vector destination)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Move(Vector destination)
-        {
-            throw new NotImplementedException();
-        }
 
         public void LevelUp()
         {
@@ -139,61 +123,80 @@ namespace GameCode.Models
 
 
 
-        public override void Update(int deltaTime)
+        public override void Update(float deltaTime)
         {
-            Console.WriteLine("Character.Update()");
-            GameObject objToProcess = this;
-            Vector currentPosition = this.Position;
-            Vector newPosition = currentPosition;
+            //Console.WriteLine("Character.Update()");
+            ////GameObject objToProcess = this;
+            //Vector currentPosition = this.Position;
+            //Vector newPosition = currentPosition;
 
             GameCommands keyPressed = this.Controller.GetMove();
             if (keyPressed == GameCommands.Up)
             {
-                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - objToProcess.Speed };
-                objToProcess.Direction = 90;
+                Velocity = Velocity - (deltaTime * acceleration * new Vector(-1 * Math.Sin(Angle), Math.Cos(Angle)));
+                //newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - Speed };
+                //Direction = 90;
             }
             else if (keyPressed == GameCommands.Down)
             {
-                newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y + objToProcess.Speed };
-                objToProcess.Direction = 270;
+
+                Velocity = Velocity - (deltaTime * acceleration * new Vector(Math.Sin(Angle), -1 * Math.Cos(Angle)));
+                //newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y + Speed };
+                //Direction = 270;
             }
             else if (keyPressed == GameCommands.Left)
             {
-                newPosition = new Vector() { X = currentPosition.X - objToProcess.Speed, Y = currentPosition.Y };
-                objToProcess.Direction = 180;
+                Rotate(-RotationSpeed);
+                //newPosition = new Vector() { X = currentPosition.X - Speed, Y = currentPosition.Y };
+                //Direction = 180;
             }
             else if (keyPressed == GameCommands.Right)
             {
-                newPosition = new Vector() { X = currentPosition.X + objToProcess.Speed, Y = currentPosition.Y };
-                objToProcess.Direction = 0;
+                Rotate(RotationSpeed);
+                //newPosition = new Vector() { X = currentPosition.X + Speed, Y = currentPosition.Y };
+                //Direction = 0;
             }
-            else if (keyPressed == GameCommands.Space)
-            {
-                Console.WriteLine("recieved a space");
-                //if (objToProcess.AttackType == AttackType.Ranged)
-                //{
-                Manager.AddProjectile(new GameProjectile(currentPosition + new Vector(Width/2,Height/2), this.Manager, objToProcess.Direction, 25, objToProcess.Damage, 100)
-                {
-                    Height = 10,
-                    Width = 10,
-                    Controller = new Controller()
+            //else if (keyPressed == GameCommands.Space)
+            //{
+            //    Weapon.ShootAt(new Vector(Position.X, Position.Y));
+            //    //Console.WriteLine("recieved a space");
+            //    //if (objToProcess.AttackType == AttackType.Ranged)
+            //    //{
+            //    Manager.AddProjectile(new GameProjectile(currentPosition + new Vector(Width / 2, Height / 2), this.Manager, new Vector(10, 10), this.Heading, 20, (objToProcess as Bot).Damage, 200)
+            //    {
+            //        Controller = null
+            //    });
+            //    //}
+            //}
+            //objToProcess.Position = newPosition;
+            Position = Position + Velocity * deltaTime;
+            Console.WriteLine("Position: {0}", Position);
+            Console.WriteLine("Velocity: {0}", Velocity);
+            Console.WriteLine("deltaTime: {0}", deltaTime);
 
-                });
-                //}
-            }
-            objToProcess.Position = newPosition;
+            //bool collided = false;
+            //foreach (GameObject o in Manager.World.Objects)
+            //{
+            //    if (objToProcess.ID != o.ID && objToProcess.CollidesWith(o))
+            //        collided = true;
+            //}
+            //if (collided)
+            //{
+            //    objToProcess.Position = currentPosition;
+            //    //Console.WriteLine("Collided");
+            //}
+        }
 
-            bool collided = false;
-            foreach (GameObject o in Manager.World.Objects)
-            {
-                if (objToProcess.UniqueID != o.UniqueID && objToProcess.CollidesWith(o))
-                    collided = true;
-            }
-            if (collided)
-            {
-                objToProcess.Position = currentPosition;
-                Console.WriteLine("Collided");
-            }
+        public void RestoreHealthToMax()
+        {
+            Health = MaxHealth;
+        }
+
+        public void IncreaseExperience(int amount)
+        {
+            Experience += amount;
+            if (Experience > ExperienceCap)
+                Experience = ExperienceCap;
         }
     }
 }

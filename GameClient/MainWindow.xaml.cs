@@ -84,7 +84,7 @@ namespace GameClient
                     keyPressed = GameCommands.Space;
                     break;
             }
-            Console.WriteLine("KeyDown: {0}", keyPressed);
+            //Console.WriteLine("KeyDown: {0}", keyPressed);
             CurrentController.KeyDown(keyPressed);
         }
 

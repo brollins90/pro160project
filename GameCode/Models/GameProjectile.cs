@@ -9,44 +9,54 @@ using System.Windows;
 namespace GameCode.Models
 {
 
-    public class GameProjectile : GameObject
+    public class GameProjectile : MovingObject
     {
         private Vector StartPosition;
+        //private Vector targetPosition;
         private double MaxDistance;
+
+        private int _Damage;
+        public int Damage
+        {
+            get { return _Damage; }
+            set { _Damage = value; }
+        }
         
-        public GameProjectile(Vector position, GameManager manager, float direction, int speed, int damage, double maxDistanceSquared)
-            : base(position, manager)
+        public GameProjectile(Vector position, GameManager manager, Vector size, Vector velocity, int damage, double maxDistanceSquared)
+            : base(position, manager, size)
         {
             StartPosition = new Vector(position.X, position.Y);
             MaxDistance = maxDistanceSquared;
             this.Damage = damage;
-            this.Direction = direction;
-            this.Speed = speed;
+            this.Velocity = velocity;
+            //this.Speed = speed;
         }
 
-        public override void Update(int deltaTime)
+        public override void Update(float deltaTime)
         {
-            if (Direction == 0)
-            {
-                Position = new Vector(Position.X + Speed, Position.Y);
-            }
-            else if (Direction == 90)
-            {
-                Position = new Vector(Position.X, Position.Y - Speed);
-            }
-            else if (Direction == 180)
-            {
-                Position = new Vector(Position.X - Speed, Position.Y);
-            }
-            else if (Direction == 270)
-            {
-                Position = new Vector(Position.X, Position.Y + Speed);
-            }
-            double distance = (Position - StartPosition).Length;
-            if (distance > MaxDistance)
-            {
-                this.Alive = false;
-            }
+            Position = Position + Velocity * deltaTime;
+
+            //if (Direction == 0)
+            //{
+            //    Position = new Vector(Position.X + Speed, Position.Y);
+            //}
+            //else if (Direction == 90)
+            //{
+            //    Position = new Vector(Position.X, Position.Y - Speed);
+            //}
+            //else if (Direction == 180)
+            //{
+            //    Position = new Vector(Position.X - Speed, Position.Y);
+            //}
+            //else if (Direction == 270)
+            //{
+            //    Position = new Vector(Position.X, Position.Y + Speed);
+            //}
+            //double distance = (Position - StartPosition).Length;
+            //if (distance > MaxDistance)
+            //{
+            //    this.Alive = false;
+            //}
         }
     }
 }

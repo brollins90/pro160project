@@ -27,7 +27,7 @@ namespace GameCode
             set { _Controllers = value; }
         }
 
-        private int lastTime = 0;
+        private float lastTime = 0;
         
 
         public GameManager()
@@ -46,7 +46,10 @@ namespace GameCode
         void Timer_Tick(object sender, EventArgs e)
         {
             int currentTime = Environment.TickCount;
-            int elapsedTime = currentTime - lastTime;
+            float elapsedTime = currentTime - lastTime;
+
+            elapsedTime = elapsedTime / 100; // deltatime should be like .01  not 100
+
             Update(elapsedTime);
             lastTime = currentTime;
         }
@@ -77,7 +80,7 @@ namespace GameCode
             c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);
-            return c.UniqueID;
+            return c.ID;
 
         }
 
@@ -99,11 +102,13 @@ namespace GameCode
             AddNPC(new Bot(new Vector(800, 400),this, BotClass.Shooter));
             AddNPC(new Bot(new Vector(900, 500),this, BotClass.Tower));
             AddNPC(new Bot(new Vector(700, 600),this, BotClass.Turret));
+            AddDebris(new Debris(new Vector(50, 50), this, new Vector(50, 50)));
         }
 
-        public void Update(int deltaTime)
+        public void Update(float deltaTime)
         {
-            Console.WriteLine("deltatime: " + deltaTime);
+            //Console.WriteLine("deltatime: " + deltaTime);
+            
             // If paused, return
             // TODO
 

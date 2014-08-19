@@ -17,69 +17,54 @@ namespace GameCode.Models
         {
             if (PropertyChanged != null)
             {
-                Console.WriteLine("ColorSelectorModel.FirePropertyChanged({0})", propertyName);
+                //Console.WriteLine("ColorSelectorModel.FirePropertyChanged({0})", propertyName);
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        public bool Alive { get; set; }
-        public GameManager Manager { get; set; }
 
-        private AttackType _AttackType;
-        public AttackType AttackType
+        private bool _Alive;
+        public bool Alive
         {
-            get { return _AttackType; }
-            set { _AttackType = value;
-            this.FirePropertyChanged("AttackType");
+            get { return _Alive; }
+            set
+            {
+                _Alive = value;
+                this.FirePropertyChanged("Alive");
+            }
+        }
+
+        private float _Angle;
+        public float Angle
+        {
+            get { return _Angle; }
+            set
+            {
+                _Angle = value;
+                this.FirePropertyChanged("Angle");
             }
         }
 
         private Controller _Controller;
-
         public Controller Controller
         {
             get { return _Controller; }
-            set { _Controller = value; }
+            set
+            {
+                _Controller = value;
+                this.FirePropertyChanged("Controller");
+            }
         }
         
-
-        private int _Damage;
-        public int Damage
+        private GameManager _Manager;
+        public GameManager Manager
         {
-            get { return _Damage; }
-            set { _Damage = value; }
-        }
-
-        private float _Direction;
-
-        public float Direction
-        {
-            get { return _Direction; }
-            set { _Direction = value; }
-        }
-
-        
-        private int _Health;
-        public int Health
-        {
-            get { return _Health; }
-            set { _Health = value; }
-        }
-
-        private int _Height;
-
-        public int Height
-        {
-            get { return _Height; }
-            set { _Height = value; }
-        }
-        
-
-        private MoveType _MoveType;
-        public MoveType MoveType
-        {
-            get { return _MoveType; }
-            set { _MoveType = value; }
+            get { return _Manager; }
+            set
+            {
+                _Manager = value;
+                this.FirePropertyChanged("Manager");
+            }
         }
 
         private Vector _Position;
@@ -93,70 +78,60 @@ namespace GameCode.Models
             }
         }
 
-        private int _Speed;
-        public int Speed
+        private Vector _Size;
+        public Vector Size
         {
-            get { return _Speed; }
-            set { _Speed = value; }
+            get { return _Size; }
+            set
+            {
+                _Size = value;
+                this.FirePropertyChanged("Size");
+            }
         }
 
         public int _Team;
         public int Team
         {
             get { return _Team; }
-            set { _Team = value; }
-        }
-
-        private int _Width;
-
-        public int Width
-        {
-            get { return _Width; }
-            set { _Width = value; }
+            set
+            {
+                _Team = value;
+                this.FirePropertyChanged("Team");
+            }
         }
 
         private static int NextID = 0;
-        private int _UniqueID;
-        public int UniqueID
+        private int _ID;
+        public int ID
         {
-            get { return _UniqueID; }
-            private set { _UniqueID = value; }
+            get { return _ID; }
+            private set { _ID = value; }
         }
 
         public GameObject(
             Vector position,
             GameManager manager,
-            AttackType attackType = AttackType.Melee,
-            int damage = 2,
-            float direction = 90f,
-            int health = 10,
-            int height = 50,
-            MoveType moveType = MoveType.Walk,
-            int speed = 5,
-            int width = 30
+            Vector size,
+            int team = 1
             )
         {
             Alive = true;
-            AttackType = attackType;
-            Damage = damage;
-            Direction = direction;
-            Health = health;
-            Height = height;
+            Controller = new Controller();
             Manager = manager;
-            MoveType = moveType;
             Position = position;
-            Speed = speed;
-            Width = width;
-            UniqueID = NextID++;
+            Size = size;
+            Team = team;
+            ID = NextID++;
+            Angle = 0;
         }
 
 
-        public abstract void Update(int deltaTime);
+        public abstract void Update(float deltaTime);
 
         internal bool CollidesWith(GameObject o)
         {
-            Rectangle r1 = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
-            Rectangle r2 = new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Width, o.Height);
+            Rectangle r1 = new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            Rectangle r2 = new Rectangle((int)o.Position.X, (int)o.Position.Y, (int)o.Size.X, (int)o.Size.Y);
             return !((r1.Bottom < r2.Top) || (r1.Top > r2.Bottom) || (r1.Left > r2.Right) || (r1.Right < r2.Left));
         }
     }

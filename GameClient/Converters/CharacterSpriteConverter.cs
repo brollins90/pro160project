@@ -14,6 +14,7 @@ namespace GameClient.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            
             Uri picture = null;
             GameCode.Models.BotClass gen = (GameCode.Models.BotClass)values[0];
             if (gen == GameCode.Models.BotClass.Melee)

@@ -47,7 +47,7 @@ namespace GameCode.Models
         public void CreateCharacter()
         {
             GameObjectID = Manager.AddPlayer(this);
-            CurrentCharacter = Manager.World.Objects.First(c => { return c.UniqueID == GameObjectID; }) as Character;
+            CurrentCharacter = Manager.World.Objects.First(c => { return c.ID == GameObjectID; }) as Character;
         }
 
         public Controller()
@@ -58,7 +58,7 @@ namespace GameCode.Models
 
         public GameCommands GetMove()
         {
-            Console.WriteLine("getmove: " + Command);
+            //Console.WriteLine("getmove: " + Command);
             GameCommands current = Command;
             Command = GameCommands.None;
             return current;
@@ -66,7 +66,7 @@ namespace GameCode.Models
 
         public void KeyDown(GameCommands keyPressed)
         {
-            Console.WriteLine("Controller.KeyDown()");
+            //Console.WriteLine("Controller.KeyDown()");
             Command = keyPressed;
             //Manager.SubmitMove(GameObjectID, keyPressed);
         }
