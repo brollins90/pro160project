@@ -14,7 +14,6 @@ namespace GameCode.Models
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
         private BotClass _BotClass;
-
         public BotClass BotClass
         {
             get { return _BotClass; }
