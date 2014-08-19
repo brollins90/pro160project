@@ -44,7 +44,7 @@ namespace GameClient.Converters
                     picture = new Uri("Images/Lucario.png", UriKind.Relative);
                 }
             }
-            else if (gen == GameCode.Models.GameObject.ObjectType.Bot)
+            else if (gen == GameCode.Models.GameObject.ObjectType.Player)
             {
                 picture = new Uri("Images/Red.png", UriKind.Relative);
             }
