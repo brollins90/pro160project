@@ -61,7 +61,7 @@
                 <Label Canvas.Left="32" Canvas.Top="47" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Height="26"></Label>
 
                 <Label Canvas.Top="73" Canvas.Left="-3">Health:</Label>
-                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentController.CurrentCharacter.CurrentHealth}" Height="26"></Label>
+                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentController.CurrentCharacter.Health}" Height="26"></Label>
 
                 <Label Canvas.Left="100" Width="50">Gold:</Label>
                 <Label Canvas.Left="154" Width="63" Content="{Binding Path=CurrentController.CurrentCharacter.Gold}"></Label>
