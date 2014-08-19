@@ -119,6 +119,9 @@
     <Resource Include="Images\Pikachu.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\GameBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Images\Eevee.png" />
   </ItemGroup>
   <ItemGroup>
