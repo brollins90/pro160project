@@ -13,6 +13,8 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public enum ObjectType { Bot, Player, Projectile };
+
         public void FirePropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
@@ -50,21 +52,27 @@ namespace GameCode.Models
         {
             get { return _Controller; }
             set
-            {
+        {
                 _Controller = value;
                 this.FirePropertyChanged("Controller");
-            }
         }
-        
+        }
+        public ObjectType _ObjectType;
+        public ObjectType objectType
+        {
+            get { return _ObjectType; }
+            set { _ObjectType = value; }
+        }
+
         private GameManager _Manager;
         public GameManager Manager
         {
             get { return _Manager; }
             set
-            {
+        {
                 _Manager = value;
                 this.FirePropertyChanged("Manager");
-            }
+        }
         }
 
         private Vector _Position;
@@ -83,7 +91,7 @@ namespace GameCode.Models
         {
             get { return _Size; }
             set
-            {
+        {
                 _Size = value;
                 this.FirePropertyChanged("Size");
             }
@@ -97,7 +105,7 @@ namespace GameCode.Models
             {
                 _Team = value;
                 this.FirePropertyChanged("Team");
-            }
+        }
         }
 
         private static int NextID = 0;

@@ -96,13 +96,20 @@ namespace GameCode
 
         public void LoadWorld(string filename)
         {
-            AddNPC(new Bot(new Vector(500, 50),this, BotClass.Boss));
+            AddNPC(new Bot(new Vector(900, 100),this, BotClass.Boss));
             AddNPC(new Bot(new Vector(750, 100),this, BotClass.Melee));
-            AddNPC(new Bot(new Vector(800, 250),this, BotClass.Mercenary));
+            AddNPC(new Bot(new Vector(910, 500),this, BotClass.Mercenary));
             AddNPC(new Bot(new Vector(800, 400),this, BotClass.Shooter));
-            AddNPC(new Bot(new Vector(900, 500),this, BotClass.Tower));
-            AddNPC(new Bot(new Vector(700, 600),this, BotClass.Turret));
-            AddDebris(new Debris(new Vector(50, 50), this, new Vector(50, 50)));
+            AddNPC(new Bot(new Vector(910, 50),this, BotClass.Tower));
+            AddNPC(new Bot(new Vector(910, 300),this, BotClass.Turret));
+            AddDebris(new Debris(new Vector(650, 880), this, 40, 200));
+            AddDebris(new Debris(new Vector(1250, 880), this, 40, 200));
+            AddDebris(new Debris(new Vector(650, 880), this, 250, 40));
+            AddDebris(new Debris(new Vector(1000, 880), this, 250, 40));
+            AddDebris(new Debris(new Vector(650, -10), this, 40, 200));
+            AddDebris(new Debris(new Vector(1250, -10), this, 40, 200));
+            AddDebris(new Debris(new Vector(650, 180), this, 250, 40));
+            AddDebris(new Debris(new Vector(1000, 180), this, 250, 40));
         }
 
         public void Update(float deltaTime)

@@ -78,7 +78,9 @@ namespace GameClient
                 case Key.Right:
                     keyPressed = GameCommands.Right;
                     break;
-
+                case Key.Escape:
+                    Application.Current.Shutdown();
+                    break;
                 case Key.Space:
                 case Key.T:
                     keyPressed = GameCommands.Space;

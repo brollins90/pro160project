@@ -14,7 +14,6 @@ namespace GameCode.Models
     public class Bot : MovingObject
     {
         private BotClass _BotClass;
-
         public BotClass BotClass
         {
             get { return _BotClass; }
@@ -22,7 +21,7 @@ namespace GameCode.Models
             {
                 _BotClass = value;
                 this.FirePropertyChanged("BotClass");
-            }
+        }
         }
 
 
@@ -34,7 +33,7 @@ namespace GameCode.Models
             {
                 _AttackType = value;
                 this.FirePropertyChanged("AttackType");
-            }
+        }
         }
 
         private int _Damage;
@@ -87,7 +86,7 @@ namespace GameCode.Models
                     //this.Controller;
                     //this.MoveType;
                     //this.UniqueID;
-                    //this.Speed = 1;
+                    this.Speed = 1;
                     this.Health = 100;
                     this.MaxHealth = Health;
                     Size = new Vector(50,50);
@@ -156,7 +155,7 @@ namespace GameCode.Models
 
         //private int temp = 0;
         public override void Update(float deltaTime)
-        {
+            {
             Position = Position + Velocity * deltaTime;
             //temp++;
             //if (temp < 50) { 
