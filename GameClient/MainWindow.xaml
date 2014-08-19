@@ -22,7 +22,7 @@
                         <Rectangle.Fill>
                             <MultiBinding Converter="{StaticResource ResourceKey = x:CharacterSpriteConverter}">
                                 <Binding Path="objectType"/>
-                                <Binding Path="botClass"/>
+                                <Binding Path="BotClass"/>
                             </MultiBinding>
                         </Rectangle.Fill>                    
                     </Rectangle>

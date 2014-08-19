@@ -13,6 +13,13 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters. The information on them is based off of the information passed through the constructor.
     public class Bot : GameObject, IMovingObject, IAttackingObject
     {
+        public ObjectType _objectType;
+        public ObjectType objectType
+        {
+            get { return _objectType; }
+            set { _objectType = value; }
+        }
+
         private BotClass _BotClass;
         public BotClass BotClass
         {
@@ -20,18 +27,21 @@ namespace GameCode.Models
             set { _BotClass = value; }
         }
 
-        public Bot(int speed, int health, int attackDamage, int team, Vector position, GameManager manager)
+        public Bot(int speed, int health, int attackDamage, int team, Vector position, GameManager manager, BotClass botClass, ObjectType objectType)
             : base(position, manager)
         {
             this.Speed = speed;
             this._Team = team;
             this.Health = health;
+            this.objectType = ObjectType.Bot;
+            this.BotClass = BotClass.Melee;
         }
 
-        public Bot(Vector position, GameManager manager, BotClass type = Models.BotClass.Melee)
+        public Bot(Vector position, GameManager manager, BotClass botClass = Models.BotClass.Melee, ObjectType objectType = ObjectType.Bot)
             : base(position, manager)
         {
-            switch (type)
+            this.objectType = ObjectType.Bot;
+            switch (botClass)
             {
                 case Models.BotClass.Boss:
                     //this.Controller;

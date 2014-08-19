@@ -93,12 +93,9 @@ namespace GameCode
 
         public void LoadWorld(string filename)
         {
-            AddNPC(new Bot(new Vector(500, 50),this, BotClass.Boss));
+
             AddNPC(new Bot(new Vector(750, 100),this, BotClass.Melee));
-            AddNPC(new Bot(new Vector(800, 250),this, BotClass.Mercenary));
-            AddNPC(new Bot(new Vector(800, 400),this, BotClass.Shooter));
-            AddNPC(new Bot(new Vector(900, 500),this, BotClass.Tower));
-            AddNPC(new Bot(new Vector(700, 600),this, BotClass.Turret));
+
             AddDebris(new Debris(new Vector(400, 500), this, 30, 100));
         }
 
