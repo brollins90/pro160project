@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="The World We Don't Know" Height="768" Width="1024"
         WindowStyle="None" ResizeMode="NoResize"  
-        WindowStartupLocation="CenterScreen" WindowState="Maximized">
-        xmlns:y="clr-namespace:GameClient.Converters"
-        Title="The World We Don't Know" Height="768" Width="1024">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        xmlns:y="clr-namespace:GameClient.Converters">
+        
     <Window.Resources>
         <y:CharacterSpriteConverter x:Key="x:CharacterSpriteConverter"/>
     </Window.Resources>
