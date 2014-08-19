@@ -37,7 +37,7 @@ namespace GameCode.Models
                     //this.Controller;
                     //this.MoveType;
                     //this.UniqueID;
-                    this.Speed = 1;
+                    this.Speed = 4;
                     this.Health = 100;
                     this.Width = 50;
                     this.Height = 50;
@@ -53,7 +53,7 @@ namespace GameCode.Models
                     this.AttackType = Melee;
                     break;
                 case Models.BotClass.Mercenary: // Sentry
-                    this.Speed = 1;
+                    this.Speed = 2;
                     this.Health = 50;
                     this.Width = 30;
                     this.Height = 30;
