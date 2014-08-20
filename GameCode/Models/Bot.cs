@@ -117,6 +117,10 @@ namespace GameCode.Models
                     {
                         Position = new Vector(Position.X + Speed, Position.Y + Speed);
                     }
+                    else
+                    {
+                        Position = new Vector(Position.X - Speed, Position.Y - Speed);
+                    }
                 }               
             }
             else if (temp < 100)
@@ -126,6 +130,10 @@ namespace GameCode.Models
                     if (!Manager.World.Objects[i].CollidesWith(this))
                     {
                         Position = new Vector(Position.X - Speed, Position.Y + Speed);
+                    }
+                    else
+                    {
+                        Position = new Vector(Position.X + Speed, Position.Y - Speed);
                     }
                 }                   
             }
@@ -137,6 +145,10 @@ namespace GameCode.Models
                     {
                         Position = new Vector(Position.X - Speed, Position.Y - Speed);
                     }
+                    else
+                    {
+                        Position = new Vector(Position.X + Speed, Position.Y + Speed);
+                    }
                 }                 
             }
             else if (temp < 200)
@@ -146,6 +158,10 @@ namespace GameCode.Models
                     if (!Manager.World.Objects[i].CollidesWith(this))
                     {
                         Position = new Vector(Position.X + Speed, Position.Y - Speed);
+                    }
+                    else
+                    {
+                        Position = new Vector(Position.X - Speed, Position.Y + Speed);
                     }
                 }                      
             }
