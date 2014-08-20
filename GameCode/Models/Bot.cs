@@ -110,20 +110,44 @@ namespace GameCode.Models
         public override void Update(int deltaTime)
         {
             temp++;
-            if (temp < 50) { 
-                Position = new Vector(Position.X + Speed, Position.Y + Speed);
+            if (temp < 50) {
+                for (int i = 0; i < Manager.World.Objects.Count; i++)
+                {
+                    if (!Manager.World.Objects[i].CollidesWith(this))
+                    {
+                        Position = new Vector(Position.X + Speed, Position.Y + Speed);
+                    }
+                }               
             }
             else if (temp < 100)
             {
-                Position = new Vector(Position.X - Speed, Position.Y + Speed);
+                for (int i = 0; i < Manager.World.Objects.Count; i++)
+                {
+                    if (!Manager.World.Objects[i].CollidesWith(this))
+                    {
+                        Position = new Vector(Position.X - Speed, Position.Y + Speed);
+                    }
+                }                   
             }
             else if (temp < 150)
             {
-                Position = new Vector(Position.X - Speed, Position.Y - Speed);
+                for (int i = 0; i < Manager.World.Objects.Count; i++)
+                {
+                    if (!Manager.World.Objects[i].CollidesWith(this))
+                    {
+                        Position = new Vector(Position.X - Speed, Position.Y - Speed);
+                    }
+                }                 
             }
             else if (temp < 200)
             {
-                Position = new Vector(Position.X + Speed, Position.Y - Speed);
+                for (int i = 0; i < Manager.World.Objects.Count; i++)
+                {
+                    if (!Manager.World.Objects[i].CollidesWith(this))
+                    {
+                        Position = new Vector(Position.X + Speed, Position.Y - Speed);
+                    }
+                }                      
             }
             else
             {
