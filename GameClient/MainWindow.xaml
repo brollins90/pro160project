@@ -4,15 +4,18 @@
         Title="The World We Don't Know" Height="768" Width="1024"
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        xmlns:y="clr-namespace:GameClient.Converters">
+        xmlns:y="clr-namespace:GameClient.Converters"
+        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove">
         
     <Window.Resources>
-        <y:CharacterSpriteConverter x:Key="x:CharacterSpriteConverter"/>
+        <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
+        <y:BlakeDebugConverter x:Key="BlakeDebugConverter"/>
+        <y:RadToDegConverter x:Key="RadToDegConverter"/>
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images\GameBackground.png"/>    
     </Window.Background>
-    <Grid x:Name="MainGrid"  KeyDown="Grid_KeyDown">
+    <Grid x:Name="MainGrid"  >
         <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}" Margin="-10,10,10,-10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -21,17 +24,20 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Width="{Binding Width}" Height="{Binding Height}">
+                    <Rectangle Width="{Binding Size.x}" Height="{Binding Size.y}" RenderTransformOrigin="0.5,0.5">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="Fill" ImageSource="Images\Pikachu.png"/>
+                            <ImageBrush Stretch="Fill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
                         </Rectangle.Fill>                    
+                        <Rectangle.RenderTransform>
+                            <RotateTransform Angle="{Binding Angle}"/>
+                        </Rectangle.RenderTransform>
                     </Rectangle>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding Position.x}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Position.y}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
@@ -43,7 +49,7 @@
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,139,27,295" Focusable="False">Gain 10 Exp.</Button>
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,74,27,360" Focusable="False">Gain 20 Exp.</Button>
-        
+
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainGold" Margin="0,10,27,424" Focusable="False">Gain 10 Gold.</Button>
 
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows;
+using GameCode.Helpers;
 
 namespace GameCode.Models
 {
@@ -13,89 +14,75 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public enum ObjectType { Bot, Player, Projectile };
+        //public enum GameObjectType { Bot, Player, Projectile };
 
         public void FirePropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
             {
-                Console.WriteLine("ColorSelectorModel.FirePropertyChanged({0})", propertyName);
+                //Console.WriteLine("ColorSelectorModel.FirePropertyChanged({0})", propertyName);
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        public bool Alive { get; set; }
-        public GameManager Manager { get; set; }
 
-        private AttackType _AttackType;
-        public AttackType AttackType
+        private bool _Alive;
+        public bool Alive
         {
-            get { return _AttackType; }
-            set { _AttackType = value;
-            this.FirePropertyChanged("AttackType");
+            get { return _Alive; }
+            set
+            {
+                _Alive = value;
+                this.FirePropertyChanged("Alive");
             }
         }
 
-        public ObjectType _ObjectType;
-        public ObjectType objectType
+        private double _Angle;
+        public double Angle
         {
-            get { return _ObjectType; }
-            set { _ObjectType = value; }
+            get { return _Angle; }
+            set
+            {
+                _Angle = value;
+                this.FirePropertyChanged("Angle");
+            }
         }
 
         private Controller _Controller;
-
         public Controller Controller
         {
             get { return _Controller; }
-            set { _Controller = value; }
-        }
-        
-
-        private int _Damage;
-        public int Damage
-        {
-            get { return _Damage; }
-            set { _Damage = value; }
-        }
-
-        private float _Direction;
-
-        public float Direction
-        {
-            get { return _Direction; }
-            set { _Direction = value; }
-        }
-
-        
-        private int _Health;
-        public int Health
-        {
-            get { return _Health; }
-            set { _Health = value;
-            this.FirePropertyChanged("Health");
-
+            set
+            {
+                    _Controller = value;
+                    this.FirePropertyChanged("Controller");
             }
         }
 
-        private int _Height;
-
-        public int Height
+        private GameManager _Manager;
+        public GameManager Manager
         {
-            get { return _Height; }
-            set { _Height = value; }
-        }
-        
-
-        private MoveType _MoveType;
-        public MoveType MoveType
-        {
-            get { return _MoveType; }
-            set { _MoveType = value; }
+            get { return _Manager; }
+            set
+            {
+                    _Manager = value;
+                    this.FirePropertyChanged("Manager");
+            }
         }
 
-        private Vector _Position;
-        public Vector Position
+        //public GameObjectType _ObjectType;
+        //public GameObjectType ObjectType
+        //{
+        //    get { return _ObjectType; }
+        //    set
+        //    {
+        //        _ObjectType = value;
+        //        this.FirePropertyChanged("ObjectType");
+        //    }
+        //}
+
+        private Vector3 _Position;
+        public Vector3 Position
         {
             get { return _Position; }
             set
@@ -105,72 +92,60 @@ namespace GameCode.Models
             }
         }
 
-        private int _Speed;
-        public int Speed
+        private Vector3 _Size;
+        public Vector3 Size
         {
-            get { return _Speed; }
-            set { _Speed = value; }
+            get { return _Size; }
+            set
+        {
+                _Size = value;
+                this.FirePropertyChanged("Size");
+            }
         }
 
         public int _Team;
         public int Team
         {
             get { return _Team; }
-            set { _Team = value; }
+            set
+            {
+                _Team = value;
+                this.FirePropertyChanged("Team");
         }
-
-        private int _Width;
-
-        public int Width
-        {
-            get { return _Width; }
-            set { _Width = value; }
         }
 
         private static int NextID = 0;
-        private int _UniqueID;
-        public int UniqueID
+        private int _ID;
+        public int ID
         {
-            get { return _UniqueID; }
-            private set { _UniqueID = value; }
+            get { return _ID; }
+            private set { _ID = value; }
         }
 
         public GameObject(
-            Vector position,
+            Vector3 position,
             GameManager manager,
-            AttackType attackType = AttackType.Melee,
-            int damage = 2,
-            float direction = 90f,
-            int health = 10,
-            int height = 50,
-            MoveType moveType = MoveType.Walk,
-            int speed = 5,
-            int width = 30,
-            ObjectType objectType = ObjectType.Bot
+            Vector3 size,
+            int team = 1
             )
         {
             Alive = true;
-            AttackType = attackType;
-            Damage = damage;
-            Direction = direction;
-            Health = health;
-            Height = height;
+            Controller = new Controller();
             Manager = manager;
-            MoveType = moveType;
             Position = position;
-            Speed = speed;
-            Width = width;
-            UniqueID = NextID++;
-            this.objectType = objectType;
+            Size = size;
+            Team = team;
+            ID = NextID++;
+            Angle = 0;
         }
 
 
-        public abstract void Update(int deltaTime);
+        public abstract void Update(double deltaTime);
 
         internal bool CollidesWith(GameObject o)
         {
-            Rectangle r1 = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
-            Rectangle r2 = new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Width, o.Height);
+            Rectangle r1 = new Rectangle((int)Position.x, (int)Position.y, (int)Size.x, (int)Size.y);
+            Rectangle r2 = new Rectangle((int)o.Position.x, (int)o.Position.y, (int)o.Size.x, (int)o.Size.y);
             return !((r1.Bottom < r2.Top) || (r1.Top > r2.Bottom) || (r1.Left > r2.Right) || (r1.Right < r2.Left));
         }
     }

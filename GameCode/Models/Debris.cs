@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCode.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,14 +11,11 @@ namespace GameCode.Models
 {
     public class Debris : GameObject
     {
-        public Debris(Vector position, GameManager manager, int width, int height)
-            : base(position, manager, width:width, height:height)
+        public Debris(Vector3 position, GameManager manager, Vector3 size)
+            : base(position, manager, size)
         {
-            //this.Position = new Vector(400, 500);
-            //this.Width = 30;
-            //this.Height = 100;
         }
-        public override void Update(int deltaTime)
+        public override void Update(double deltaTime)
         {
             return;
         }

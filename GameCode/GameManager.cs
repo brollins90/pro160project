@@ -7,6 +7,8 @@ using System.Windows.Threading;
 using System.Threading.Tasks;
 using GameCode.Models;
 using System.Windows;
+using GameCode.Helpers;
+using GameCode.Models.Projectiles;
 
 namespace GameCode
 {
@@ -27,7 +29,7 @@ namespace GameCode
             set { _Controllers = value; }
         }
 
-        private int lastTime = 0;
+        private float lastTime = 0;
         
 
         public GameManager()
@@ -40,20 +42,24 @@ namespace GameCode
             Timer.Tick += Timer_Tick;
 
             lastTime = GetCurrentTime();
+            LoadWorld("");
 
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
             int currentTime = Environment.TickCount;
-            int elapsedTime = currentTime - lastTime;
+            float elapsedTime = currentTime - lastTime;
+
+            elapsedTime = elapsedTime / 100; // deltatime should be like .01  not 100
+
             Update(elapsedTime);
             lastTime = currentTime;
         }
 
         public void AddNPC()
         {
-            GameObject newCharacter = new Bot(new Vector(300, 150), this);
+            GameObject newCharacter = new Bot(new Vector3(300, 150,0), this);
             //GameObject newCharacter = new Bot(new Point(300, 150));
             //Controller newController = new BotController()
             //{
@@ -73,11 +79,11 @@ namespace GameCode
 
         public int AddPlayer(Controller playerController)
         {
-            Character c = new Character(new Vector(100, 100), this);
+            Character c = new Character(new Vector3(100, 100,0), this);
             c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);
-            return c.UniqueID;
+            return c.ID;
 
         }
 
@@ -93,25 +99,26 @@ namespace GameCode
 
         public void LoadWorld(string filename)
         {
-            AddNPC(new Bot(new Vector(900, 100),this, BotClass.Boss));
-            AddNPC(new Bot(new Vector(750, 100),this, BotClass.Melee));
-            AddNPC(new Bot(new Vector(910, 500),this, BotClass.Mercenary));
-            AddNPC(new Bot(new Vector(800, 400),this, BotClass.Shooter));
-            AddNPC(new Bot(new Vector(910, 50),this, BotClass.Tower));
-            AddNPC(new Bot(new Vector(910, 300),this, BotClass.Turret));
-            AddDebris(new Debris(new Vector(650, 880), this, 40, 200));
-            AddDebris(new Debris(new Vector(1250, 880), this, 40, 200));
-            AddDebris(new Debris(new Vector(650, 880), this, 250, 40));
-            AddDebris(new Debris(new Vector(1000, 880), this, 250, 40));
-            AddDebris(new Debris(new Vector(650, -10), this, 40, 200));
-            AddDebris(new Debris(new Vector(1250, -10), this, 40, 200));
-            AddDebris(new Debris(new Vector(650, 180), this, 250, 40));
-            AddDebris(new Debris(new Vector(1000, 180), this, 250, 40));
+            AddNPC(new Bot(new Vector3(900, 100,0),this, BotClass.Boss));
+            AddNPC(new Bot(new Vector3(750, 100, 0), this, BotClass.Melee));
+            AddNPC(new Bot(new Vector3(910, 500, 0), this, BotClass.Mercenary));
+            AddNPC(new Bot(new Vector3(800, 400, 0), this, BotClass.Shooter));
+            AddNPC(new Bot(new Vector3(910, 50, 0), this, BotClass.Tower));
+            AddNPC(new Bot(new Vector3(910, 300, 0), this, BotClass.Turret));
+            AddDebris(new Debris(new Vector3(650, 880, 0), this, new Vector3(40, 200, 0)));
+            AddDebris(new Debris(new Vector3(1250, 880, 0), this, new Vector3(40, 200, 0)));
+            AddDebris(new Debris(new Vector3(650, 880, 0), this, new Vector3(250, 40, 0)));
+            AddDebris(new Debris(new Vector3(1000, 880, 0), this, new Vector3(250, 40, 0)));
+            AddDebris(new Debris(new Vector3(650, -10, 0), this, new Vector3(40, 200, 0)));
+            AddDebris(new Debris(new Vector3(1250, -10, 0), this, new Vector3(40, 200, 0)));
+            AddDebris(new Debris(new Vector3(650, 180, 0), this, new Vector3(250, 40, 0)));
+            AddDebris(new Debris(new Vector3(1000, 180, 0), this, new Vector3(250, 40, 0)));
         }
 
-        public void Update(int deltaTime)
+        public void Update(float deltaTime)
         {
-            Console.WriteLine("deltatime: " + deltaTime);
+            //Console.WriteLine("deltatime: " + deltaTime);
+            
             // If paused, return
             // TODO
 
@@ -173,9 +180,15 @@ namespace GameCode
         {
         }
 
-        public void SubmitMove()
+        public void SubmitMove(GameCommand command)
         {
-
+            foreach (Controller c in Controllers)
+            {
+                if (c.GameObjectID == command.GameObjectId)
+                {
+                    c.KeyDown(command);
+                }
+            }
         }
 
         public int GetCurrentTime()

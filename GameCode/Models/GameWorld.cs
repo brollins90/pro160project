@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCode.Models.Projectiles;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -39,7 +40,7 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(GameProjectile); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow)); }).ToList();
                 return retVal;
             }
         }
