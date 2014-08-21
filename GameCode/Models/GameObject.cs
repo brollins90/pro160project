@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows;
+using GameCode.Helpers;
 
 namespace GameCode.Models
 {
@@ -13,7 +14,7 @@ namespace GameCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public enum ObjectType { Bot, Player, Projectile };
+        //public enum GameObjectType { Bot, Player, Projectile };
 
         public void FirePropertyChanged(String propertyName)
         {
@@ -36,8 +37,8 @@ namespace GameCode.Models
             }
         }
 
-        private float _Angle;
-        public float Angle
+        private double _Angle;
+        public double Angle
         {
             get { return _Angle; }
             set
@@ -52,16 +53,10 @@ namespace GameCode.Models
         {
             get { return _Controller; }
             set
-        {
-                _Controller = value;
-                this.FirePropertyChanged("Controller");
-        }
-        }
-        public ObjectType _ObjectType;
-        public ObjectType objectType
-        {
-            get { return _ObjectType; }
-            set { _ObjectType = value; }
+            {
+                    _Controller = value;
+                    this.FirePropertyChanged("Controller");
+            }
         }
 
         private GameManager _Manager;
@@ -69,14 +64,25 @@ namespace GameCode.Models
         {
             get { return _Manager; }
             set
-        {
-                _Manager = value;
-                this.FirePropertyChanged("Manager");
-        }
+            {
+                    _Manager = value;
+                    this.FirePropertyChanged("Manager");
+            }
         }
 
-        private Vector _Position;
-        public Vector Position
+        //public GameObjectType _ObjectType;
+        //public GameObjectType ObjectType
+        //{
+        //    get { return _ObjectType; }
+        //    set
+        //    {
+        //        _ObjectType = value;
+        //        this.FirePropertyChanged("ObjectType");
+        //    }
+        //}
+
+        private Vector3 _Position;
+        public Vector3 Position
         {
             get { return _Position; }
             set
@@ -86,8 +92,8 @@ namespace GameCode.Models
             }
         }
 
-        private Vector _Size;
-        public Vector Size
+        private Vector3 _Size;
+        public Vector3 Size
         {
             get { return _Size; }
             set
@@ -117,9 +123,9 @@ namespace GameCode.Models
         }
 
         public GameObject(
-            Vector position,
+            Vector3 position,
             GameManager manager,
-            Vector size,
+            Vector3 size,
             int team = 1
             )
         {
@@ -134,12 +140,12 @@ namespace GameCode.Models
         }
 
 
-        public abstract void Update(float deltaTime);
+        public abstract void Update(double deltaTime);
 
         internal bool CollidesWith(GameObject o)
         {
-            Rectangle r1 = new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
-            Rectangle r2 = new Rectangle((int)o.Position.X, (int)o.Position.Y, (int)o.Size.X, (int)o.Size.Y);
+            Rectangle r1 = new Rectangle((int)Position.x, (int)Position.y, (int)Size.x, (int)Size.y);
+            Rectangle r2 = new Rectangle((int)o.Position.x, (int)o.Position.y, (int)o.Size.x, (int)o.Size.y);
             return !((r1.Bottom < r2.Top) || (r1.Top > r2.Bottom) || (r1.Left > r2.Right) || (r1.Right < r2.Left));
         }
     }

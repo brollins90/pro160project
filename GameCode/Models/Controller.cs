@@ -21,15 +21,30 @@ namespace GameCode.Models
         }
 
         private int _GameObjectID;
-	    public int GameObjectID
-	    {
-		    get { return _GameObjectID;}
-		    set { _GameObjectID = value;}
-	    }
+        public int GameObjectID
+        {
+            get { return _GameObjectID; }
+            set { _GameObjectID = value; }
+        }
+
+        //private GameCommands _Command;
+        //public GameCommands Command
+        //{
+        //    get { return _Command; }
+        //    set { _Command = value; }
+        //}
+
+        private GameCommand _Cmd;
+
+        public GameCommand Cmd
+        {
+            get { return _Cmd; }
+            set { _Cmd = value; }
+        }
+        
 
         private GameManager _Manager;
 
-        public GameCommands Command;
 
         public GameManager Manager
         {
@@ -53,21 +68,22 @@ namespace GameCode.Models
         public Controller()
         {
             ControllerID = NextID++;
-            Command = GameCommands.None;
+            Cmd = new GameCommand();
+            Cmd.Command = GameCommands.None;
         }
 
-        public GameCommands GetMove()
+        public GameCommand GetMove()
         {
+            GameCommand temp = Cmd.Copy();
             //Console.WriteLine("getmove: " + Command);
-            GameCommands current = Command;
-            Command = GameCommands.None;
-            return current;
+            Cmd.Command = GameCommands.None;
+            return temp;
         }
 
-        public void KeyDown(GameCommands keyPressed)
+        public void KeyDown(GameCommand cmd)
         {
-            //Console.WriteLine("Controller.KeyDown()");
-            Command = keyPressed;
+            Console.WriteLine("Controller.KeyDown()");
+            Cmd = cmd;
             //Manager.SubmitMove(GameObjectID, keyPressed);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCode.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace GameCode.Models
 
     public class GameProjectile : MovingObject
     {
-        private Vector StartPosition;
+        private Vector3 StartPosition;
         //private Vector targetPosition;
         private double MaxDistance;
 
@@ -22,17 +23,17 @@ namespace GameCode.Models
             set { _Damage = value; }
         }
         
-        public GameProjectile(Vector position, GameManager manager, Vector size, Vector velocity, int damage, double maxDistanceSquared)
+        public GameProjectile(Vector3 position, GameManager manager, Vector3 size, Vector3 velocity, int damage, double maxDistanceSquared)
             : base(position, manager, size)
         {
-            StartPosition = new Vector(position.X, position.Y);
+            StartPosition = new Vector3(position.x, position.y, Position.z);
             MaxDistance = maxDistanceSquared;
             this.Damage = damage;
             this.Velocity = velocity;
             //this.Speed = speed;
         }
 
-        public override void Update(float deltaTime)
+        public override void Update(double deltaTime)
         {
             Position = Position + Velocity * deltaTime;
 

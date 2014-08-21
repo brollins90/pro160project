@@ -42,6 +42,7 @@ namespace GameClient
             // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
+            CurrentController.CreateCharacter();
 
             PopulateGame();
 
@@ -52,10 +53,9 @@ namespace GameClient
 
         private void PopulateGame()
         {
-            CurrentController.CreateCharacter();
 
             // Add some Bots
-            Manager.LoadWorld("");
+            //Manager.LoadWorld("");
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -64,18 +64,22 @@ namespace GameClient
             switch (e.Key)
             {
                 case Key.Up:
+                case Key.W:
                     keyPressed = GameCommands.Up;
                     break;
 
                 case Key.Down:
+                case Key.S:
                     keyPressed = GameCommands.Down;
                     break;
 
                 case Key.Left:
+                case Key.A:
                     keyPressed = GameCommands.Left;
                     break;
 
                 case Key.Right:
+                case Key.D:
                     keyPressed = GameCommands.Right;
                     break;
                 case Key.Escape:
@@ -86,8 +90,9 @@ namespace GameClient
                     keyPressed = GameCommands.Space;
                     break;
             }
-            //Console.WriteLine("KeyDown: {0}", keyPressed);
-            CurrentController.KeyDown(keyPressed);
+            Console.WriteLine("KeyDown: {0}", keyPressed);
+            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
+            //CurrentController.KeyDown(keyPressed);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -160,6 +165,25 @@ namespace GameClient
         private void GainGold(object sender, RoutedEventArgs e)
         {
             (CurrentController.CurrentCharacter as Character).Gold += 10;
+        }
+
+        private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine("down");
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.LeftClick, Environment.TickCount, e.GetPosition(this)));
+            }
+            else if (e.ChangedButton == MouseButton.Right)
+            {
+                Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.RightClick, Environment.TickCount, e.GetPosition(this)));
+            }
+        }
+
+        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("move");
+            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
         }
     }
 }
