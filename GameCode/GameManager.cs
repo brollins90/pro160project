@@ -79,7 +79,7 @@ namespace GameCode
 
         public int AddPlayer(Controller playerController)
         {
-            Character c = new Character(new Vector3(100, 100,0), this);
+            Character c = new Character(new Vector3(920, 800, 0), this);
             c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);

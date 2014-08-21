@@ -20,26 +20,32 @@ namespace GameCode.Models
         public int Constitution
         {
             get { return _Constitution; }
-            set { _Constitution = value;
-            this.FirePropertyChanged("Constitution");
-        }
+            set
+            {
+                _Constitution = value;
+                this.FirePropertyChanged("Constitution");
+            }
         }
 
         private int _Defense;
         public int Defense
         {
             get { return _Defense; }
-            set { _Defense = value; 
-            this.FirePropertyChanged("Defense"); 
-        }
+            set
+            {
+                _Defense = value;
+                this.FirePropertyChanged("Defense");
+            }
         }
 
         private int _Experience;
         public int Experience
         {
             get { return _Experience; }
-            set { _Experience = value;
-            this.FirePropertyChanged("Experience");
+            set
+            {
+                _Experience = value;
+                this.FirePropertyChanged("Experience");
             }
         }
 
@@ -47,8 +53,10 @@ namespace GameCode.Models
         public int ExperienceCap
         {
             get { return _ExperienceCap; }
-            set { _ExperienceCap = value;
-            this.FirePropertyChanged("ExperienceCap");
+            set
+            {
+                _ExperienceCap = value;
+                this.FirePropertyChanged("ExperienceCap");
             }
         }
 
@@ -56,18 +64,30 @@ namespace GameCode.Models
         public int Level
         {
             get { return _Level; }
-            set { _Level = value;
-            this.FirePropertyChanged("Level");
+            set
+            {
+                _Level = value;
+                this.FirePropertyChanged("Level");
             }
         }
+
+        //private PlayerInput _PlayerInput;
+
+        //public PlayerInput PlayerInput
+        //{
+        //    get { return _PlayerInput; }
+        //    set { _PlayerInput = value; }
+        //}
 
 
         private int _Strength;
         public int Strength
         {
             get { return _Strength; }
-            set { _Strength = value;
-            this.FirePropertyChanged("Strength");
+            set
+            {
+                _Strength = value;
+                this.FirePropertyChanged("Strength");
             }
         }
 
@@ -75,8 +95,10 @@ namespace GameCode.Models
         public int Gold
         {
             get { return _Gold; }
-            set { _Gold = value;
-            this.FirePropertyChanged("Gold");
+            set
+            {
+                _Gold = value;
+                this.FirePropertyChanged("Gold");
             }
         }
 
@@ -98,6 +120,11 @@ namespace GameCode.Models
             Experience = 0;
             ExperienceCap = 100;
             Gold = 0;
+            RestoreHealthToMax();
+            Level = 1;
+            Size = new Vector3(50, 50, 0);
+            Strength = 3;
+            Weapon = new CrossBow(this);
         }
 
 
@@ -109,15 +136,15 @@ namespace GameCode.Models
             this.Experience = 0;
             this.ExperienceCap += 30;
             this.MaxHealth = Constitution * 20;
-            this.Health = MaxHealth;
+            RestoreHealthToMax();
             this.Gold += 100;
 
             if (this.Level % 3 == 0)
             {
                 this.Defense += 1;
                 this.Gold += 150;
-            }           
-           
+            }
+
         }
 
 
@@ -129,14 +156,14 @@ namespace GameCode.Models
 
             //if no steering force is produced decelerate the player by applying a
             //braking force        
-  
+
             const double BrakingRate = 0.8;
-            Velocity *= BrakingRate;       
+            Velocity *= BrakingRate;
 
 
             //calculate the acceleration
             //Vector accel = force / m_dMass;
-            Vector3 acceleration = new Vector3(10,10,0);
+            Vector3 acceleration = new Vector3(10, 10, 0);
 
 
             //update the velocity
@@ -147,7 +174,7 @@ namespace GameCode.Models
 
             ////update the position
             //Position += Velocity;
-            
+
             ////if the vehicle has a non zero velocity the heading and side vectors must 
             ////be updated
             //if (!Velocity.IsZero())
@@ -157,7 +184,8 @@ namespace GameCode.Models
             //    Side = Heading.Perp();
             //}
 
-            GameCommands keyPressed = this.Controller.GetMove();
+            GameCommand cmd = this.Controller.GetMove();
+            GameCommands keyPressed = cmd.Command;
             if (keyPressed == GameCommands.Up)
             {
 
@@ -180,7 +208,8 @@ namespace GameCode.Models
                 //Rotate(RotationSpeed);
                 Velocity = Velocity - (deltaTime * acceleration * -1 * Heading.PerpCCW());
             }
-            else if (keyPressed == GameCommands.MouseMove) {
+            else if (keyPressed == GameCommands.MouseMove)
+            {
                 Console.WriteLine("YAYAYAYAY");
                 RotateTowardPosition(new Vector3(((System.Windows.Point)cmd.Additional).X, ((System.Windows.Point)cmd.Additional).Y, 0));
             }
@@ -200,19 +229,19 @@ namespace GameCode.Models
             //{
             //    objToProcess.Position = currentPosition;
             //    //Console.WriteLine("Collided");
-                //}
-
-            }
+            //}
+        }
 
         public void RestoreHealthToMax()
-            {
+        {
             Health = MaxHealth;
-            }
+        }
 
         public void IncreaseExperience(int amount)
-            {
-                objToProcess.Position = currentPosition;
-                Console.WriteLine("Collided");
-            }
+        {
+            Experience += amount;
+            if (Experience > ExperienceCap)
+                Experience = ExperienceCap;
         }
+    }
 }
