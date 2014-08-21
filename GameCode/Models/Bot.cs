@@ -144,7 +144,7 @@ namespace GameCode.Models
                     break;
             }
         }
-        public void ReduceHealth(int val)
+        public void DecreaseHealth(int val)
         {
             Health -= val;
         }
@@ -189,9 +189,14 @@ namespace GameCode.Models
             //}
         }
 
-        //public Models.AttackType Melee { get; set; }
-
-        //public Models.AttackType Ranged { get; set; }
+        public void TakeDamage(int damage)
+        {
+            DecreaseHealth(damage);
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
+        }
 
     }
 }

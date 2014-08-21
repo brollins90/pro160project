@@ -20,7 +20,7 @@ namespace GameCode.Models.Weapons
         {
             if (IsReadyForNextAttack()) { 
                 Owner.Manager.AddProjectile(
-                    new Arrow((Owner.Position + new Vector3(Owner.Size.x / 2, Owner.Size.y / 2, Owner.Size.z / 2)),
+                    new Arrow(Owner,
                         Owner.Manager,
                         Owner.Angle,
                         Owner.Damage,
