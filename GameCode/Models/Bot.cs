@@ -111,59 +111,19 @@ namespace GameCode.Models
         {
             temp++;
             if (temp < 50) {
-                for (int i = 0; i < Manager.World.Objects.Count; i++)
-                {
-                    if (!Manager.World.Objects[i].CollidesWith(this))
-                    {
-                        Position = new Vector(Position.X + Speed, Position.Y + Speed);
-                    }
-                    else
-                    {
-                        Position = new Vector(Position.X - Speed, Position.Y - Speed);
-                    }
-                }               
+                Position = new Vector(Position.X + Speed, Position.Y + Speed);            
             }
             else if (temp < 100)
             {
-                for (int i = 0; i < Manager.World.Objects.Count; i++)
-                {
-                    if (!Manager.World.Objects[i].CollidesWith(this))
-                    {
-                        Position = new Vector(Position.X - Speed, Position.Y + Speed);
-                    }
-                    else
-                    {
-                        Position = new Vector(Position.X + Speed, Position.Y - Speed);
-                    }
-                }                   
+                Position = new Vector(Position.X - Speed, Position.Y + Speed);
             }
             else if (temp < 150)
             {
-                for (int i = 0; i < Manager.World.Objects.Count; i++)
-                {
-                    if (!Manager.World.Objects[i].CollidesWith(this))
-                    {
-                        Position = new Vector(Position.X - Speed, Position.Y - Speed);
-                    }
-                    else
-                    {
-                        Position = new Vector(Position.X + Speed, Position.Y + Speed);
-                    }
-                }                 
+                Position = new Vector(Position.X - Speed, Position.Y - Speed);
             }
             else if (temp < 200)
             {
-                for (int i = 0; i < Manager.World.Objects.Count; i++)
-                {
-                    if (!Manager.World.Objects[i].CollidesWith(this))
-                    {
-                        Position = new Vector(Position.X + Speed, Position.Y - Speed);
-                    }
-                    else
-                    {
-                        Position = new Vector(Position.X - Speed, Position.Y + Speed);
-                    }
-                }                      
+                Position = new Vector(Position.X + Speed, Position.Y - Speed);
             }
             else
             {
