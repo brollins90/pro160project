@@ -18,33 +18,33 @@ namespace GameClient.Converters
             Uri picture = null;
 
             var typeSwitch = new Dictionary<Type, Action> {
-                { typeof(Character), () => picture = new Uri("Images/Red.png", UriKind.Relative) },
+                { typeof(Character), () => picture = new Uri("Images/ArcherCharacter.png", UriKind.Relative) },
                 { typeof(Bot), () => {
                     Bot temp = (Bot)current;
                     switch (temp.BotClass)
                     {
                         case BotClass.Boss:
-                            picture = new Uri("Images/Pikachu.png", UriKind.Relative);
+                            picture = new Uri("Images/BossTopView.png", UriKind.Relative);
                             break;
                         case BotClass.Melee:
-                            picture = new Uri("Images/Entei.png", UriKind.Relative);
+                            picture = new Uri("Images/Minion.png", UriKind.Relative);
                             break;
                         case BotClass.Mercenary:
-                            picture = new Uri("Images/Eevee.png", UriKind.Relative);
+                            picture = new Uri("Images/MercenaryTopView.png", UriKind.Relative);
                             break;
                         case BotClass.Shooter:
-                            picture = new Uri("Images/Charizard.png", UriKind.Relative);
+                            picture = new Uri("Images/Minion.png", UriKind.Relative);
                             break;
                         case BotClass.Tower:
-                            picture = new Uri("Images/Lucario.png", UriKind.Relative);
+                            picture = new Uri("Images/TowerCastleThingTopView.png", UriKind.Relative);
                             break;
                         case BotClass.Turret:
-                            picture = new Uri("Images/Mewtwo.png", UriKind.Relative);
+                            picture = new Uri("Images/SentryTopView.png", UriKind.Relative);
                             break;
                     }
                 } },
-                { typeof(GameProjectile), () => picture = new Uri("Images/Red.png", UriKind.Relative) },
-                { typeof(Debris), () => picture = new Uri("Images/Red.png", UriKind.Relative) }
+                { typeof(GameProjectile), () => picture = new Uri("Images/BallistaArrow.png", UriKind.Relative) },
+                { typeof(Debris), () => picture = new Uri("Images/BrickWall.png", UriKind.Relative) }
             };
 
             typeSwitch[current.GetType()]();

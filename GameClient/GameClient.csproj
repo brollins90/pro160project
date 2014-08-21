@@ -158,6 +158,26 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ArcherCharacter.png" />
+    <Resource Include="Images\BallistaArrow.png" />
+    <Resource Include="Images\Ballista.png" />
+    <Resource Include="Images\BossTopView.png" />
+    <Resource Include="Images\Boss.png" />
+    <Resource Include="Images\FighterCharacter.png" />
+    <Resource Include="Images\MasterSwordReplica.png" />
+    <Resource Include="Images\MercenaryTopView.png" />
+    <Resource Include="Images\Mercenary.png" />
+    <Resource Include="Images\Minion.png" />
+    <Resource Include="Images\SentryTopView.png" />
+    <Resource Include="Images\Sentry.png" />
+    <Resource Include="Images\SwordCharacter.png" />
+    <Resource Include="Images\TowerCastleThing.png" />
+    <Resource Include="Images\TowerCastleThingTopView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BrickWall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

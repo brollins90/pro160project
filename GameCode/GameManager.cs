@@ -102,8 +102,8 @@ namespace GameCode
             AddNPC(new Bot(new Vector3(750, 100, 0), this, BotClass.Melee));
             AddNPC(new Bot(new Vector3(910, 500, 0), this, BotClass.Mercenary));
             AddNPC(new Bot(new Vector3(800, 400, 0), this, BotClass.Shooter));
-            AddNPC(new Bot(new Vector3(910, 50, 0), this, BotClass.Tower));
             AddNPC(new Bot(new Vector3(910, 300, 0), this, BotClass.Turret));
+            AddNPC(new Bot(new Vector3(900, 30, 0), this, BotClass.Tower));
             AddDebris(new Debris(new Vector3(650, 880, 0), this, new Vector3(40, 200, 0)));
             AddDebris(new Debris(new Vector3(1250, 880, 0), this, new Vector3(40, 200, 0)));
             AddDebris(new Debris(new Vector3(650, 880, 0), this, new Vector3(250, 40, 0)));
