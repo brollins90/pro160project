@@ -41,6 +41,7 @@ namespace GameCode.Models
             : base(position, manager)
         {
             this.objectType = ObjectType.Bot;
+            this.Team = 5;
             switch (botClass)
             {
                 case Models.BotClass.Boss:
@@ -109,6 +110,15 @@ namespace GameCode.Models
         private int temp = 0;
         public override void Update(int deltaTime)
         {
+            GameObject objToProcess = this;
+            Vector currentPosition = this.Position;
+            Vector newPosition = currentPosition;
+
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
+
             temp++;
             if (temp < 50) {
                 Position = new Vector(Position.X + Speed, Position.Y + Speed);            
@@ -129,6 +139,23 @@ namespace GameCode.Models
             {
                 temp = 0;
             }
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (objToProcess.UniqueID != o.UniqueID && objToProcess.CollidesWith(o))
+                    collided = true;
+            }
+            if (collided)
+            {
+                objToProcess.Position = currentPosition;
+                if (objToProcess.objectType == ObjectType.Bot)
+                {
+
+                        Health -= 20;
+         
+                }
+            } 
         }
 
         public Models.AttackType Melee { get; set; }

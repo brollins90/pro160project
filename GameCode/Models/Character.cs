@@ -106,6 +106,7 @@ namespace GameCode.Models
             ExperienceCap = 100;
             Health = 100;
             Gold = 0;
+            Team = 1;
         }
 
         public void Attack(Vector destination)
@@ -145,6 +146,11 @@ namespace GameCode.Models
             GameObject objToProcess = this;
             Vector currentPosition = this.Position;
             Vector newPosition = currentPosition;
+
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
 
             GameCommands keyPressed = this.Controller.GetMove();
             if (keyPressed == GameCommands.Up)
@@ -193,7 +199,13 @@ namespace GameCode.Models
             {
                 objToProcess.Position = currentPosition;
                 Console.WriteLine("Collided");
-            }
+                if(objToProcess.objectType == ObjectType.Bot)
+                {
+
+                        Health += 20;
+                
+                }              
+            } 
         }
     }
 }
