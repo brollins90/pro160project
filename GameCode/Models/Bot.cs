@@ -30,9 +30,9 @@ namespace GameCode.Models
             {
                 _BotClass = value;
                 this.FirePropertyChanged("BotClass");
-            }
         }
-        
+        }
+
         private int _Damage;
         public int Damage
         {
@@ -41,15 +41,15 @@ namespace GameCode.Models
             {
                 _Damage = value;
                 this.FirePropertyChanged("Damage");
-            }
+        }
         }
 
 
         private int _Health;
         public int Health
         {
-            get { return _Health; }
-            set
+            this.objectType = ObjectType.Bot;
+            switch (botClass)
             {
                 _Health = value;
                 this.FirePropertyChanged("Health");
@@ -163,30 +163,29 @@ namespace GameCode.Models
             throw new NotImplementedException();
         }
 
-        //private int temp = 0;
-        public override void Update(double deltaTime)
+        private int temp = 0;
+        public override void Update(int deltaTime)
+        {
+            temp++;
+            if (temp < 50) {
+                Position = new Vector(Position.X + Speed, Position.Y + Speed);            
+            }
+            else if (temp < 100)
             {
-            Position = Position + Velocity * deltaTime;
-            //temp++;
-            //if (temp < 50) { 
-            //    Position = new Vector(Position.X + Speed, Position.Y + Speed);
-            //}
-            //else if (temp < 100)
-            //{
-            //    Position = new Vector(Position.X - Speed, Position.Y + Speed);
-            //}
-            //else if (temp < 150)
-            //{
-            //    Position = new Vector(Position.X - Speed, Position.Y - Speed);
-            //}
-            //else if (temp < 200)
-            //{
-            //    Position = new Vector(Position.X + Speed, Position.Y - Speed);
-            //}
-            //else
-            //{
-            //    temp = 0;
-            //}
+                Position = new Vector(Position.X - Speed, Position.Y + Speed);
+            }
+            else if (temp < 150)
+            {
+                Position = new Vector(Position.X - Speed, Position.Y - Speed);
+            }
+            else if (temp < 200)
+            {
+                Position = new Vector(Position.X + Speed, Position.Y - Speed);
+            }
+            else
+            {
+                temp = 0;
+            }
         }
 
         //public Models.AttackType Melee { get; set; }

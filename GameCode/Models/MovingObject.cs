@@ -13,6 +13,14 @@ namespace GameCode.Models
     public abstract class MovingObject : GameObject
     {
 
+        private Vector3 _Acceleration;
+
+        public Vector3 Acceleration
+        {
+            get { return _Acceleration; }
+            set { _Acceleration = value; }
+        }
+        
         public Vector3 Heading
         {
             get {
@@ -92,6 +100,7 @@ namespace GameCode.Models
         {
             MaxTurnRate = 10;
             MaxSpeed = 15;
+            Acceleration = new Vector3(10, 10, 0);
         }
 
         public void Rotate(double angleChange)
@@ -128,6 +137,11 @@ namespace GameCode.Models
             //Side = Heading.PerpCCW();
 
             return false;
+        }
+
+        public override void Update(double deltaTime)
+        {
+            Position = Position + Velocity * deltaTime;
         }
 
 //        inline void MovingEntity::SetHeading(Vector2D new_heading)
