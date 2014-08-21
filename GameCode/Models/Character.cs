@@ -215,5 +215,4 @@ namespace GameCode.Models
                 Console.WriteLine("Collided");
             }
         }
-    }
 }
