@@ -48,8 +48,8 @@ namespace GameCode.Models
         private int _Health;
         public int Health
         {
-            this.objectType = ObjectType.Bot;
-            switch (botClass)
+            get { return _Health; }
+            set
             {
                 _Health = value;
                 this.FirePropertyChanged("Health");
@@ -164,28 +164,29 @@ namespace GameCode.Models
         }
 
         private int temp = 0;
-        public override void Update(int deltaTime)
+        public override void Update(double deltaTime)
         {
-            temp++;
-            if (temp < 50) {
-                Position = new Vector(Position.X + Speed, Position.Y + Speed);            
-            }
-            else if (temp < 100)
-            {
-                Position = new Vector(Position.X - Speed, Position.Y + Speed);
-            }
-            else if (temp < 150)
-            {
-                Position = new Vector(Position.X - Speed, Position.Y - Speed);
-            }
-            else if (temp < 200)
-            {
-                Position = new Vector(Position.X + Speed, Position.Y - Speed);
-            }
-            else
-            {
-                temp = 0;
-            }
+            Position = Position + Velocity * deltaTime;
+            //temp++;
+            //if (temp < 50) { 
+            //    Position = new Vector(Position.X + Speed, Position.Y + Speed);
+            //}
+            //else if (temp < 100)
+            //{
+            //    Position = new Vector(Position.X - Speed, Position.Y + Speed);
+            //}
+            //else if (temp < 150)
+            //{
+            //    Position = new Vector(Position.X - Speed, Position.Y - Speed);
+            //}
+            //else if (temp < 200)
+            //{
+            //    Position = new Vector(Position.X + Speed, Position.Y - Speed);
+            //}
+            //else
+            //{
+            //    temp = 0;
+            //}
         }
 
         //public Models.AttackType Melee { get; set; }
