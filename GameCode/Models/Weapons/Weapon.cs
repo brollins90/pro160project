@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCode.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace GameCode.Models.Weapons
 
         public void UpdateTimeNextAvailable()
         {
-            TimeNextAvailable = Environment.TickCount + (1.0 / RateOfFire);
+            TimeNextAvailable = Environment.TickCount + (1000.0 * RateOfFire);
         }
 
         public void AimAt(Vector target)
@@ -47,5 +48,7 @@ namespace GameCode.Models.Weapons
         {
             //Owner.Manager.AddProjectile(new GameProjectile(Owner.Position, Owner.Manager, Owner.Direction, Speed, Owner.Damage, Distance));
         }
+
+        public abstract void Attack();
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GameCode.Models;
 using System.Windows;
 using GameCode.Helpers;
+using GameCode.Models.Projectiles;
 
 namespace GameCode
 {

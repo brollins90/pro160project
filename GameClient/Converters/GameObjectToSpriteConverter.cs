@@ -1,4 +1,5 @@
 ﻿using GameCode.Models;
+using GameCode.Models.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +45,11 @@ namespace GameClient.Converters
                     }
                 } },
                 { typeof(GameProjectile), () => picture = new Uri("Images/Red.png", UriKind.Relative) },
+                { typeof(Arrow), () => picture = new Uri("Images/Red.png", UriKind.Relative) },
                 { typeof(Debris), () => picture = new Uri("Images/Red.png", UriKind.Relative) }
             };
 
+            Console.WriteLine(current.GetType());
             typeSwitch[current.GetType()]();
 
             ImageSource image = new BitmapImage(picture);

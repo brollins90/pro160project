@@ -61,14 +61,6 @@ namespace GameCode.Models
             }
         }
 
-        //private PlayerInput _PlayerInput;
-
-        //public PlayerInput PlayerInput
-        //{
-        //    get { return _PlayerInput; }
-        //    set { _PlayerInput = value; }
-        //}
-
 
         private int _Strength;
         public int Strength
@@ -137,12 +129,6 @@ namespace GameCode.Models
 
         public override void Update(double deltaTime)
         {
-
-
-
-
-
-
             //calculate the combined steering force
             // TODO
 
@@ -200,33 +186,15 @@ namespace GameCode.Models
                 //Rotate(RotationSpeed);
                 Velocity = Velocity - (deltaTime * acceleration * -1 * Heading.PerpCCW());
             }
-            else if (keyPressed == GameCommands.Space)
-            {
-                //RotateTowardPosition(new Vector(500, 500));
-            }
             else if (keyPressed == GameCommands.MouseMove) {
                 Console.WriteLine("YAYAYAYAY");
                 RotateTowardPosition(new Vector3(((System.Windows.Point)cmd.Additional).X, ((System.Windows.Point)cmd.Additional).Y, 0));
             }
-            //else if (keyPressed == GameCommands.Space)
-            //{
-            //    Weapon.ShootAt(new Vector(Position.X, Position.Y));
-            //    //Console.WriteLine("recieved a space");
-            //    //if (objToProcess.AttackType == AttackType.Ranged)
-            //    //{
-            //    Manager.AddProjectile(new GameProjectile(currentPosition + new Vector(Width / 2, Height / 2), this.Manager, new Vector(10, 10), this.Heading, 20, (objToProcess as Bot).Damage, 200)
-            //    {
-            //        Controller = null
-            //    });
-            //    //}
-            //}
-            //objToProcess.Position = newPosition;
+            else if (keyPressed == GameCommands.Space)
+            {
+                Weapon.Attack();
+            }
             Position = Position + Velocity * deltaTime;
-            //Console.WriteLine("Position: {0}", Position);
-            //Console.WriteLine("Velocity: {0}", Velocity);
-            //Console.WriteLine("Heading: {0}", Heading);
-            //Console.WriteLine("deltaTime: {0}", deltaTime);
-            //Console.WriteLine("Angle: {0}", Angle);
 
             //bool collided = false;
             //foreach (GameObject o in Manager.World.Objects)
@@ -240,9 +208,6 @@ namespace GameCode.Models
             //    //Console.WriteLine("Collided");
             //}
 
-
-
-            //Velocity *= .9;
         }
 
         public void RestoreHealthToMax()
