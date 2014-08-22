@@ -14,7 +14,7 @@ namespace GameCode.Models.Weapons
         {
             this.ProjectileRange = 100;
             this.ProjectileSpeed = 5;
-            this.RateOfFire = .3; // shoots 3 times per second
+            this.RateOfFire = 1.1; // shoots 3 times per second
         }
         public override void Attack()
         {

@@ -118,6 +118,7 @@ namespace GameCode.Models
             Constitution = 5;
             Defense = 6;
             Experience = 0;
+            Damage = Strength * 2;
             ExperienceCap = 100;
             Gold = 0;
             MaxHealth = Constitution * 20;
@@ -136,6 +137,7 @@ namespace GameCode.Models
             this.Constitution += 2;
             this.Experience = 0;
             this.ExperienceCap += 30;
+            this.Damage = Strength * 2;
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             this.Gold += 100;
