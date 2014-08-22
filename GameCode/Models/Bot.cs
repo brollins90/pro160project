@@ -88,8 +88,8 @@ namespace GameCode.Models
                     //this.UniqueID;
                     //this.Speed = 1;
                     this.BotWeapon = new CrossBow(this);
-                    this.Damage = 40;
-                    this.Health = 100;
+                    this.Damage = 25;
+                    this.Health = 1000;
                     this.MaxHealth = Health;
                     Size = new Vector3(50,50,0);
                     break;
@@ -97,7 +97,7 @@ namespace GameCode.Models
                     this.BotClass = type;
                     //this.Speed = 3;
                     this.BotWeapon = new CrossBow(this);
-                    this.Damage = 20;
+                    this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
                     Size = new Vector3(20,20,0);
@@ -107,8 +107,8 @@ namespace GameCode.Models
                     this.BotClass = type;
                     //this.Speed = 1;
                     this.BotWeapon = new CrossBow(this);
-                    this.Damage = 30;
-                    this.Health = 50;
+                    this.Damage = 13;
+                    this.Health = 500;
                     this.MaxHealth = Health;
                     Size = new Vector3(30,30,0);
                     //this.AttackType = Melee;
@@ -117,7 +117,7 @@ namespace GameCode.Models
                     this.BotClass = type;
                     //this.Speed = 2;
                     this.BotWeapon = new CrossBow(this);
-                    this.Damage = 15;
+                    this.Damage = 7;
                     this.Health = 10;
                     this.MaxHealth = Health;
                     Size = new Vector3(20, 20,0);
@@ -128,16 +128,16 @@ namespace GameCode.Models
                     //this.Speed = 0;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 0;
-                    this.Health = 75;
+                    this.Health = 1500;
                     this.MaxHealth = Health;
-                    Size = new Vector3(75,75,0);
+                    Size = new Vector3(100,100,0);
                     break;
                 case Models.BotClass.Turret: // stationary
                     this.BotClass = type;
                     //this.Speed = 0;
                     this.BotWeapon = new CrossBow(this);
-                    this.Damage = 50;
-                    this.Health = 75;
+                    this.Damage = 16;
+                    this.Health = 750;
                     this.MaxHealth = Health;
                     Size = new Vector3(60,60,0);
                     //this.AttackType = Ranged;
@@ -189,12 +189,17 @@ namespace GameCode.Models
             //}
         }
 
+        public void HasDied()
+        {
+            Alive = false;
+        }
+
         public void TakeDamage(int amount)
         {
             DecreaseHealth(amount);
             if (Health <= 0)
             {
-                Alive = false;
+                HasDied();
             }
         }
 
