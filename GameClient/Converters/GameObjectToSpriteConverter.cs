@@ -45,7 +45,7 @@ namespace GameClient.Converters
                     }
                 } },
                 { typeof(Arrow), () => picture = new Uri("Images/BallistaArrow2.0.png", UriKind.Relative) },
-                { typeof(Debris), () => picture = new Uri("Images/BrickWall.png", UriKind.Relative) }
+                { typeof(Debris), () => picture = new Uri("Images/BrickWall2.0.png", UriKind.Relative) }
             };
 
             typeSwitch[current.GetType()]();
