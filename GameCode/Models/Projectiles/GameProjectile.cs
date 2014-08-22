@@ -22,7 +22,7 @@ namespace GameCode.Models.Projectiles
         /// <summary>
         /// The Bot the "shot" the projectile
         /// </summary>
-        protected Bot Owner;
+        internal Bot Owner;
 
         /// <summary>
         /// The distance the projectile can move (stored in squared form to ease math)
@@ -57,7 +57,7 @@ namespace GameCode.Models.Projectiles
         public override void Update(double deltaTime)
         {
             // Change velocity
-            Velocity = Velocity - (deltaTime * Acceleration * -1 * Heading);
+            //Velocity = Velocity - (deltaTime * Acceleration * -1 * Heading);
 
             // update position
             base.Update(deltaTime);

@@ -50,6 +50,7 @@ namespace GameCode.Helpers
         public double DotProduct(Vector3 rhs) { return ((x * rhs.x) + (y * rhs.y)); }
         public double DotProduct(Vector3 lhs, Vector3 rhs) { return ((lhs.x * rhs.x) + (lhs.y * rhs.y)); }
         //public static float DotProduct(this Vector3 lhs, Vector3 rhs) { return ((lhs.x * rhs.x) + (lhs.y * rhs.y)); }
+        public bool IsZero() {  return x == 0 && y == 0 && z == 0;}
         public double Length() { return Math.Sqrt(x * x + y * y); }
         public double LengthSquared() { return (x * x + y * y); }
         public Vector3 Negate() { return new Vector3((-1 * x), (-1 * y), (-1 * z)); }

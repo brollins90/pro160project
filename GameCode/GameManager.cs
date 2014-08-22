@@ -29,7 +29,7 @@ namespace GameCode
             set { _Controllers = value; }
         }
 
-        private float lastTime = 0;
+        private int LastTimeMillis = 0;
         
 
         public GameManager()
@@ -37,40 +37,34 @@ namespace GameCode
             Timer = new DispatcherTimer();
             World = new GameWorld();
             Controllers = new ObservableCollection<Controller>();
-            Timer.Interval = TimeSpan.FromMilliseconds((16));
+            Timer.Interval = TimeSpan.FromMilliseconds((5));
             Timer.Start();
             Timer.Tick += Timer_Tick;
 
-            lastTime = GetCurrentTime();
+            LastTimeMillis = GetCurrentTime();
             LoadWorld("");
 
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            int currentTime = Environment.TickCount;
-            float elapsedTime = currentTime - lastTime;
-            Console.WriteLine(elapsedTime);
-            elapsedTime = elapsedTime / 100; // deltatime should be like .01  not 100
+            int currentTimeMillis = Environment.TickCount;
+            int elapsedTimeMillis = currentTimeMillis - LastTimeMillis;
+            Console.WriteLine("lastTime...: " + LastTimeMillis);
+            Console.WriteLine("CurrentTime: " + currentTimeMillis);
+            Console.WriteLine("elapsedTime: " + elapsedTimeMillis);
+            float elapsedTimeFloat = (float)elapsedTimeMillis / 1000;
+            Console.WriteLine(elapsedTimeFloat);
 
-            Update(elapsedTime);
-            lastTime = currentTime;
+            Update(elapsedTimeFloat);
+            LastTimeMillis = currentTimeMillis;
         }
 
-        public void AddNPC()
-        {
-            GameObject newCharacter = new Bot(new Vector3(300, 150,0), this);
-            //GameObject newCharacter = new Bot(new Point(300, 150));
-            //Controller newController = new BotController()
-            //{
-            //    GameObjectID = newCharacter.UniqueID
-            //};
-            //newCharacter.Controller = newController;
-            World.Objects.Add(newCharacter);
-            //Controllers.Add(newController);
-
-
-        }
+        //public void AddNPC()
+        //{
+        //    GameObject newCharacter = new Bot(new Vector3(300, 150,0), this);
+        //    World.Objects.Add(newCharacter);
+        //}
 
         public void AddNPC(GameObject o)
         {
@@ -84,7 +78,6 @@ namespace GameCode
             World.Objects.Add(c);
             Controllers.Add(playerController);
             return c.ID;
-
         }
 
         public void AddDebris(Debris debris)
@@ -117,7 +110,7 @@ namespace GameCode
 
         public void Update(float deltaTime)
         {
-            //Console.WriteLine("deltatime: " + deltaTime);
+            Console.WriteLine("deltatime: " + deltaTime);
             
             // If paused, return
             // TODO
