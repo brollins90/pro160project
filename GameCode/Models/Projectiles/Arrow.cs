@@ -9,7 +9,7 @@ namespace GameCode.Models.Projectiles
 {
     public class Arrow : GameProjectile
     {
-        public Arrow(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+        public Arrow(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 100) :
             base(owner, manager, new Vector3(30, 30, 0), angle, damage, rangeSquared)
         {
 

@@ -139,6 +139,7 @@ namespace GameCode
             {
                 if (o.Alive)
                 {
+                    
                     o.Update(deltaTime);
                 }
             }
@@ -159,6 +160,8 @@ namespace GameCode
                     o.Update(deltaTime);
                 }
             }
+
+            
 
 
             // Remove the dead

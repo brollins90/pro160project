@@ -153,6 +153,9 @@ namespace GameCode.Models
             Health += val;
         }
 
+       
+            
+
         public void Attack(Vector3 destination)
         {
             throw new NotImplementedException();
@@ -189,12 +192,17 @@ namespace GameCode.Models
             //}
         }
 
+        public void HasDied()
+        {
+            Alive = false;
+        }
+
         public void TakeDamage(int damage)
         {
             DecreaseHealth(damage);
             if (Health <= 0)
             {
-                Alive = false;
+                HasDied();
             }
         }
 

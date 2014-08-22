@@ -120,6 +120,7 @@ namespace GameCode.Models
             Experience = 0;
             ExperienceCap = 100;
             Gold = 0;
+            MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             Level = 1;
             Size = new Vector3(50, 50, 0);
