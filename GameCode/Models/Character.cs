@@ -214,23 +214,26 @@ namespace GameCode.Models
                 Console.WriteLine("YAYAYAYAY");
                 RotateTowardPosition(new Vector3(((System.Windows.Point)cmd.Additional).X, ((System.Windows.Point)cmd.Additional).Y, 0));
             }
-            else if (keyPressed == GameCommands.Space)
+            else if (keyPressed == GameCommands.Space || keyPressed == GameCommands.LeftClick)
             {
                 Weapon.Attack();
             }
-            Position = Position + Velocity * deltaTime;
 
-            //bool collided = false;
-            //foreach (GameObject o in Manager.World.Objects)
-            //{
-            //    if (objToProcess.ID != o.ID && objToProcess.CollidesWith(o))
-            //        collided = true;
-            //}
-            //if (collided)
-            //{
-            //    objToProcess.Position = currentPosition;
-            //    //Console.WriteLine("Collided");
-            //}
+            Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
+            base.Update(deltaTime);
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                //if (o.ID != this.ID && o.ID != Owner.ID)
+                if (this.ID != o.ID && this.CollidesWith(o))
+                    collided = true;
+            }
+            if (collided)
+            {
+                this.Position = previousPosition;
+                //Console.WriteLine("Collided");
+            }
         }
 
         public void RestoreHealthToMax()
