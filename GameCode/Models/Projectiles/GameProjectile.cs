@@ -9,14 +9,29 @@ using System.Windows;
 
 namespace GameCode.Models.Projectiles
 {
-
+    /// <summary>
+    /// Represents any object that causes damage in the game, ie. Arrow, Sword, Bullet
+    /// </summary>
     public abstract class GameProjectile : MovingObject
     {
-        private Vector3 StartPosition;
-        private Bot Owner;
-        //private Vector targetPosition;
-        private double RangeSquared;
+        /// <summary>
+        /// Location the projectile originated
+        /// </summary>
+        protected Vector3 StartPosition;
 
+        /// <summary>
+        /// The Bot the "shot" the projectile
+        /// </summary>
+        protected Bot Owner;
+
+        /// <summary>
+        /// The distance the projectile can move (stored in squared form to ease math)
+        /// </summary>
+        protected double RangeSquared;
+
+        /// <summary>
+        /// The amount of damage the projectile causes
+        /// </summary>
         private int _Damage;
         public int Damage
         {
@@ -24,6 +39,7 @@ namespace GameCode.Models.Projectiles
             set { _Damage = value; }
         }
 
+        
         public GameProjectile(Bot owner, GameManager manager, Vector3 size, double angle, int damage, double rangeSquared)
             : base(owner.Position, manager, size)
         {
@@ -34,27 +50,19 @@ namespace GameCode.Models.Projectiles
             this.Angle = angle;
         }
 
+        /// <summary>
+        /// Does the movement, all sub objects should include a base.Update() to move the object
+        /// </summary>
+        /// <param name="deltaTime">time since last update</param>
         public override void Update(double deltaTime)
         {
+            // Change velocity
             Velocity = Velocity - (deltaTime * Acceleration * -1 * Heading);
-            base.Update(deltaTime);
-            //Console.WriteLine("Arrow");
-            //Console.WriteLine("owner.id: " + Owner.ID);
-            foreach (GameObject o in Manager.World.Objects)
-            {
-                //Console.WriteLine("o.id: " + o.ID);
-                if (o.ID != this.ID && o.ID != Owner.ID && this.CollidesWith(o))
-                {
-                    //Console.WriteLine("collides with: " + o.ID);
-                    if (o.GetType() == typeof(Bot))
-                    {
-                        ((Bot)o).TakeDamage(Damage);
-                    }
-                    Alive = false;
-                    
-                }
-            }
 
+            // update position
+            base.Update(deltaTime);
+
+            // check range
             if ((Position - StartPosition).LengthSquared() > RangeSquared)
             {
                 Alive = false;

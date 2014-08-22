@@ -50,7 +50,7 @@ namespace GameCode
         {
             int currentTime = Environment.TickCount;
             float elapsedTime = currentTime - lastTime;
-
+            Console.WriteLine(elapsedTime);
             elapsedTime = elapsedTime / 100; // deltatime should be like .01  not 100
 
             Update(elapsedTime);

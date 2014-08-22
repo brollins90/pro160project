@@ -139,19 +139,13 @@ namespace GameCode.Models
             return false;
         }
 
+        /// <summary>
+        /// We always update the position here.  Sub objects can handle the Velocity update themselves
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public override void Update(double deltaTime)
         {
             Position = Position + Velocity * deltaTime;
         }
-
-//        inline void MovingEntity::SetHeading(Vector2D new_heading)
-//{
-//  assert( (new_heading.LengthSq() - 1.0) < 0.00001);
-  
-//  m_vHeading = new_heading;
-
-//  //the side vector must always be perpendicular to the heading
-//  m_vSide = m_vHeading.Perp();
-//}
     }
 }
