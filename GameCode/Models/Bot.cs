@@ -197,7 +197,6 @@ namespace GameCode.Models
                 Alive = false;
             }
         }
-
     }
 }
 
