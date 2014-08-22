@@ -12,8 +12,8 @@ namespace GameCode.Models.Weapons
     {
         public CrossBow(Bot owner) : base(owner)
         {
-            this.ProjectileRange = 400;
-            this.ProjectileSpeed = 5;
+            this.ProjectileRange = 200;
+            this.ProjectileSpeed = 400;
             this.RateOfFire = .3; // shoots 3 times per second
         }
         public override void Attack()
@@ -26,7 +26,7 @@ namespace GameCode.Models.Weapons
                         Owner.Damage,
                         ProjectileRange * ProjectileRange)
                         {
-                            Acceleration = new Vector3(ProjectileSpeed, ProjectileSpeed, 0)
+                            Speed = new Vector3(ProjectileSpeed, ProjectileSpeed, 0)
                         });
                 UpdateTimeNextAvailable();
             }

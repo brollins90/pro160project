@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using GameCode.Helpers;
+using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
@@ -120,6 +121,7 @@ namespace GameCode.Models
             Experience = 0;
             ExperienceCap = 100;
             Gold = 0;
+            MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             Level = 1;
             Size = new Vector3(50, 50, 0);
@@ -151,87 +153,61 @@ namespace GameCode.Models
 
         public override void Update(double deltaTime)
         {
-            //calculate the combined steering force
-            // TODO
+            // add some natural breaking forces
+            Velocity *= BreakingSpeed;
 
-            //if no steering force is produced decelerate the player by applying a
-            //braking force        
-
-            const double BrakingRate = 0.8;
-            Velocity *= BrakingRate;
-
-
-            //calculate the acceleration
-            //Vector accel = force / m_dMass;
-            Vector3 acceleration = new Vector3(10, 10, 0);
-
-
-            //update the velocity
-            //Velocity += acceleration;
-
-            ////make sure vehicle does not exceed maximum velocity
-            //Velocity.Truncate(MaxSpeed);
-
-            ////update the position
-            //Position += Velocity;
-
-            ////if the vehicle has a non zero velocity the heading and side vectors must 
-            ////be updated
-            //if (!Velocity.IsZero())
-            //{
-            //    Heading = Velocity;
-            //    Heading.Normalize();
-            //    Side = Heading.Perp();
-            //}
-
+            // check for a command
             GameCommand cmd = this.Controller.GetMove();
             GameCommands keyPressed = cmd.Command;
             if (keyPressed == GameCommands.Up)
             {
-
-                //Vector3 temp = new Vector3(-1 * Math.Sin(Angle), Math.Cos(Angle), 0);
-                Velocity = Velocity - (deltaTime * acceleration * -1 * Heading);
-                //newPosition = new Vector() { X = currentPosition.X, Y = currentPosition.Y - Speed };
-                //Direction = 90;
+                Velocity = Velocity + (Heading * Speed * deltaTime);
             }
             else if (keyPressed == GameCommands.Down)
             {
-                Velocity = Velocity - (deltaTime * acceleration * Heading);
+                Velocity = Velocity - (Heading * Speed * deltaTime);
             }
             else if (keyPressed == GameCommands.Left)
             {
-                //Rotate(-RotationSpeed); 
-                Velocity = Velocity - (deltaTime * acceleration * -1 * Heading.PerpCW());
+                Velocity = Velocity + (Heading.PerpCW() * Speed * deltaTime);
             }
             else if (keyPressed == GameCommands.Right)
             {
-                //Rotate(RotationSpeed);
-                Velocity = Velocity - (deltaTime * acceleration * -1 * Heading.PerpCCW());
+                Velocity = Velocity + (Heading.PerpCCW() * Speed * deltaTime);
             }
             else if (keyPressed == GameCommands.MouseMove)
             {
-                Console.WriteLine("YAYAYAYAY");
-                RotateTowardPosition(new Vector3(((System.Windows.Point)cmd.Additional).X, ((System.Windows.Point)cmd.Additional).Y, 0));
+                System.Windows.Point mousePos = (System.Windows.Point)cmd.Additional;
+                RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
             }
-            else if (keyPressed == GameCommands.Space || keyPressed == GameCommands.LeftClick)
+            else if (keyPressed == GameCommands.Space || 
+                    keyPressed == GameCommands.LeftClick)
             {
                 Weapon.Attack();
             }
-
+            
+            // save previous position
             Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
-            base.Update(deltaTime);
+            // update position that we already calculated
+            Position = Position + Velocity;
 
+            // check for new collisions
             bool collided = false;
             foreach (GameObject o in Manager.World.Objects)
             {
-                //if (o.ID != this.ID && o.ID != Owner.ID)
                 if (this.ID != o.ID && this.CollidesWith(o))
-                    collided = true;
+                    if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
+                    {
+                        // do nothing
+                    }
+                    else { 
+                        collided = true;
+                    }
             }
+            // if collided dont perform the move
             if (collided)
             {
                 this.Position = previousPosition;
-                //Console.WriteLine("Collided");
             }
         }
 

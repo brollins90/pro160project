@@ -35,7 +35,7 @@ namespace GameCode.Models.Weapons
         public double ProjectileSpeed { get; set; }
         //public double MaximumSpeed { get; set; }
 
-        public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 7)
+        public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 20)
         {
             Owner = owner;
             RateOfFire = rateOfFire;
