@@ -211,7 +211,6 @@ namespace GameCode.Models
                 Health = MaxHealth;
             }
         }
-
     }
 }
 
