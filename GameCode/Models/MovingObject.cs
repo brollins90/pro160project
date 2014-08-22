@@ -14,11 +14,25 @@ namespace GameCode.Models
     {
 
         private Vector3 _Acceleration;
-
         public Vector3 Acceleration
         {
             get { return _Acceleration; }
-            set { _Acceleration = value; }
+            set
+            {
+                _Acceleration = value;
+                this.FirePropertyChanged("Acceleration");
+            }
+        }
+
+        private Vector3 _BreakingSpeed;
+        public Vector3 BreakingSpeed
+        {
+            get { return _BreakingSpeed; }
+            set
+            {
+                _BreakingSpeed = value;
+                this.FirePropertyChanged("BreakingSpeed");
+            }
         }
         
         public Vector3 Heading
@@ -84,6 +98,17 @@ namespace GameCode.Models
         //    }
         //}
 
+        private Vector3 _Speed;
+        public Vector3 Speed
+        {
+            get { return _Speed; }
+            set
+            {
+                _Speed = value;
+                this.FirePropertyChanged("Speed");
+            }
+        }
+
         private Vector3 _Velocity;
         public Vector3 Velocity
         {
@@ -98,9 +123,14 @@ namespace GameCode.Models
         public MovingObject(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
-            MaxTurnRate = 10;
+            Acceleration = new Vector3(0, 0, 0);
+            BreakingSpeed = new Vector3(.1, .1, 0); // (1 is no breaking speed)
+            Mass = 0;
+            MaxForce = 0;
             MaxSpeed = 15;
-            Acceleration = new Vector3(10, 10, 0);
+            MaxTurnRate = 50;
+            Speed = new Vector3(100, 100, 0);
+            Velocity = new Vector3(0, 0, 0);
         }
 
         public void Rotate(double angleChange)
@@ -119,11 +149,7 @@ namespace GameCode.Models
 
             if (angleToTarget < 0.05)
             {
-                return true; // we are looking in the correct direction
-                //Rotate(Heading.Sign(toTarget));
-                //dot = Heading.DotProduct(toTarget);
-                //angleToTarget = Math.Acos(dot);
-
+                return true;
             }
 
             // check max turn speed
@@ -134,8 +160,6 @@ namespace GameCode.Models
 
             Rotate(Heading.Sign(toTarget) * angleToTarget);
 
-            //Side = Heading.PerpCCW();
-
             return false;
         }
 
@@ -145,7 +169,13 @@ namespace GameCode.Models
         /// <param name="deltaTime"></param>
         public override void Update(double deltaTime)
         {
-            Position = Position + Velocity * deltaTime;
+            // add some natural breaking forces
+            Velocity *= BreakingSpeed;
+
+            Velocity = Heading * (Speed * deltaTime);
+
+            // update position that we already calculated
+            Position = Position + Velocity;
         }
     }
 }

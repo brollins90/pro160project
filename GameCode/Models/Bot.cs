@@ -144,24 +144,24 @@ namespace GameCode.Models
                     break;
             }
         }
-        public void DecreaseHealth(int val)
+        protected void DecreaseHealth(int val)
         {
             Health -= val;
         }
-        public void IncreaseHealth(int val)
+        protected void IncreaseHealth(int val)
         {
             Health += val;
         }
 
-        public void Attack(Vector3 destination)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Attack(Vector3 destination)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void Move(Vector3 destination)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Move(Vector3 destination)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private int temp = 0;
         public override void Update(double deltaTime)
@@ -189,12 +189,21 @@ namespace GameCode.Models
             //}
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int amount)
         {
-            DecreaseHealth(damage);
+            DecreaseHealth(amount);
             if (Health <= 0)
             {
                 Alive = false;
+            }
+        }
+
+        public void GiveHealth(int amount)
+        {
+            IncreaseHealth(amount);
+            if (Health >= MaxHealth)
+            {
+                Health = MaxHealth;
             }
         }
 
