@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using GameCode.Models.Weapons;
 using GameCode.Helpers;
+using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
@@ -159,8 +160,9 @@ namespace GameCode.Models
 
         public override void Update(double deltaTime)
         {
-            Vector3 target = new Vector3();
+            //Vector3 target = new Vector3();
             double closestLengthSquared = double.MaxValue;
+            Bot closestEnemy = null;
 
             //Console.WriteLine("Bot: " + this.ID);
             foreach (Bot b in Manager.World.Enemies(this.Team))
@@ -170,15 +172,51 @@ namespace GameCode.Models
                 //Console.WriteLine("distance: " + distanceFromSquared);
                 if (distanceFromSquared < AttackRadiusSquared && distanceFromSquared < closestLengthSquared)
                 {
-                    target = b.Position;
+                    closestEnemy = b;
+                    //target = b.Position;
                     closestLengthSquared = distanceFromSquared;
                 }
             }
 
-            if (!target.IsZero())
+            if (closestEnemy != null)
             {
-                RotateTowardPosition(target);
-                BotWeapon.Attack();
+                if (RotateTowardPosition(closestEnemy.Position))
+                {
+                    if (closestLengthSquared > (BotWeapon.ProjectileRange * BotWeapon.ProjectileRange))
+                    {
+                        // get closer
+                        MoveForward(deltaTime);
+                    }
+                    else
+                    {
+                        BotWeapon.Attack();
+                    }
+                }
+            }
+
+            // save previous position
+            Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
+            // update position that we already calculated
+            Position = Position + Velocity;
+
+            // check for new collisions
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (this.ID != o.ID && this.CollidesWith(o))
+                    if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        collided = true;
+                    }
+            }
+            // if collided dont perform the move
+            if (collided)
+            {
+                this.Position = previousPosition;
             }
         }
 
