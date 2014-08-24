@@ -82,7 +82,7 @@ namespace GameCode.Models
 
         public void KeyDown(GameCommand cmd)
         {
-            Console.WriteLine("Controller.KeyDown()");
+            //Console.WriteLine("Controller.KeyDown()");
             Cmd = cmd;
             //Manager.SubmitMove(GameObjectID, keyPressed);
         }

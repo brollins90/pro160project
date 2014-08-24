@@ -14,6 +14,10 @@ namespace GameCode
 {
     public class GameManager
     {
+        public const int TEAM_INT_DEBRIS = 97;
+        public const int TEAM_INT_PLAYER = 98;
+        public const int TEAM_INT_BADDIES = 99;
+
         private DispatcherTimer Timer;
         private GameWorld _World;
         public GameWorld World
@@ -30,6 +34,8 @@ namespace GameCode
         }
 
         private int LastTimeMillis = 0;
+        public int tempMyTeam = 15;
+        public int tempOtherTeam = 20;
         
 
         public GameManager()
@@ -50,11 +56,11 @@ namespace GameCode
         {
             int currentTimeMillis = Environment.TickCount;
             int elapsedTimeMillis = currentTimeMillis - LastTimeMillis;
-            Console.WriteLine("lastTime...: " + LastTimeMillis);
-            Console.WriteLine("CurrentTime: " + currentTimeMillis);
-            Console.WriteLine("elapsedTime: " + elapsedTimeMillis);
+            //Console.WriteLine("lastTime...: " + LastTimeMillis);
+            //Console.WriteLine("CurrentTime: " + currentTimeMillis);
+            //Console.WriteLine("elapsedTime: " + elapsedTimeMillis);
             float elapsedTimeFloat = (float)elapsedTimeMillis / 1000;
-            Console.WriteLine(elapsedTimeFloat);
+            //Console.WriteLine(elapsedTimeFloat);
 
             Update(elapsedTimeFloat);
             LastTimeMillis = currentTimeMillis;
@@ -73,7 +79,10 @@ namespace GameCode
 
         public int AddPlayer(Controller playerController)
         {
-            Character c = new Character(new Vector3(920, 800, 0), this);
+            Character c = new Character(new Vector3(920, 800, 0), this)
+            {
+                Team = TEAM_INT_PLAYER
+            };
             c.Controller = playerController;
             World.Objects.Add(c);
             Controllers.Add(playerController);
@@ -110,7 +119,7 @@ namespace GameCode
 
         public void Update(float deltaTime)
         {
-            Console.WriteLine("deltatime: " + deltaTime);
+            //Console.WriteLine("deltatime: " + deltaTime);
             
             // If paused, return
             // TODO

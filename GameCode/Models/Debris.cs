@@ -14,6 +14,7 @@ namespace GameCode.Models
         public Debris(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
+            Team = GameManager.TEAM_INT_DEBRIS;
         }
         public override void Update(double deltaTime)
         {

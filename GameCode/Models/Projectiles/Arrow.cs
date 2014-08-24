@@ -30,12 +30,16 @@ namespace GameCode.Models.Projectiles
             {
                 foreach (GameObject o in Manager.World.Objects)
                 {
+                    if (o.ID == 14)
+                    {
+                        Console.WriteLine("asfd");
+                    }
                     // dont check for collisions with self, owner
                     // TODO or team
                     if (/* o.Team != this.Team && */ o.ID != this.ID && o.ID != Owner.ID && this.CollidesWith(o))
                     {
                         // only apply damage if collision is with a bot
-                        if (o.GetType() == typeof(Bot))
+                        if (o.GetType() == typeof(Bot) || o.GetType() == typeof(Character))
                         {
                             ((Bot)o).TakeDamage(Damage);
                         }

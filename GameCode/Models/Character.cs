@@ -163,19 +163,19 @@ namespace GameCode.Models
             GameCommands keyPressed = cmd.Command;
             if (keyPressed == GameCommands.Up)
             {
-                Velocity = Velocity + (Heading * Speed * deltaTime);
+                MoveForward(deltaTime);
             }
             else if (keyPressed == GameCommands.Down)
             {
-                Velocity = Velocity - (Heading * Speed * deltaTime);
+                MoveBackward(deltaTime);
             }
             else if (keyPressed == GameCommands.Left)
             {
-                Velocity = Velocity + (Heading.PerpCW() * Speed * deltaTime);
+                MoveLeft(deltaTime);
             }
             else if (keyPressed == GameCommands.Right)
             {
-                Velocity = Velocity + (Heading.PerpCCW() * Speed * deltaTime);
+                MoveRight(deltaTime);
             }
             else if (keyPressed == GameCommands.MouseMove)
             {
@@ -187,30 +187,8 @@ namespace GameCode.Models
             {
                 Weapon.Attack();
             }
-            
-            // save previous position
-            Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
-            // update position that we already calculated
-            Position = Position + Velocity;
 
-            // check for new collisions
-            bool collided = false;
-            foreach (GameObject o in Manager.World.Objects)
-            {
-                if (this.ID != o.ID && this.CollidesWith(o))
-                    if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
-                    {
-                        // do nothing
-                    }
-                    else { 
-                        collided = true;
-                    }
-            }
-            // if collided dont perform the move
-            if (collided)
-            {
-                this.Position = previousPosition;
-            }
+            base.Update(deltaTime);
         }
 
         public void RestoreHealthToMax()

@@ -129,7 +129,7 @@ namespace GameCode.Models
             MaxForce = 0;
             MaxSpeed = 15;
             MaxTurnRate = 50;
-            Speed = new Vector3(100, 100, 0);
+            Speed = new Vector3(10, 10, 0);
             Velocity = new Vector3(0, 0, 0);
         }
 
@@ -161,6 +161,34 @@ namespace GameCode.Models
             Rotate(Heading.Sign(toTarget) * angleToTarget);
 
             return false;
+        }
+        public bool MoveForward(double deltaTime)
+        {
+            Velocity = Velocity + (Heading * Speed * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveBackward(double deltaTime)
+        {
+            Velocity = Velocity - (Heading * Speed * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveLeft(double deltaTime)
+        {
+            Velocity = Velocity + (Heading.PerpCW() * Speed * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveRight(double deltaTime)
+        {
+            Velocity = Velocity + (Heading.PerpCCW() * Speed * deltaTime);
+            // check collision
+            // TODO
+            return true;
         }
 
         /// <summary>
