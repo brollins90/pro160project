@@ -46,6 +46,7 @@
     <Compile Include="Helpers\Vector3.cs" />
     <Compile Include="Helpers\VectorHelpers.cs" />
     <Compile Include="Models\Debris.cs" />
+    <Compile Include="Models\InputListener.cs" />
     <Compile Include="Models\Projectiles\Arrow.cs" />
     <Compile Include="Models\Projectiles\GameProjectile.cs" />
     <Compile Include="Models\Bot.cs" />

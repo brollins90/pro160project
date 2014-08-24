@@ -59,7 +59,7 @@ namespace GameCode
             //Console.WriteLine("lastTime...: " + LastTimeMillis);
             //Console.WriteLine("CurrentTime: " + currentTimeMillis);
             //Console.WriteLine("elapsedTime: " + elapsedTimeMillis);
-            float elapsedTimeFloat = (float)elapsedTimeMillis / 1000;
+            float elapsedTimeFloat = (float)elapsedTimeMillis / 10; // should me 1000
             //Console.WriteLine(elapsedTimeFloat);
 
             Update(elapsedTimeFloat);
@@ -119,6 +119,8 @@ namespace GameCode
 
         public void Update(float deltaTime)
         {
+            //Console.WriteLine("{0} {1} Update: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, deltaTime);
+
             //Console.WriteLine("deltatime: " + deltaTime);
             
             // If paused, return

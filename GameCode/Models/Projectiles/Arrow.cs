@@ -12,17 +12,16 @@ namespace GameCode.Models.Projectiles
         public Arrow(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
             base(owner,
             manager, 
-            new Vector3(30, 30, 0), // Size of an arrow is always the same
+            new Vector3(17, 8, 0), // Size of an arrow is always the same
             angle,
             damage, // damage is dependant on owner but we specify a default anyway
             rangeSquared)
         {
-
         }
 
         public override void Update(double deltaTime)
         {
-            // perform movement
+             //perform movement
             base.Update(deltaTime);
 
             // if still alive, check collision

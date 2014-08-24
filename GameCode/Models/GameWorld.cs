@@ -12,9 +12,6 @@ namespace GameCode.Models
 {
     public class GameWorld
     {
-        public const int WORLD_WIDTH = 1024;
-        public const int WORLD_HEIGHT = 768;
-
         private ObservableCollection<GameObject> _Objects;
         public ObservableCollection<GameObject> Objects
         {
@@ -36,20 +33,20 @@ namespace GameCode.Models
             }
         }
 
-        public List<GameObject> Projectiles
-        {
-            get
-            {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow)); }).ToList();
-                return retVal;
-            }
-        }
-
         public List<GameObject> Characters
         {
             get
             {
                 var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Character); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Collidables
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow)); }).ToList();
                 return retVal;
             }
         }
@@ -67,6 +64,15 @@ namespace GameCode.Models
         {            
             var retVal = Objects.Where((obj, r) => { return ((obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam ); }).ToList();
             return retVal;           
+        }
+
+        public List<GameObject> Projectiles
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow)); }).ToList();
+                return retVal;
+            }
         }
 
 

@@ -68,6 +68,7 @@ namespace GameCode.Helpers
         }
         public Vector3 PerpCW() { return new Vector3(y, (-1 * x)); }
         public Vector3 PerpCCW() { return new Vector3((-1 * y), x); }
+        public Vector3 ScalarMultiply(double scalar) {  return new Vector3(x * scalar, y * scalar, z * scalar); }
 
         public override string ToString()
         {

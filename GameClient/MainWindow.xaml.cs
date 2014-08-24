@@ -26,6 +26,7 @@ namespace GameClient
         public GameManager Manager {get;set;}
         public Controller CurrentController {get; set;}
 
+
         public MainWindow()
         {
             // Init the components
@@ -51,6 +52,8 @@ namespace GameClient
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
         }
 
+
+
         private void PopulateGame()
         {
 
@@ -66,21 +69,25 @@ namespace GameClient
                 case Key.Up:
                 case Key.W:
                     keyPressed = GameCommands.Up;
+                    CurrentController.InputListener.KeyForward = true;
                     break;
 
                 case Key.Down:
                 case Key.S:
                     keyPressed = GameCommands.Down;
+                    CurrentController.InputListener.KeyBackward = true;
                     break;
 
                 case Key.Left:
                 case Key.A:
                     keyPressed = GameCommands.Left;
+                    CurrentController.InputListener.KeyLeft = true;
                     break;
 
                 case Key.Right:
                 case Key.D:
                     keyPressed = GameCommands.Right;
+                    CurrentController.InputListener.KeyRight = true;
                     break;
                 case Key.Escape:
                     Application.Current.Shutdown();
@@ -88,9 +95,11 @@ namespace GameClient
                 case Key.Space:
                 case Key.T:
                     keyPressed = GameCommands.Space;
+                    CurrentController.InputListener.KeyFire = true;
                     break;
             }
-            Console.WriteLine("KeyDown: {0}", keyPressed);
+            Console.WriteLine("{0} {1} KeyDown: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, keyPressed);
+//            Console.WriteLine("KeyDown: {0}", keyPressed);
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
             //CurrentController.KeyDown(keyPressed);
         }
@@ -184,6 +193,45 @@ namespace GameClient
         {
             Console.WriteLine("move");
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                case Key.W:
+                    //keyPressed = GameCommands.Up;
+                    CurrentController.InputListener.KeyForward = false;
+                    break;
+
+                case Key.Down:
+                case Key.S:
+                    //keyPressed = GameCommands.Down;
+                    CurrentController.InputListener.KeyBackward = false;
+                    break;
+
+                case Key.Left:
+                case Key.A:
+                    //keyPressed = GameCommands.Left;
+                    CurrentController.InputListener.KeyLeft = false;
+                    break;
+
+                case Key.Right:
+                case Key.D:
+                    //keyPressed = GameCommands.Right;
+                    CurrentController.InputListener.KeyRight = false;
+                    break;
+                case Key.Escape:
+                    Application.Current.Shutdown();
+                    break;
+                case Key.Space:
+                case Key.T:
+                    //keyPressed = GameCommands.Space;
+                    CurrentController.InputListener.KeyFire = false;
+                    break;
+            }
         }
     }
 }

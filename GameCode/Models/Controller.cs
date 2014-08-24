@@ -14,6 +14,7 @@ namespace GameCode.Models
 
         private static int NextID = 0;
         private int _ControllerID;
+        public InputListener InputListener { get; set; }
         public int ControllerID
         {
             get { return _ControllerID; }
@@ -70,6 +71,7 @@ namespace GameCode.Models
             ControllerID = NextID++;
             Cmd = new GameCommand();
             Cmd.Command = GameCommands.None;
+            InputListener = new InputListener();
         }
 
         public GameCommand GetMove()

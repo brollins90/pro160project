@@ -14,7 +14,7 @@ namespace GameCode.Models
 {
     public class Character : Bot
     {
-        private float RotationSpeed = 3;
+        //private float RotationSpeed = 3;
         //private Vector3 acceleration = new Vector3(10,10,0);
 
         private int _Constitution;
@@ -115,6 +115,7 @@ namespace GameCode.Models
         public Character(Vector3 position, GameManager manager)
             : base(position, manager)
         {
+            Acceleration = new Vector3(6, 6, 0);
             Angle = -90;
             Constitution = 5;
             Defense = 6;
@@ -125,7 +126,7 @@ namespace GameCode.Models
             MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             Level = 1;
-            Size = new Vector3(50, 50, 0);
+            Size = new Vector3(32, 32, 0);
             Strength = 3;
             Weapon = new CrossBow(this);
         }
@@ -151,44 +152,78 @@ namespace GameCode.Models
 
         }
 
-
-
-        public override void Update(double deltaTime)
-        {
-            // add some natural breaking forces
-            Velocity *= BreakingSpeed;
-
+        public override void CheckInput(double deltaTime) {
             // check for a command
             GameCommand cmd = this.Controller.GetMove();
             GameCommands keyPressed = cmd.Command;
-            if (keyPressed == GameCommands.Up)
+            if (Controller.InputListener.KeyForward)//(keyPressed == GameCommands.Up)
             {
                 MoveForward(deltaTime);
             }
-            else if (keyPressed == GameCommands.Down)
+            if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.Down)
             {
                 MoveBackward(deltaTime);
             }
-            else if (keyPressed == GameCommands.Left)
+            if (Controller.InputListener.KeyLeft)//(keyPressed == GameCommands.Left)
             {
                 MoveLeft(deltaTime);
             }
-            else if (keyPressed == GameCommands.Right)
+            if (Controller.InputListener.KeyRight)//(keyPressed == GameCommands.Right)
             {
                 MoveRight(deltaTime);
             }
-            else if (keyPressed == GameCommands.MouseMove)
+            //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
+            //{
+            //    StopMoving(deltaTime);
+            //}
+            if (keyPressed == GameCommands.MouseMove)
             {
                 System.Windows.Point mousePos = (System.Windows.Point)cmd.Additional;
                 RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
             }
-            else if (keyPressed == GameCommands.Space || 
-                    keyPressed == GameCommands.LeftClick)
+            if (Controller.InputListener.KeyFire)//(keyPressed == GameCommands.Space || 
+            //keyPressed == GameCommands.LeftClick)
             {
                 Weapon.Attack();
             }
+        }
+
+        public override void Update(double deltaTime)
+        {
+            // add some natural breaking forces
+            //Velocity *= BreakingSpeed;
+            CheckInput(deltaTime);
 
             base.Update(deltaTime);
+
+
+
+            ////Velocity = Heading * (Speed * deltaTime);
+
+            //// save previous position
+            //Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
+            //// update position that we already calculated
+            //Position = Position + Velocity;
+
+            //// check for new collisions
+            //bool collided = false;
+            //foreach (GameObject o in Manager.World.Objects)
+            //{
+            //    if (this.ID != o.ID && this.CollidesWith(o))
+            //        if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
+            //        {
+            //            // do nothing
+            //        }
+            //        else
+            //        {
+            //            collided = true;
+            //        }
+            //}
+            //// if collided dont perform the move
+            //if (collided)
+            //{
+            //    this.Position = previousPosition;
+            //}
         }
 
         public void RestoreHealthToMax()

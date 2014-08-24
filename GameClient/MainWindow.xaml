@@ -5,7 +5,8 @@
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:y="clr-namespace:GameClient.Converters"
-        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove">
+        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove"
+        KeyUp="Window_KeyUp">
         
     <Window.Resources>
         <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
@@ -26,7 +27,7 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Size.x}" Height="{Binding Size.y}" RenderTransformOrigin="0.5,0.5">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
+                            <ImageBrush Stretch="Fill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
                         </Rectangle.Fill>                    
                         <Rectangle.RenderTransform>
                             <RotateTransform Angle="{Binding Angle}"/>
