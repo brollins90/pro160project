@@ -22,6 +22,15 @@ namespace GameCode.Models
     public class Bot : MovingObject
     {
 
+        private double _AttackRadiusSquared;
+        public double AttackRadiusSquared
+        {
+            get { return _AttackRadiusSquared; }
+            set { _AttackRadiusSquared = value;
+            this.FirePropertyChanged("AttackRadiusSquared");
+            }
+        }
+
         private BotClass _BotClass;
         public BotClass BotClass
         {
@@ -79,14 +88,13 @@ namespace GameCode.Models
         public Bot(Vector3 position, GameManager manager, BotClass type = Models.BotClass.Melee)
             : base(position, manager, new Vector3(0,0,0))
         {
+            Team = GameManager.TEAM_INT_BADDIES;
+
             switch (type)
             {
                 case Models.BotClass.Boss:
+                    this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    //this.Controller;
-                    //this.MoveType;
-                    //this.UniqueID;
-                    //this.Speed = 1;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 25;
                     this.Health = 1000;
@@ -94,38 +102,35 @@ namespace GameCode.Models
                     Size = new Vector3(50,50,0);
                     break;
                 case Models.BotClass.Melee:
+                    this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    //this.Speed = 3;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
                     Size = new Vector3(20,20,0);
-                    //this.AttackType = Melee;
                     break;
                 case Models.BotClass.Mercenary: // Sentry
+                    this.AttackRadiusSquared = 100 * 100;
                     this.BotClass = type;
-                    //this.Speed = 1;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 13;
                     this.Health = 500;
                     this.MaxHealth = Health;
                     Size = new Vector3(30,30,0);
-                    //this.AttackType = Melee;
                     break;
                 case Models.BotClass.Shooter: // ???
+                    this.AttackRadiusSquared = 400 * 400;
                     this.BotClass = type;
-                    //this.Speed = 2;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 7;
                     this.Health = 10;
                     this.MaxHealth = Health;
                     Size = new Vector3(20, 20,0);
-                    //this.AttackType = Ranged;
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
+                    this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    //this.Speed = 0;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 0;
                     this.Health = 1500;
@@ -133,14 +138,13 @@ namespace GameCode.Models
                     Size = new Vector3(100,100,0);
                     break;
                 case Models.BotClass.Turret: // stationary
+                    this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    //this.Speed = 0;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 16;
                     this.Health = 750;
                     this.MaxHealth = Health;
                     Size = new Vector3(60,60,0);
-                    //this.AttackType = Ranged;
                     break;
             }
         }
@@ -153,40 +157,29 @@ namespace GameCode.Models
             Health += val;
         }
 
-        //public void Attack(Vector3 destination)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Move(Vector3 destination)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        private int temp = 0;
         public override void Update(double deltaTime)
         {
-            Position = Position + Velocity * deltaTime;
-            //temp++;
-            //if (temp < 50) { 
-            //    Position = new Vector(Position.X + Speed, Position.Y + Speed);
-            //}
-            //else if (temp < 100)
-            //{
-            //    Position = new Vector(Position.X - Speed, Position.Y + Speed);
-            //}
-            //else if (temp < 150)
-            //{
-            //    Position = new Vector(Position.X - Speed, Position.Y - Speed);
-            //}
-            //else if (temp < 200)
-            //{
-            //    Position = new Vector(Position.X + Speed, Position.Y - Speed);
-            //}
-            //else
-            //{
-            //    temp = 0;
-            //}
+            Vector3 target = new Vector3();
+            double closestLengthSquared = double.MaxValue;
+
+            //Console.WriteLine("Bot: " + this.ID);
+            foreach (Bot b in Manager.World.Enemies(this.Team))
+            {
+                //Console.WriteLine("Enemy: " + b.ID);
+                double distanceFromSquared = (Position - b.Position).LengthSquared();
+                //Console.WriteLine("distance: " + distanceFromSquared);
+                if (distanceFromSquared < AttackRadiusSquared && distanceFromSquared < closestLengthSquared)
+                {
+                    target = b.Position;
+                    closestLengthSquared = distanceFromSquared;
+                }
+            }
+
+            if (!target.IsZero())
+            {
+                RotateTowardPosition(target);
+                BotWeapon.Attack();
+            }
         }
 
         public void HasDied()
@@ -196,7 +189,9 @@ namespace GameCode.Models
 
         public void TakeDamage(int amount)
         {
+            Console.WriteLine("TakeDamage() " + amount);
             DecreaseHealth(amount);
+            Console.WriteLine("Health after: " + Health);
             if (Health <= 0)
             {
                 HasDied();

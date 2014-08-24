@@ -63,6 +63,12 @@ namespace GameCode.Models
             }
         }
 
+        public List<GameObject> Enemies(int currentTeam)
+        {            
+            var retVal = Objects.Where((obj, r) => { return ((obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam ); }).ToList();
+            return retVal;           
+        }
+
 
         internal void Remove()
         {
