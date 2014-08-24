@@ -12,9 +12,9 @@ namespace GameCode.Models.Weapons
     {
         public CrossBow(Bot owner) : base(owner)
         {
-            this.ProjectileRange = 200;
+            this.ProjectileRange = 100;
             this.ProjectileSpeed = 400;
-            this.RateOfFire = .3; // shoots 3 times per second
+            this.RateOfFire = 1.1; // shoots 3 times per second
         }
         public override void Attack()
         {
