@@ -83,7 +83,8 @@ namespace GameCode.Models
         {
             get { return _BotWeapon; }
             set { _BotWeapon = value;
-                this.FirePropertyChanged("BotWeapon"); }
+                this.FirePropertyChanged("BotWeapon"); 
+            }
         }
 
         public Bot(Vector3 position, GameManager manager, BotClass type = Models.BotClass.Melee)
