@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace GameCode.Models
 {
-    public class Debris : GameObject
+    public class Bushes : GameObject
     {
-        public Debris(Vector3 position, GameManager manager, Vector3 size)
+        public Bushes(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
             Team = GameManager.TEAM_INT_DEBRIS;

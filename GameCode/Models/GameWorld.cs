@@ -51,11 +51,20 @@ namespace GameCode.Models
             }
         }
 
-        public List<GameObject> Debris
+        public List<GameObject> CastleWalls
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Debris); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(CastleWalls); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Bushes
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bushes); }).ToList();
                 return retVal;
             }
         }

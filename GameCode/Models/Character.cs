@@ -17,6 +17,7 @@ namespace GameCode.Models
         //private float RotationSpeed = 3;
         //private Vector3 acceleration = new Vector3(10,10,0);
 
+
         private double _HealthBarLength;
         public double HealthBarLength
         {
@@ -127,6 +128,7 @@ namespace GameCode.Models
             : base(position, manager)
         {
             Acceleration = new Vector3(6, 6, 0);
+            Weapon = new Magic(this);
             Angle = -90;
             Constitution = 5;
             Defense = 6;
@@ -139,7 +141,7 @@ namespace GameCode.Models
             Level = 1;
             Size = new Vector3(32, 32, 0);
             Strength = 3;
-            Weapon = new Sword(this);
+            
         }
 
 

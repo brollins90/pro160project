@@ -115,7 +115,7 @@ namespace GameCode.Models
                     Size = new Vector3(20,20,0);
                     break;
                 case Models.BotClass.Mercenary: // Sentry
-                    this.Acceleration = new Vector3(1, 1, 0);
+                    this.Acceleration = new Vector3(2, 2, 0);
                     this.AttackRadiusSquared = 100 * 100;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -135,8 +135,8 @@ namespace GameCode.Models
                     Size = new Vector3(20, 20,0);
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
-                    this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
+                    this.Acceleration = new Vector3(0, 0, 0);
+                    this.AttackRadiusSquared = 1 * 1;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 0;
@@ -145,7 +145,7 @@ namespace GameCode.Models
                     Size = new Vector3(100,100,0);
                     break;
                 case Models.BotClass.Turret: // stationary
-                    this.Acceleration = new Vector3(1, 1, 0);
+                    this.Acceleration = new Vector3(0, 0, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new Magic(this);
