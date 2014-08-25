@@ -141,14 +141,13 @@
     <Resource Include="Images\BrickWall.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TowerCastleThingTopView %282%29.png" />
+    <Resource Include="Images\BallistaArrow2.0.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BallistaArrow2.0.png" />
     <Resource Include="Images\BrickWall2.0.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BrickWall2.0 %281%29.png" />
+    <Resource Include="Images\Minion - Copy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -89,7 +89,7 @@
                 <Label Content="{Binding Path=CurrentController.CurrentCharacter.ExperienceCap}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
 
                 <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle x:Name="CurrentHealth" Height="26" Width="80" Fill="Green"/>
+                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentController.CurrentCharacter.HealthBarLength}" Fill="Green"/>
                 </Canvas>
             </Canvas>
         </ItemsControl>

@@ -17,6 +17,17 @@ namespace GameCode.Models
         //private float RotationSpeed = 3;
         //private Vector3 acceleration = new Vector3(10,10,0);
 
+        private double _HealthBarLength;
+        public double HealthBarLength
+        {
+            get { return HealthBarLength; }
+            set 
+            {
+                HealthBarLength = (double)((double)Health / (double)MaxHealth) * 100;
+                FirePropertyChanged("HealthBarLength");
+            }
+        }
+
         private int _Constitution;
         public int Constitution
         {
