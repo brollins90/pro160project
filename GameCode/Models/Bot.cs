@@ -154,6 +154,7 @@ namespace GameCode.Models
                     this.MaxHealth = Health;
                     Size = new Vector3(60,60,0);
                     break;
+
             }
         }
         protected void DecreaseHealth(int val)
