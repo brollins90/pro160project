@@ -21,7 +21,6 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters. The information on them is based off of the information passed through the constructor.
     public class Bot : MovingObject
     {
-
         private BotClass _BotClass;
         public BotClass BotClass
         {
