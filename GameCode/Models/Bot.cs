@@ -95,6 +95,7 @@ namespace GameCode.Models
             switch (type)
             {
                 case Models.BotClass.Boss:
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -104,6 +105,7 @@ namespace GameCode.Models
                     Size = new Vector3(50,50,0);
                     break;
                 case Models.BotClass.Melee:
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -113,6 +115,7 @@ namespace GameCode.Models
                     Size = new Vector3(20,20,0);
                     break;
                 case Models.BotClass.Mercenary: // Sentry
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 100 * 100;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -122,6 +125,7 @@ namespace GameCode.Models
                     Size = new Vector3(30,30,0);
                     break;
                 case Models.BotClass.Shooter: // ???
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 400 * 400;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -131,6 +135,7 @@ namespace GameCode.Models
                     Size = new Vector3(20, 20,0);
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -140,6 +145,7 @@ namespace GameCode.Models
                     Size = new Vector3(100,100,0);
                     break;
                 case Models.BotClass.Turret: // stationary
+                    this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
@@ -159,9 +165,9 @@ namespace GameCode.Models
             Health += val;
         }
 
-        public override void Update(double deltaTime)
+
+        public virtual void CheckInput(double deltaTime)
         {
-            //Vector3 target = new Vector3();
             double closestLengthSquared = double.MaxValue;
             Bot closestEnemy = null;
 
@@ -183,7 +189,7 @@ namespace GameCode.Models
             {
                 if (RotateTowardPosition(closestEnemy.Position))
                 {
-                    if (closestLengthSquared > (BotWeapon.ProjectileRange * BotWeapon.ProjectileRange))
+                    if (closestLengthSquared > BotWeapon.ProjectileRangeSquared)
                     {
                         // get closer
                         MoveForward(deltaTime);
@@ -194,15 +200,20 @@ namespace GameCode.Models
                     }
                 }
             }
+        }
 
-            // save previous position
+        public override void Update(double deltaTime)
+        {
+
+            CheckInput(deltaTime);
+
             Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
-            // update position that we already calculated
-            Position = Position + Velocity;
+
+            base.Update(deltaTime);
 
             // check for new collisions
             bool collided = false;
-            foreach (GameObject o in Manager.World.Objects)
+            foreach (GameObject o in Manager.World.Collidables)
             {
                 if (this.ID != o.ID && this.CollidesWith(o))
                     if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
@@ -219,6 +230,7 @@ namespace GameCode.Models
             {
                 this.Position = previousPosition;
             }
+
         }
 
         public void HasDied()
@@ -228,11 +240,9 @@ namespace GameCode.Models
 
         public void TakeDamage(int amount)
         {
-            Console.WriteLine("TakeDamage() " + amount);
+            //Console.WriteLine("TakeDamage() " + amount);
             DecreaseHealth(amount);
-            Console.WriteLine("Health after: " + Health);
-
-            
+            //Console.WriteLine("Health after: " + Health);
             if (Health <= 0)
             {
                 HasDied();

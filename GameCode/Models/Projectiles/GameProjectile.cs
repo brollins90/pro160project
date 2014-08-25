@@ -57,9 +57,8 @@ namespace GameCode.Models.Projectiles
         public override void Update(double deltaTime)
         {
             // Change velocity
-            //Velocity = Velocity - (deltaTime * Acceleration * -1 * Heading);
+            MoveForward(deltaTime);
 
-            // update position
             base.Update(deltaTime);
 
             // check range
