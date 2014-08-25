@@ -108,7 +108,7 @@ namespace GameCode.Models
                     this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.BotWeapon = new Sword(this);
                     this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
@@ -148,7 +148,7 @@ namespace GameCode.Models
                     this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.BotWeapon = new Magic(this);
                     this.Damage = 16;
                     this.Health = 750;
                     this.MaxHealth = Health;

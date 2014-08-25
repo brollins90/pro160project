@@ -139,7 +139,7 @@ namespace GameCode.Models
             Level = 1;
             Size = new Vector3(32, 32, 0);
             Strength = 3;
-            Weapon = new CrossBow(this);
+            Weapon = new Sword(this);
         }
 
 

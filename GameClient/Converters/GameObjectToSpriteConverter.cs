@@ -45,6 +45,8 @@ namespace GameClient.Converters
                     }
                 } },
                 { typeof(Arrow), () => picture = new Uri("Images/BallistaArrow2.0.png", UriKind.Relative) },
+                { typeof(StabAttack), () => picture = new Uri("Images/MasterSwordReplica.png", UriKind.Relative) },
+                { typeof(FireBall), () => picture = new Uri("Images/FireBall.png", UriKind.Relative) },
                 { typeof(Debris), () => picture = new Uri("Images/BrickWall2.0.png", UriKind.Relative) }
             };
 

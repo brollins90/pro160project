@@ -46,7 +46,7 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow)); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow) && obj.GetType() != typeof(StabAttack) && obj.GetType() != typeof(FireBall)); }).ToList();
                 return retVal;
             }
         }
@@ -70,7 +70,7 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow)); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall)); }).ToList();
                 return retVal;
             }
         }
