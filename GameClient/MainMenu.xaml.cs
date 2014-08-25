@@ -35,7 +35,6 @@ namespace GameClient
             ExitGame.Visibility = Visibility.Hidden;
             PlayVsAI.Visibility = Visibility.Visible;
             PlayOnline.Visibility = Visibility.Visible;
-
         }
 
         private void PlayVsAIButton(object sender, RoutedEventArgs e)
