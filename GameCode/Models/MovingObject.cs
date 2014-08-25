@@ -129,7 +129,7 @@ namespace GameCode.Models
             MaxForce = 0;
             MaxSpeed = 15;
             MaxTurnRate = 50;
-            Speed = new Vector3(10, 10, 0);
+            Speed = new Vector3(30, 30, 0);
             Velocity = new Vector3(0, 0, 0);
         }
 

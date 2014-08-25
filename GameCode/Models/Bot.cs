@@ -231,6 +231,8 @@ namespace GameCode.Models
             Console.WriteLine("TakeDamage() " + amount);
             DecreaseHealth(amount);
             Console.WriteLine("Health after: " + Health);
+
+            
             if (Health <= 0)
             {
                 HasDied();

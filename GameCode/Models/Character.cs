@@ -134,7 +134,7 @@ namespace GameCode.Models
         public void LevelUp()
         {
             this.Level += 1;
-            this.Strength += 1;
+            this.Strength += 2;
             this.Constitution += 2;
             this.Experience = 0;
             this.ExperienceCap += 30;

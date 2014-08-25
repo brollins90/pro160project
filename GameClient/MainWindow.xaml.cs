@@ -185,5 +185,25 @@ namespace GameClient
             Console.WriteLine("move");
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
         }
+
+        public void HealthBarCalculation()
+        {
+            double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).Health / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+
+            if (healthleft <= 0)
+            {
+                CurrentHealth.Width = 0;
+
+                MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
+                MainMenu mainmenu = new MainMenu();
+                mainmenu.Show();
+                this.Hide();
+
+            }
+            else
+            {
+                CurrentHealth.Width = healthleft;
+            }
+        }
     }
 }
