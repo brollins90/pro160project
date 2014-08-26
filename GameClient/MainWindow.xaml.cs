@@ -29,8 +29,9 @@ namespace GameClient
         public CharacterClasses ClassChosen { get; set; }
 
 
-        public MainWindow()
+        public MainWindow(CharacterClasses classChosen)
         {
+            ClassChosen = classChosen;
             // Init the components
             InitializeComponent();
             // Every game needs a manager (instance of the game)
