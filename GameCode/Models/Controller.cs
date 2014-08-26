@@ -60,9 +60,9 @@ namespace GameCode.Models
             return 0;
         }
 
-        public void CreateCharacter()
+        public void CreateCharacter(CharacterClasses type = Models.CharacterClasses.Fighter)
         {
-            GameObjectID = Manager.AddPlayer(this);
+            GameObjectID = Manager.AddPlayer(this, type);
             CurrentCharacter = Manager.World.Objects.First(c => { return c.ID == GameObjectID; }) as Character;
         }
 

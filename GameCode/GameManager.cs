@@ -77,9 +77,9 @@ namespace GameCode
             World.Objects.Add(o);
         }
 
-        public int AddPlayer(Controller playerController)
+        public int AddPlayer(Controller playerController, CharacterClasses type = Models.CharacterClasses.Fighter)
         {
-            Character c = new Character(new Vector3(920, 800, 0), this)
+            Character c = new Character(new Vector3(920, 800, 0), this, type)
             {
                 Team = TEAM_INT_PLAYER
             };

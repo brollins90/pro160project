@@ -149,8 +149,8 @@ namespace GameCode.Models
                     Acceleration = new Vector3(8, 8, 0);
                     Weapon = new Sword(this);
                     Angle = -90;
-                    Constitution = 5;
-                    Defense = 6;
+                    Constitution = 7;
+                    Defense = 8;
                     Experience = 0;
                     Damage = Strength * 2;
                     ExperienceCap = 100;
@@ -164,7 +164,7 @@ namespace GameCode.Models
 
                 case Models.CharacterClasses.Archer:
                     Acceleration = new Vector3(5, 5, 0);
-                    Weapon = new Sword(this);
+                    Weapon = new CrossBow(this);
                     Angle = -90;
                     Constitution = 5;
                     Defense = 6;
@@ -181,12 +181,12 @@ namespace GameCode.Models
 
                 case Models.CharacterClasses.Mage:
                     Acceleration = new Vector3(3, 3, 0);
-                    Weapon = new Sword(this);
+                    Weapon = new Magic(this);
                     Angle = -90;
-                    Constitution = 5;
-                    Defense = 6;
+                    Constitution = 4;
+                    Defense = 4;
                     Experience = 0;
-                    Damage = Strength * 2;
+                    Damage = Strength * 3;
                     ExperienceCap = 100;
                     Gold = 0;
                     MaxHealth = Constitution * 20;
@@ -195,7 +195,6 @@ namespace GameCode.Models
                     Size = new Vector3(32, 32, 0);
                     Strength = 3;
                     break;
-                
             }
             
             

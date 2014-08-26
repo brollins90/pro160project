@@ -43,7 +43,7 @@ namespace GameClient
             // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
-            CurrentController.CreateCharacter();
+            CurrentController.CreateCharacter(CharacterClasses.Mage);
 
             PopulateGame();
 
@@ -51,8 +51,6 @@ namespace GameClient
             CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
         }
-
-
 
         private void PopulateGame()
         {
