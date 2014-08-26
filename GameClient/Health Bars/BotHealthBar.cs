@@ -18,7 +18,6 @@ namespace GameClient.Health_Bars
         public BotHealthBar(int xPosition, int yPosition, int height, int width, int currentHealth, int maxHealth)
         {
             healthBarFull = new Rectangle(xPosition, yPosition, 100, 20);
-            healthBarFull.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red); 
             healthBarCurrent = new Rectangle(xPosition, yPosition, (currentHealth / maxHealth) * 100, 20);
         }
     }

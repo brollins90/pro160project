@@ -42,6 +42,8 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="Button_Click_1" Focusable="False">Open Shop</Button>
+
         <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,267,27,167" Click="LevelUpButton" Focusable="False">Level up!</Button>
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="TakeDamage" Margin="0,203,27,231" Focusable="False">Take Damage!</Button>
@@ -54,7 +56,7 @@
         
         <Canvas x:Name="BotMaxHealth" Height="26" Width="100" Canvas.Top="104" Background="Red">
                 <Rectangle x:Name="BotCurrentHealth" Height="26" Width="80" Fill="Green"/>
-            </Canvas>
+        </Canvas>
 
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
@@ -95,5 +97,28 @@
                 </Canvas>
             </Canvas>
         </ItemsControl>
+        <UniformGrid x:Name="ShopMenu" Columns="1" Visibility="Collapsed">
+            <UniformGrid.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </UniformGrid.Background>
+            <Label FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center">Welcome to the shop!!!</Label>
+            <Button Click="Button_Click_2">Reinforce Armor Plating : 20 Gold</Button>
+            <Button Click="Button_Click_3">Reforge Weapon : 30 Gold</Button>
+            <Button Click="Button_Click_4">Drink Magic Potion : 50 Gold</Button>
+            <UniformGrid Columns="3" Rows="1">
+                <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
+                <Label FontSize="60" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Margin="-142,0,294,0"/>
+                <Label FontSize="60" Margin="-295,0,0,0" Background="Red" Visibility="Collapsed" x:Name="NotEnoughGold">Not Enough Gold!!!</Label>
+            </UniformGrid>
+            <Button Click="Button_Click">Exit</Button>
+            <UniformGrid Columns="6" Rows="1">
+                <Label FontSize="40">Strength: </Label>
+                <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Margin="0,0,60,0"/>
+                <Label FontSize="40" Margin="-60,0,40,0">Defense: </Label>
+                <Label FontSize="40" Content="{Binding CurrentController.CurrentCharacter.Defense}" Margin="-40,0,82,0"/>
+                <Label FontSize="40" Margin="-82,0,-4,0">Constitution: </Label>
+                <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
+            </UniformGrid>
+        </UniformGrid>
     </Grid>
 </Window>
