@@ -12,11 +12,26 @@ using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
+    public enum CharacterClasses {
+        Mage,
+        Fighter,
+        Archer
+    };
     public class Character : Bot
     {
         //private float RotationSpeed = 3;
         //private Vector3 acceleration = new Vector3(10,10,0);
 
+        private CharacterClasses _Classes;
+        public CharacterClasses Classes
+        {
+            get { return _Classes; }
+            set
+            {
+                _Classes = value;
+                this.FirePropertyChanged("Classes");
+            }
+        }
 
         private double _HealthBarLength;
         public double HealthBarLength
@@ -124,23 +139,65 @@ namespace GameCode.Models
         }
 
 
-        public Character(Vector3 position, GameManager manager)
+        public Character(Vector3 position, GameManager manager, CharacterClasses type = Models.CharacterClasses.Fighter)
             : base(position, manager)
         {
-            Acceleration = new Vector3(6, 6, 0);
-            Weapon = new Magic(this);
-            Angle = -90;
-            Constitution = 5;
-            Defense = 6;
-            Experience = 0;
-            Damage = Strength * 2;
-            ExperienceCap = 100;
-            Gold = 0;
-            MaxHealth = Constitution * 20;
-            RestoreHealthToMax();
-            Level = 1;
-            Size = new Vector3(32, 32, 0);
-            Strength = 3;
+
+            switch (type)
+            {
+                case Models.CharacterClasses.Fighter:
+                    Acceleration = new Vector3(8, 8, 0);
+                    Weapon = new Sword(this);
+                    Angle = -90;
+                    Constitution = 5;
+                    Defense = 6;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+
+                case Models.CharacterClasses.Archer:
+                    Acceleration = new Vector3(5, 5, 0);
+                    Weapon = new Sword(this);
+                    Angle = -90;
+                    Constitution = 5;
+                    Defense = 6;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+
+                case Models.CharacterClasses.Mage:
+                    Acceleration = new Vector3(3, 3, 0);
+                    Weapon = new Sword(this);
+                    Angle = -90;
+                    Constitution = 5;
+                    Defense = 6;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+                
+            }
+            
             
         }
 
