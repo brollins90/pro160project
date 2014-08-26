@@ -26,6 +26,8 @@ namespace GameClient
         public GameManager Manager {get;set;}
         public Controller CurrentController {get; set;}
 
+        public CharacterClasses ClassChosen { get; set; }
+
 
         public MainWindow()
         {
@@ -43,7 +45,7 @@ namespace GameClient
             // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
-            CurrentController.CreateCharacter(CharacterClasses.Mage);
+            CurrentController.CreateCharacter(ClassChosen);
 
             PopulateGame();
 

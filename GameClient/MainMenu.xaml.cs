@@ -63,9 +63,10 @@ namespace GameClient
 
         private void Mage_Click(object sender, RoutedEventArgs e)
         {
-
+            
             MainWindow gamewindow = new MainWindow();
             gamewindow.Show();
+            gamewindow.ClassChosen = GameCode.Models.CharacterClasses.Mage;
             this.Hide();
         }
 
@@ -74,6 +75,7 @@ namespace GameClient
 
             MainWindow gamewindow = new MainWindow();
             gamewindow.Show();
+            gamewindow.ClassChosen = GameCode.Models.CharacterClasses.Archer;
             this.Hide();
         }
 
@@ -82,6 +84,7 @@ namespace GameClient
 
             MainWindow gamewindow = new MainWindow();
             gamewindow.Show();
+            gamewindow.ClassChosen = GameCode.Models.CharacterClasses.Fighter;
             this.Hide();
         }
     }
