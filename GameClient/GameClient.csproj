@@ -116,6 +116,7 @@
     <Content Include="Images\Bushes.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\cursor.cur" />
     <Content Include="Images\FireBall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
