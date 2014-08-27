@@ -26,8 +26,12 @@ namespace GameClient
         public GameManager Manager {get;set;}
         public Controller CurrentController {get; set;}
 
-        public MainWindow()
+        public CharacterClasses ClassChosen { get; set; }
+
+
+        public MainWindow(CharacterClasses classChosen)
         {
+            ClassChosen = classChosen;
             // Init the components
             InitializeComponent();
             // Every game needs a manager (instance of the game)
@@ -42,7 +46,7 @@ namespace GameClient
             // Create the interface component for the Play to submit commands
             CurrentController = new Controller();
             CurrentController.Connect(Manager);
-            CurrentController.CreateCharacter();
+            CurrentController.CreateCharacter(ClassChosen);
 
             PopulateGame();
 
@@ -66,21 +70,25 @@ namespace GameClient
                 case Key.Up:
                 case Key.W:
                     keyPressed = GameCommands.Up;
+                    CurrentController.InputListener.KeyForward = true;
                     break;
 
                 case Key.Down:
                 case Key.S:
                     keyPressed = GameCommands.Down;
+                    CurrentController.InputListener.KeyBackward = true;
                     break;
 
                 case Key.Left:
                 case Key.A:
                     keyPressed = GameCommands.Left;
+                    CurrentController.InputListener.KeyLeft = true;
                     break;
 
                 case Key.Right:
                 case Key.D:
                     keyPressed = GameCommands.Right;
+                    CurrentController.InputListener.KeyRight = true;
                     break;
                 case Key.Escape:
                     Application.Current.Shutdown();
@@ -88,9 +96,11 @@ namespace GameClient
                 case Key.Space:
                 case Key.T:
                     keyPressed = GameCommands.Space;
+                    CurrentController.InputListener.KeyFire = true;
                     break;
             }
-            Console.WriteLine("KeyDown: {0}", keyPressed);
+            Console.WriteLine("{0} {1} KeyDown: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, keyPressed);
+//            Console.WriteLine("KeyDown: {0}", keyPressed);
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
             //CurrentController.KeyDown(keyPressed);
         }
@@ -186,6 +196,46 @@ namespace GameClient
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
         }
 
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                case Key.W:
+                    //keyPressed = GameCommands.Up;
+                    CurrentController.InputListener.KeyForward = false;
+                    break;
+
+                case Key.Down:
+                case Key.S:
+                    //keyPressed = GameCommands.Down;
+                    CurrentController.InputListener.KeyBackward = false;
+                    break;
+
+                case Key.Left:
+                case Key.A:
+                    //keyPressed = GameCommands.Left;
+                    CurrentController.InputListener.KeyLeft = false;
+                    break;
+
+                case Key.Right:
+                case Key.D:
+                    //keyPressed = GameCommands.Right;
+                    CurrentController.InputListener.KeyRight = false;
+                    break;
+                case Key.Escape:
+                    Application.Current.Shutdown();
+                    break;
+                case Key.Space:
+                case Key.T:
+                    //keyPressed = GameCommands.Space;
+                    CurrentController.InputListener.KeyFire = false;
+                    break;
+            }
+            ShopMenu.Visibility = Visibility.Collapsed;
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+        }
         //Close shop
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -243,11 +293,6 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
-        }
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            ShopMenu.Visibility = Visibility.Collapsed;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
 
