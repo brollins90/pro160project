@@ -185,7 +185,7 @@ namespace GameClient
             Console.WriteLine("move");
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
         }
-        
+
         //Close shop
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -196,6 +196,63 @@ namespace GameClient
         //Open shop
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            ShopMenu.Visibility = Visibility.Visible;
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+        }
+
+        //Reinforce armor plating
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+            if (CurrentController.CurrentCharacter.Gold >= 20)
+            {
+                CurrentController.CurrentCharacter.Gold -= 20;
+                CurrentController.CurrentCharacter.Defense += 1;
+            }
+            else
+            {
+                NotEnoughGold.Visibility = Visibility.Visible;
+            }
+        }
+
+        //Reforge weapon
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+            if (CurrentController.CurrentCharacter.Gold >= 30)
+            {
+                CurrentController.CurrentCharacter.Gold -= 30;
+                CurrentController.CurrentCharacter.Strength += 1;
+            }
+            else
+            {
+                NotEnoughGold.Visibility = Visibility.Visible;
+            }
+        }
+
+        //Drink magic potion
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+            if (CurrentController.CurrentCharacter.Gold >= 50)
+            {
+                CurrentController.CurrentCharacter.Gold -= 50;
+                CurrentController.CurrentCharacter.Constitution += 1;
+            }
+            else
+            {
+                NotEnoughGold.Visibility = Visibility.Visible;
+            }
+        }
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            ShopMenu.Visibility = Visibility.Collapsed;
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+        }
+
+        //Open shop
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+            {
             ShopMenu.Visibility = Visibility.Visible;
             NotEnoughGold.Visibility = Visibility.Collapsed;
         }
