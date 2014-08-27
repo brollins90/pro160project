@@ -69,6 +69,7 @@
     <Compile Include="Converters\BlakeDebugConverter.cs" />
     <Compile Include="Converters\CharacterSpriteConverter.cs" />
     <Compile Include="Converters\GameObjectToSpriteConverter.cs" />
+    <Compile Include="Health Bars\BotHealthBar.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>

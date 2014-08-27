@@ -31,7 +31,6 @@ namespace GameCode.Models
             this.FirePropertyChanged("AttackRadiusSquared");
             }
         }
-
         private BotClass _BotClass;
         public BotClass BotClass
         {
