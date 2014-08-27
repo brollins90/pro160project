@@ -30,9 +30,13 @@ namespace GameCode.Models.Weapons
         /// </summary>
         public double ProjectileRange { get; set; }
         /// <summary>
+        /// The range the projectile shot fom this weapon will travel before disapearing
+        /// </summary>
+        public double ProjectileRangeSquared { get; set; }
+        /// <summary>
         /// The speed at which the projectile will accelerate
         /// </summary>
-        public double ProjectileSpeed { get; set; }
+        public Vector3 ProjectileSpeed { get; set; }
         //public double MaximumSpeed { get; set; }
 
         public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 20)
@@ -41,7 +45,8 @@ namespace GameCode.Models.Weapons
             RateOfFire = rateOfFire;
             TimeNextAvailable = Environment.TickCount;
             ProjectileRange = distance;
-            ProjectileSpeed = speed;
+            ProjectileRangeSquared = ProjectileRange * ProjectileRange;
+            ProjectileSpeed = new Vector3(speed, speed, 0);
         }
 
         /// <summary>

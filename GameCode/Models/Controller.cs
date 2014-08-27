@@ -14,6 +14,7 @@ namespace GameCode.Models
 
         private static int NextID = 0;
         private int _ControllerID;
+        public InputListener InputListener { get; set; }
         public int ControllerID
         {
             get { return _ControllerID; }
@@ -59,9 +60,9 @@ namespace GameCode.Models
             return 0;
         }
 
-        public void CreateCharacter()
+        public void CreateCharacter(CharacterClasses type = Models.CharacterClasses.Fighter)
         {
-            GameObjectID = Manager.AddPlayer(this);
+            GameObjectID = Manager.AddPlayer(this, type);
             CurrentCharacter = Manager.World.Objects.First(c => { return c.ID == GameObjectID; }) as Character;
         }
 
@@ -70,6 +71,7 @@ namespace GameCode.Models
             ControllerID = NextID++;
             Cmd = new GameCommand();
             Cmd.Command = GameCommands.None;
+            InputListener = new InputListener();
         }
 
         public GameCommand GetMove()
@@ -82,7 +84,7 @@ namespace GameCode.Models
 
         public void KeyDown(GameCommand cmd)
         {
-            Console.WriteLine("Controller.KeyDown()");
+            //Console.WriteLine("Controller.KeyDown()");
             Cmd = cmd;
             //Manager.SubmitMove(GameObjectID, keyPressed);
         }

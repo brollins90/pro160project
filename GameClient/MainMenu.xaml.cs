@@ -12,13 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace GameClient
 {
     /// <summary>
     /// Interaction logic for MainMenu.xaml
     /// </summary>
+    /// 
     public partial class MainMenu : Window
     {
+
         public MainMenu()
         {
             InitializeComponent();
@@ -35,14 +38,16 @@ namespace GameClient
             ExitGame.Visibility = Visibility.Hidden;
             PlayVsAI.Visibility = Visibility.Visible;
             PlayOnline.Visibility = Visibility.Visible;
-
         }
 
         private void PlayVsAIButton(object sender, RoutedEventArgs e)
         {
-            MainWindow gamewindow = new MainWindow();
-            gamewindow.Show();
-            this.Hide();
+            PlayVsAI.Visibility = Visibility.Hidden;
+            PlayOnline.Visibility = Visibility.Hidden;
+            Archer.Visibility = Visibility.Visible;
+            Mage.Visibility = Visibility.Visible;
+            Fighter.Visibility = Visibility.Visible;
+
         }
 
         private void PlayOnlineButton(object sender, RoutedEventArgs e)
@@ -54,6 +59,30 @@ namespace GameClient
         {
             base.OnClosing(e);
             Application.Current.Shutdown();
+        }
+
+        private void Mage_Click(object sender, RoutedEventArgs e)
+        {
+
+            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Mage);
+            gamewindow.Show();
+            this.Hide();
+        }
+
+        private void Archer_Click(object sender, RoutedEventArgs e)
+        {
+
+            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Archer);            
+            gamewindow.Show();
+            this.Hide();
+        }
+
+        private void Fighter_Click(object sender, RoutedEventArgs e)
+        {
+
+            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Fighter);
+            gamewindow.Show();
+            this.Hide();
         }
     }
 }

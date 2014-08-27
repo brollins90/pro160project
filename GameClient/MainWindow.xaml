@@ -5,7 +5,8 @@
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:y="clr-namespace:GameClient.Converters"
-        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove">
+        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove"
+        KeyUp="Window_KeyUp">
         
     <Window.Resources>
         <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
@@ -26,7 +27,7 @@
                 <DataTemplate>
                     <Rectangle Width="{Binding Size.x}" Height="{Binding Size.y}" RenderTransformOrigin="0.5,0.5">
                         <Rectangle.Fill>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
+                            <ImageBrush Stretch="Fill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
                         </Rectangle.Fill>                    
                         <Rectangle.RenderTransform>
                             <RotateTransform Angle="{Binding Angle}"/>
@@ -93,7 +94,7 @@
                 <Label Content="{Binding Path=CurrentController.CurrentCharacter.ExperienceCap}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
 
                 <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle x:Name="CurrentHealth" Height="26" Width="80" Fill="Green"/>
+                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentController.CurrentCharacter.HealthBarLength}" Fill="Green"/>
                 </Canvas>
             </Canvas>
         </ItemsControl>

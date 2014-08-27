@@ -1,18 +1,21 @@
 ﻿using GameCode.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GameCode.Models.Projectiles
 {
-    public class Arrow : GameProjectile
+     public class FireBall : GameProjectile
     {
-        public Arrow(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+
+         public FireBall(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
             base(owner,
             manager, 
-            new Vector3(17, 8, 0), // Size of an arrow is always the same
+            new Vector3(20, 10, 0), // Size of an arrow is always the same
             angle,
             damage, // damage is dependant on owner but we specify a default anyway
             rangeSquared)

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace GameCode.Models.Projectiles
 {
-    public class Arrow : GameProjectile
+    public class StabAttack : GameProjectile
     {
-        public Arrow(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+        public StabAttack(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
             base(owner,
-            manager, 
-            new Vector3(17, 8, 0), // Size of an arrow is always the same
+            manager,
+            new Vector3(25, 12, 0), // Size of an arrow is always the same
             angle,
             damage, // damage is dependant on owner but we specify a default anyway
             rangeSquared)
@@ -21,7 +21,7 @@ namespace GameCode.Models.Projectiles
 
         public override void Update(double deltaTime)
         {
-             //perform movement
+            //perform movement
             base.Update(deltaTime);
 
             // if still alive, check collision

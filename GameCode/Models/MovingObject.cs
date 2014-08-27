@@ -7,6 +7,7 @@ using System.Windows;
 using GameCode;
 using GameCode.Helpers;
 using System.Windows.Media;
+using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
@@ -98,16 +99,16 @@ namespace GameCode.Models
         //    }
         //}
 
-        private Vector3 _Speed;
-        public Vector3 Speed
-        {
-            get { return _Speed; }
-            set
-            {
-                _Speed = value;
-                this.FirePropertyChanged("Speed");
-            }
-        }
+        //private Vector3 _Speed;
+        //public Vector3 Speed
+        //{
+        //    get { return _Speed; }
+        //    set
+        //    {
+        //        _Speed = value;
+        //        this.FirePropertyChanged("Speed");
+        //    }
+        //}
 
         private Vector3 _Velocity;
         public Vector3 Velocity
@@ -123,13 +124,13 @@ namespace GameCode.Models
         public MovingObject(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
-            Acceleration = new Vector3(0, 0, 0);
+            Acceleration = new Vector3(1, 1, 0);
             BreakingSpeed = new Vector3(.1, .1, 0); // (1 is no breaking speed)
             Mass = 0;
             MaxForce = 0;
-            MaxSpeed = 15;
-            MaxTurnRate = 50;
-            Speed = new Vector3(100, 100, 0);
+            MaxSpeed = 10;
+            MaxTurnRate = 300;
+            //Speed = new Vector3(.3, .3, 0);
             Velocity = new Vector3(0, 0, 0);
         }
 
@@ -162,6 +163,41 @@ namespace GameCode.Models
 
             return false;
         }
+        public bool MoveForward(double deltaTime)
+        {
+            Velocity += (Heading * Acceleration * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveBackward(double deltaTime)
+        {
+            Velocity -= (Heading * Acceleration * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveLeft(double deltaTime)
+        {
+            Velocity += (Heading.PerpCW() * Acceleration * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        public bool MoveRight(double deltaTime)
+        {
+            Velocity -= (Heading.PerpCW() * Acceleration * deltaTime);
+            // check collision
+            // TODO
+            return true;
+        }
+        //public bool StopMoving(double deltaTime)
+        //{
+        //    Velocity = new Vector3();
+        //    // check collision
+        //    // TODO
+        //    return true;
+        //}
 
         /// <summary>
         /// We always update the position here.  Sub objects can handle the Velocity update themselves
@@ -172,7 +208,10 @@ namespace GameCode.Models
             // add some natural breaking forces
             Velocity *= BreakingSpeed;
 
-            Velocity = Heading * (Speed * deltaTime);
+            // Acceleration is static to the object and set in the constructor
+            //Acceleration = Force / Mass
+
+            //Velocity += Heading * (Acceleration * deltaTime);
 
             // update position that we already calculated
             Position = Position + Velocity;

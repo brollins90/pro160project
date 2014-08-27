@@ -12,10 +12,37 @@ using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
+    public enum CharacterClasses {
+        Mage,
+        Fighter,
+        Archer
+    };
     public class Character : Bot
     {
-        private float RotationSpeed = 3;
+        //private float RotationSpeed = 3;
         //private Vector3 acceleration = new Vector3(10,10,0);
+
+        private CharacterClasses _Classes;
+        public CharacterClasses Classes
+        {
+            get { return _Classes; }
+            set
+            {
+                _Classes = value;
+                this.FirePropertyChanged("Classes");
+            }
+        }
+
+        private double _HealthBarLength;
+        public double HealthBarLength
+        {
+            get { return HealthBarLength; }
+            set 
+            {
+                HealthBarLength = (double)((double)Health / (double)MaxHealth) * 100;
+                FirePropertyChanged("HealthBarLength");
+            }
+        }
 
         private int _Constitution;
         public int Constitution
@@ -112,31 +139,76 @@ namespace GameCode.Models
         }
 
 
-        public Character(Vector3 position, GameManager manager)
+        public Character(Vector3 position, GameManager manager, CharacterClasses type = Models.CharacterClasses.Fighter)
             : base(position, manager)
         {
-            Angle = -90;
-            Constitution = 5;
-            Defense = 6;
-            Experience = 0;
-            ExperienceCap = 100;
-            Gold = 0;
-            MaxHealth = Constitution * 20;
-            RestoreHealthToMax();
-            Level = 1;
-            Size = new Vector3(50, 50, 0);
-            Strength = 3;
-            Weapon = new CrossBow(this);
+
+            switch (type)
+            {
+                case Models.CharacterClasses.Fighter:
+                    Acceleration = new Vector3(8, 8, 0);
+                    Weapon = new Sword(this);
+                    Angle = -90;
+                    Constitution = 7;
+                    Defense = 8;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+
+                case Models.CharacterClasses.Archer:
+                    Acceleration = new Vector3(5, 5, 0);
+                    Weapon = new CrossBow(this);
+                    Angle = -90;
+                    Constitution = 5;
+                    Defense = 6;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+
+                case Models.CharacterClasses.Mage:
+                    Acceleration = new Vector3(3, 3, 0);
+                    Weapon = new Magic(this);
+                    Angle = -90;
+                    Constitution = 4;
+                    Defense = 4;
+                    Experience = 0;
+                    Damage = Strength * 3;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+            }
+            
+            
         }
 
 
         public void LevelUp()
         {
             this.Level += 1;
-            this.Strength += 1;
+            this.Strength += 2;
             this.Constitution += 2;
             this.Experience = 0;
             this.ExperienceCap += 30;
+            this.Damage = Strength * 2;
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             this.Gold += 100;
@@ -149,66 +221,78 @@ namespace GameCode.Models
 
         }
 
-
-
-        public override void Update(double deltaTime)
-        {
-            // add some natural breaking forces
-            Velocity *= BreakingSpeed;
-
+        public override void CheckInput(double deltaTime) {
             // check for a command
             GameCommand cmd = this.Controller.GetMove();
             GameCommands keyPressed = cmd.Command;
-            if (keyPressed == GameCommands.Up)
+            if (Controller.InputListener.KeyForward)//(keyPressed == GameCommands.Up)
             {
-                Velocity = Velocity + (Heading * Speed * deltaTime);
+                MoveForward(deltaTime);
             }
-            else if (keyPressed == GameCommands.Down)
+            if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.Down)
             {
-                Velocity = Velocity - (Heading * Speed * deltaTime);
+                MoveBackward(deltaTime);
             }
-            else if (keyPressed == GameCommands.Left)
+            if (Controller.InputListener.KeyLeft)//(keyPressed == GameCommands.Left)
             {
-                Velocity = Velocity + (Heading.PerpCW() * Speed * deltaTime);
+                MoveLeft(deltaTime);
             }
-            else if (keyPressed == GameCommands.Right)
+            if (Controller.InputListener.KeyRight)//(keyPressed == GameCommands.Right)
             {
-                Velocity = Velocity + (Heading.PerpCCW() * Speed * deltaTime);
+                MoveRight(deltaTime);
             }
-            else if (keyPressed == GameCommands.MouseMove)
+            //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
+            //{
+            //    StopMoving(deltaTime);
+            //}
+            if (keyPressed == GameCommands.MouseMove)
             {
                 System.Windows.Point mousePos = (System.Windows.Point)cmd.Additional;
                 RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
             }
-            else if (keyPressed == GameCommands.Space || 
-                    keyPressed == GameCommands.LeftClick)
+            if (Controller.InputListener.KeyFire)//(keyPressed == GameCommands.Space || 
+            //keyPressed == GameCommands.LeftClick)
             {
                 Weapon.Attack();
             }
-            
-            // save previous position
-            Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
-            // update position that we already calculated
-            Position = Position + Velocity;
+        }
 
-            // check for new collisions
-            bool collided = false;
-            foreach (GameObject o in Manager.World.Objects)
-            {
-                if (this.ID != o.ID && this.CollidesWith(o))
-                    if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
-                    {
-                        // do nothing
-                    }
-                    else { 
-                        collided = true;
-                    }
-            }
-            // if collided dont perform the move
-            if (collided)
-            {
-                this.Position = previousPosition;
-            }
+        public override void Update(double deltaTime)
+        {
+            // add some natural breaking forces
+            //Velocity *= BreakingSpeed;
+            CheckInput(deltaTime);
+
+            base.Update(deltaTime);
+
+
+
+            ////Velocity = Heading * (Speed * deltaTime);
+
+            //// save previous position
+            //Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
+            //// update position that we already calculated
+            //Position = Position + Velocity;
+
+            //// check for new collisions
+            //bool collided = false;
+            //foreach (GameObject o in Manager.World.Objects)
+            //{
+            //    if (this.ID != o.ID && this.CollidesWith(o))
+            //        if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
+            //        {
+            //            // do nothing
+            //        }
+            //        else
+            //        {
+            //            collided = true;
+            //        }
+            //}
+            //// if collided dont perform the move
+            //if (collided)
+            //{
+            //    this.Position = previousPosition;
+            //}
         }
 
         public void RestoreHealthToMax()

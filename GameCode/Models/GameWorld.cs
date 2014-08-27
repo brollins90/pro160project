@@ -12,9 +12,6 @@ namespace GameCode.Models
 {
     public class GameWorld
     {
-        public const int WORLD_WIDTH = 1024;
-        public const int WORLD_HEIGHT = 768;
-
         private ObservableCollection<GameObject> _Objects;
         public ObservableCollection<GameObject> Objects
         {
@@ -36,15 +33,6 @@ namespace GameCode.Models
             }
         }
 
-        public List<GameObject> Projectiles
-        {
-            get
-            {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow)); }).ToList();
-                return retVal;
-            }
-        }
-
         public List<GameObject> Characters
         {
             get
@@ -54,11 +42,53 @@ namespace GameCode.Models
             }
         }
 
-        public List<GameObject> Debris
+        public List<GameObject> Collidables
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Debris); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow) && obj.GetType() != typeof(StabAttack) && obj.GetType() != typeof(FireBall)); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> CastleWalls
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(CastleWalls); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Rocks
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Rocks); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Bushes
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bushes); }).ToList();
+                return retVal;
+            }
+        }
+
+        public List<GameObject> Enemies(int currentTeam)
+        {            
+            var retVal = Objects.Where((obj, r) => { return ((obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam ); }).ToList();
+            return retVal;           
+        }
+
+        public List<GameObject> Projectiles
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall)); }).ToList();
                 return retVal;
             }
         }

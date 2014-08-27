@@ -45,8 +45,11 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="Helpers\Vector3.cs" />
     <Compile Include="Helpers\VectorHelpers.cs" />
-    <Compile Include="Models\Debris.cs" />
+    <Compile Include="Models\Bushes.cs" />
+    <Compile Include="Models\CastleWalls.cs" />
+    <Compile Include="Models\InputListener.cs" />
     <Compile Include="Models\Projectiles\Arrow.cs" />
+    <Compile Include="Models\Projectiles\FireBall.cs" />
     <Compile Include="Models\Projectiles\GameProjectile.cs" />
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\Character.cs" />
@@ -56,8 +59,12 @@
     <Compile Include="Models\Controller.cs" />
     <Compile Include="Models\MovingObject.cs" />
     <Compile Include="Models\PlayerInput.cs" />
-    <Compile Include="Models\Weapons\CrossBow.cs" />
-    <Compile Include="Models\Weapons\Weapon.cs" />
+    <Compile Include="Models\Projectiles\StabAttack.cs" />
+    <Compile Include="Models\Projectiles\Weapons\CrossBow.cs" />
+    <Compile Include="Models\Projectiles\Weapons\Magic.cs" />
+    <Compile Include="Models\Projectiles\Weapons\Sword.cs" />
+    <Compile Include="Models\Projectiles\Weapons\Weapon.cs" />
+    <Compile Include="Models\Rocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

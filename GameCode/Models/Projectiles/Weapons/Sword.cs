@@ -8,26 +8,28 @@ using System.Threading.Tasks;
 
 namespace GameCode.Models.Weapons
 {
-    public class CrossBow : Weapon
+    public class Sword : Weapon
     {
-        public CrossBow(Bot owner) : base(owner)
+        public Sword(Bot owner) : base(owner)
         {
-            this.ProjectileRange = 200;
-            this.ProjectileSpeed = 400;
-            this.RateOfFire = .3; // shoots 3 times per second
+            this.ProjectileRange = 25;
+            this.ProjectileSpeed = new Vector3(10, 10, 0);
+            this.RateOfFire = .762;
         }
+
         public override void Attack()
         {
-            if (IsReadyForNextAttack()) { 
+            if (IsReadyForNextAttack())
+            {
                 Owner.Manager.AddProjectile(
-                    new Arrow(Owner,
+                    new StabAttack(Owner,
                         Owner.Manager,
                         Owner.Angle,
                         Owner.Damage,
                         ProjectileRange * ProjectileRange)
-                        {
-                            Speed = new Vector3(ProjectileSpeed, ProjectileSpeed, 0)
-                        });
+                    {
+                        Acceleration = ProjectileSpeed
+                    });
                 UpdateTimeNextAvailable();
             }
         }
