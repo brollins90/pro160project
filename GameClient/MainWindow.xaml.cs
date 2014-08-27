@@ -33,7 +33,9 @@ namespace GameClient
 
         public MainWindow(CharacterClasses classChosen)
         {
-            Cursor myCursor = new Cursor(@"C:\Users\Lilitheus\Source\Repos\pro160project\GameClient\cursor.cur");
+            string absolute = System.IO.Path.GetFullPath("cursor.cur");
+
+            Cursor myCursor = new Cursor(absolute);
 
             this.Cursor = myCursor;
             
