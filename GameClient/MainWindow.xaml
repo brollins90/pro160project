@@ -58,10 +58,6 @@
                 <Rectangle x:Name="BotCurrentHealth" Height="26" Width="80" Fill="Green"/>
         </Canvas>
 
-        <Canvas x:Name="BotMaxHealth" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                <Rectangle x:Name="BotCurrentHealth" Height="26" Width="80" Fill="Green"/>
-        </Canvas>
-
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
             <Label VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="256" Canvas.Top="-9">Experience</Label>

@@ -250,58 +250,6 @@ namespace GameClient
             NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
-        //Open shop
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-            {
-            ShopMenu.Visibility = Visibility.Visible;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-        }
-
-        //Reinforce armor plating
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 20)
-            {
-                CurrentController.CurrentCharacter.Gold -= 20;
-                CurrentController.CurrentCharacter.Defense += 1;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-        }
-
-        //Reforge weapon
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 30)
-            {
-                CurrentController.CurrentCharacter.Gold -= 30;
-                CurrentController.CurrentCharacter.Strength += 1;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-        }
-
-        //Drink magic potion
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 50)
-            {
-                CurrentController.CurrentCharacter.Gold -= 50;
-                CurrentController.CurrentCharacter.Constitution += 1;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-        }
-
 
     }
 }
