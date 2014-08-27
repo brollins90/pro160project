@@ -33,6 +33,12 @@ namespace GameClient
 
         public MainWindow(CharacterClasses classChosen)
         {
+            string absolute = System.IO.Path.GetFullPath("cursor.cur");
+
+            Cursor myCursor = new Cursor(absolute);
+
+            this.Cursor = myCursor;
+            
             UpgradeArmorCost = 50;
             UpgradeWeaponCost = 30;
             UpgradeHealthCost = 50; 
