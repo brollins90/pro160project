@@ -120,5 +120,11 @@
                 <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
             </UniformGrid>
         </UniformGrid>
+        <StackPanel x:Name="GameOver" Visibility="Collapsed">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </StackPanel.Background>
+            <Label FontSize="100" HorizontalAlignment="Center" Background="Red">GAME OVER</Label>
+        </StackPanel>
     </Grid>
 </Window>
