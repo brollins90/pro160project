@@ -36,7 +36,7 @@ namespace GameClient
             Cursor myCursor = new Cursor(@"C:\Users\Lilitheus\Source\Repos\pro160project\GameClient\cursor.cur");
 
             this.Cursor = myCursor;
-
+            
             UpgradeArmorCost = 50;
             UpgradeWeaponCost = 30;
             UpgradeHealthCost = 50; 
@@ -113,6 +113,7 @@ namespace GameClient
 //            Console.WriteLine("KeyDown: {0}", keyPressed);
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
             //CurrentController.KeyDown(keyPressed);
+            CheckIfDead();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -126,12 +127,11 @@ namespace GameClient
             (CurrentController.CurrentCharacter as Character).LevelUp();
             CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-            
+            CheckIfDead();
         }
 
         private void TakeDamage(object sender, RoutedEventArgs e)
         {
-
             Random rand = new Random();
 
             (CurrentController.CurrentCharacter as Character).Health = (CurrentController.CurrentCharacter as Character).Health - rand.Next(10) + 1;
@@ -141,19 +141,17 @@ namespace GameClient
             if (healthleft <= 0)
             {
                 CurrentHealth.Width = 0;
-
+                GameOver.Visibility = Visibility.Visible;
                 MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
                 MainMenu mainmenu = new MainMenu();
                 mainmenu.Show();
                 this.Hide();
-                
             }
             else
             {
                 CurrentHealth.Width = healthleft;
             }
-
-
+            CheckIfDead();
         }
 
         private void GainExp(object sender, RoutedEventArgs e)
@@ -166,6 +164,7 @@ namespace GameClient
                 CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             }
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+            CheckIfDead();
         }
 
         private void GainMoreExp(object sender, RoutedEventArgs e)
@@ -180,11 +179,13 @@ namespace GameClient
                 CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             }
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+            CheckIfDead();
         }
 
         private void GainGold(object sender, RoutedEventArgs e)
         {
             (CurrentController.CurrentCharacter as Character).Gold += 10;
+            CheckIfDead();
         }
 
         private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -198,17 +199,18 @@ namespace GameClient
             {
                 Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.RightClick, Environment.TickCount, e.GetPosition(this)));
             }
+            CheckIfDead();
         }
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
             Console.WriteLine("move");
             Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
+            CheckIfDead();
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-
             switch (e.Key)
             {
                 case Key.Up:
@@ -245,12 +247,14 @@ namespace GameClient
             }
             ShopMenu.Visibility = Visibility.Collapsed;
             NotEnoughGold.Visibility = Visibility.Collapsed;
+            CheckIfDead();
         }
         //Close shop
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ShopMenu.Visibility = Visibility.Collapsed;
             NotEnoughGold.Visibility = Visibility.Collapsed;
+            CheckIfDead();
         }
 
         //Open shop
@@ -258,6 +262,7 @@ namespace GameClient
         {
             ShopMenu.Visibility = Visibility.Visible;
             NotEnoughGold.Visibility = Visibility.Collapsed;
+            CheckIfDead();
         }
 
         //Reinforce armor plating
@@ -277,6 +282,7 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
+            CheckIfDead();
         }
 
         //Reforge weapon
@@ -296,6 +302,7 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
+            CheckIfDead();
         }
 
         //Drink magic potion
@@ -317,8 +324,25 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
+            CheckIfDead();
         }
 
-
+        //ends game if player is dead
+        public void CheckIfDead()
+        {
+            if (CurrentController.CurrentCharacter.Health <= 0)
+            {
+                CurrentHealth.Width = 0;
+                GameOver.Visibility = Visibility.Visible;
+                MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
+                MainMenu mainmenu = new MainMenu();
+                mainmenu.Show();
+                this.Hide();
+            }
+            else
+            {
+                CurrentHealth.Width = CurrentController.CurrentCharacter.Health;
+            }
+        }
     }
 }

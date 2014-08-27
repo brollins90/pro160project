@@ -126,7 +126,7 @@
             </Button>
             <UniformGrid Columns="3" Rows="1">
                 <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
-                <Label FontSize="60" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Margin="-142,0,294,0"/>
+                <Label FontSize="60" Content="{Binding Path=CurrentController.CurrentCharacter.Gold}" Margin="-142,0,294,0"/>
                 <Label FontSize="60" Margin="-295,0,0,0" Background="Red" Visibility="Collapsed" x:Name="NotEnoughGold">Not Enough Gold!!!</Label>
             </UniformGrid>
             <Button Click="Button_Click">Exit</Button>
@@ -139,5 +139,11 @@
                 <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
             </UniformGrid>
         </UniformGrid>
+        <StackPanel x:Name="GameOver" Visibility="Collapsed">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </StackPanel.Background>
+            <Label FontSize="100" HorizontalAlignment="Center" Background="Red">GAME OVER</Label>
+        </StackPanel>
     </Grid>
 </Window>
