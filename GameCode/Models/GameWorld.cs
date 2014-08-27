@@ -60,6 +60,15 @@ namespace GameCode.Models
             }
         }
 
+        public List<GameObject> Rocks
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Rocks); }).ToList();
+                return retVal;
+            }
+        }
+
         public List<GameObject> Bushes
         {
             get

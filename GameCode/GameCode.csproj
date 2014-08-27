@@ -64,6 +64,7 @@
     <Compile Include="Models\Projectiles\Weapons\Magic.cs" />
     <Compile Include="Models\Projectiles\Weapons\Sword.cs" />
     <Compile Include="Models\Projectiles\Weapons\Weapon.cs" />
+    <Compile Include="Models\Rocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
