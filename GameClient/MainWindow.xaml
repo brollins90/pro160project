@@ -43,7 +43,7 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="Button_Click_1" Focusable="False">Open Shop</Button>
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="OpenShopButton" Focusable="False">Open Shop</Button>
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,267,27,167" Click="LevelUpButton" Focusable="False">Level up!</Button>
 
@@ -97,14 +97,33 @@
                 </Canvas>
             </Canvas>
         </ItemsControl>
+
         <UniformGrid x:Name="ShopMenu" Columns="1" Visibility="Collapsed">
             <UniformGrid.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
             </UniformGrid.Background>
             <Label FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center">Welcome to the shop!!!</Label>
-            <Button Click="Button_Click_2">Reinforce Armor Plating : 20 Gold</Button>
-            <Button Click="Button_Click_3">Reforge Weapon : 30 Gold</Button>
-            <Button Click="Button_Click_4">Drink Magic Potion : 50 Gold</Button>
+            <Button Click="UpgradeArmorButton">
+                <Canvas>
+                    <TextBlock FontSize="24" Canvas.Left="-171" Canvas.Top="-13"> Upgrade Armor: </TextBlock>
+                    <TextBlock x:Name="ArmorCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeArmorCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                </Canvas>
+            </Button>
+            <Button Click="UpgradeWeaponButton">
+                <Canvas>
+                    <TextBlock FontSize="24" Canvas.Left="-193" Canvas.Top="-13"> Upgrade Weapon:</TextBlock>
+                    <TextBlock x:Name="WeaponCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeWeaponCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                </Canvas>
+            </Button>
+            <Button Click="UpgradeHealthButton">
+                <Canvas>
+                    <TextBlock FontSize="24" Canvas.Left="-173" Canvas.Top="-13"> Upgrade Health:</TextBlock>
+                    <TextBlock x:Name="HealthCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeHealthCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                </Canvas>
+            </Button>
             <UniformGrid Columns="3" Rows="1">
                 <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
                 <Label FontSize="60" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Margin="-142,0,294,0"/>

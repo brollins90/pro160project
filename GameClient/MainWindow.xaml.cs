@@ -23,18 +23,23 @@ namespace GameClient
     public partial class MainWindow : Window
     {
 
-        public GameManager Manager {get;set;}
-        public Controller CurrentController {get; set;}
-
+        public GameManager Manager { get; set; }
+        public Controller CurrentController { get; set; }
         public CharacterClasses ClassChosen { get; set; }
+        public int UpgradeArmorCost { get; set; }
+        public int UpgradeWeaponCost { get; set; }
+        public int UpgradeHealthCost { get; set; }
 
 
         public MainWindow(CharacterClasses classChosen)
         {
-            Cursor myCursor = new Cursor("C:\\Users\\Lilitheus\\Source\\Repos\\pro160project\\GameClient\\cursor.cur");
+            Cursor myCursor = new Cursor(@"C:\Users\Lilitheus\Source\Repos\pro160project\GameClient\cursor.cur");
 
             this.Cursor = myCursor;
-            
+
+            UpgradeArmorCost = 50;
+            UpgradeWeaponCost = 30;
+            UpgradeHealthCost = 50; 
 
             ClassChosen = classChosen;
             // Init the components
@@ -249,20 +254,24 @@ namespace GameClient
         }
 
         //Open shop
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void OpenShopButton(object sender, RoutedEventArgs e)
         {
             ShopMenu.Visibility = Visibility.Visible;
             NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
         //Reinforce armor plating
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void UpgradeArmorButton(object sender, RoutedEventArgs e)
         {
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 20)
+            if (CurrentController.CurrentCharacter.Gold >= UpgradeArmorCost)
             {
-                CurrentController.CurrentCharacter.Gold -= 20;
+                CurrentController.CurrentCharacter.Gold -= UpgradeArmorCost;
                 CurrentController.CurrentCharacter.Defense += 1;
+
+                UpgradeArmorCost += 20;
+
+                ArmorCostText.Text = "" + UpgradeArmorCost;
             }
             else
             {
@@ -271,13 +280,17 @@ namespace GameClient
         }
 
         //Reforge weapon
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void UpgradeWeaponButton(object sender, RoutedEventArgs e)
         {
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 30)
+            if (CurrentController.CurrentCharacter.Gold >= UpgradeWeaponCost)
             {
-                CurrentController.CurrentCharacter.Gold -= 30;
+                CurrentController.CurrentCharacter.Gold -= UpgradeWeaponCost;
                 CurrentController.CurrentCharacter.Strength += 1;
+
+                UpgradeWeaponCost += 20;
+
+                WeaponCostText.Text = "" + UpgradeWeaponCost;
             }
             else
             {
@@ -286,13 +299,19 @@ namespace GameClient
         }
 
         //Drink magic potion
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void UpgradeHealthButton(object sender, RoutedEventArgs e)
         {
+            
+
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= 50)
+            if (CurrentController.CurrentCharacter.Gold >= UpgradeHealthCost)
             {
-                CurrentController.CurrentCharacter.Gold -= 50;
+                CurrentController.CurrentCharacter.Gold -= UpgradeHealthCost;
                 CurrentController.CurrentCharacter.Constitution += 1;
+
+                UpgradeHealthCost += 20;
+
+                HealthCostText.Text = "" + UpgradeHealthCost;
             }
             else
             {
