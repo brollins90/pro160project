@@ -31,6 +31,11 @@ namespace GameClient
 
         public MainWindow(CharacterClasses classChosen)
         {
+            Cursor myCursor = new Cursor("C:\\Users\\Lilitheus\\Source\\Repos\\pro160project\\GameClient\\cursor.cur");
+
+            this.Cursor = myCursor;
+            
+
             ClassChosen = classChosen;
             // Init the components
             InitializeComponent();
