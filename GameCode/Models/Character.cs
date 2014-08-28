@@ -33,7 +33,7 @@ namespace GameCode.Models
             }
         }
 
-        private double _HealthBarLength;
+        private double _HealthBarLength;    
         public double HealthBarLength
         {
             get { return HealthBarLength; }
