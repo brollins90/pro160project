@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientWorker.cs" />
+    <Compile Include="MultiServer.cs" />
+    <Compile Include="MultiServerClientSetup.cs" />
+    <Compile Include="MultiServerRoom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
