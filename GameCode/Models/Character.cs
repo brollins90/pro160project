@@ -36,10 +36,10 @@ namespace GameCode.Models
         private double _HealthBarLength;
         public double HealthBarLength
         {
-            get { return HealthBarLength; }
+            get { return _HealthBarLength; }
             set 
             {
-                HealthBarLength = (double)((double)Health / (double)MaxHealth) * 100;
+                _HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
                 FirePropertyChanged("HealthBarLength");
             }
         }
@@ -212,7 +212,7 @@ namespace GameCode.Models
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             this.Gold += 100;
-
+            this.HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
             if (this.Level % 3 == 0)
             {
                 this.Defense += 1;
@@ -303,8 +303,13 @@ namespace GameCode.Models
         public void IncreaseExperience(int amount)
         {
             Experience += amount;
-            if (Experience > ExperienceCap)
-                Experience = ExperienceCap;
+            if (Experience >= ExperienceCap)
+            {
+                int expleft = Experience - ExperienceCap;
+                LevelUp();
+                Experience = expleft;
+                HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
+            }
         }
     }
 }

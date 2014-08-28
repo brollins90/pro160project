@@ -24,7 +24,7 @@ namespace GameClient
     {
 
         public GameManager Manager { get; set; }
-        public Controller CurrentController { get; set; }
+        public Controller CurrentController { get; set; }   
         public CharacterClasses ClassChosen { get; set; }
         public int UpgradeArmorCost { get; set; }
         public int UpgradeWeaponCost { get; set; }
@@ -127,7 +127,6 @@ namespace GameClient
         private void LevelUpButton(object sender, RoutedEventArgs e)
         {
             (CurrentController.CurrentCharacter as Character).LevelUp();
-            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
             CheckIfDead();
         }
@@ -252,7 +251,7 @@ namespace GameClient
             CheckIfDead();
         }
         //Close shop
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ExitShopButton(object sender, RoutedEventArgs e)
         {
             ShopMenu.Visibility = Visibility.Collapsed;
             NotEnoughGold.Visibility = Visibility.Collapsed;
