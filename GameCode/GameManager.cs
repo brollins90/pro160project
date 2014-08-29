@@ -14,6 +14,7 @@ namespace GameCode
 {
     public class GameManager
     {
+        int spawnCount = 0;
         public const int TEAM_INT_DEBRIS = 97;
         public const int TEAM_INT_PLAYER = 98;
         public const int TEAM_INT_BADDIES = 99;
@@ -49,11 +50,21 @@ namespace GameCode
 
             LastTimeMillis = GetCurrentTime();
             LoadWorld("");
+        }
 
+        public void spawn()
+        {
+            this.AddNPC(new Bot(new Vector3(950, 200, 0), this, BotClass.Melee));
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
+            spawnCount++;
+            if (spawnCount == 1000)
+            {
+                spawn();
+                spawnCount = 0;
+            }
             int currentTimeMillis = Environment.TickCount;
             int elapsedTimeMillis = currentTimeMillis - LastTimeMillis;
             //Console.WriteLine("lastTime...: " + LastTimeMillis);

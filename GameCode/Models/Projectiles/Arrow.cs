@@ -18,7 +18,6 @@ namespace GameCode.Models.Projectiles
             rangeSquared)
         {
         }
-
         public override void Update(double deltaTime)
         {
              //perform movement

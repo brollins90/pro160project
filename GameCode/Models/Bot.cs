@@ -8,6 +8,7 @@ using System.Windows;
 using GameCode.Models.Weapons;
 using GameCode.Helpers;
 using GameCode.Models.Projectiles;
+using System.Timers;
 
 namespace GameCode.Models
 {
@@ -22,7 +23,6 @@ namespace GameCode.Models
     //The main class for all Non Playable Characters. The information on them is based off of the information passed through the constructor.
     public class Bot : MovingObject
     {
-
         private double _AttackRadiusSquared;
         public double AttackRadiusSquared
         {
@@ -77,7 +77,6 @@ namespace GameCode.Models
         }
 
         private Weapon _BotWeapon;
-
         public Weapon BotWeapon
         {
             get { return _BotWeapon; }
@@ -89,7 +88,6 @@ namespace GameCode.Models
         public Bot(Vector3 position, GameManager manager, BotClass type = Models.BotClass.Melee)
             : base(position, manager, new Vector3(0,0,0))
         {
-            Team = GameManager.TEAM_INT_BADDIES;
 
             switch (type)
             {
@@ -104,8 +102,8 @@ namespace GameCode.Models
                     Size = new Vector3(50,50,0);
                     break;
                 case Models.BotClass.Melee:
-                    this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
+                    this.Acceleration = new Vector3(3, 3, 0);
+                    this.AttackRadiusSquared = 1000 * 1000;
                     this.BotClass = type;
                     this.BotWeapon = new Sword(this);
                     this.Damage = 9;
@@ -125,7 +123,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Shooter: // ???
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 400 * 400;
+                    this.AttackRadiusSquared = 1000 * 1000;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 7;
@@ -183,6 +181,7 @@ namespace GameCode.Models
                     //target = b.Position;
                     closestLengthSquared = distanceFromSquared;
                 }
+            
             }
 
             if (closestEnemy != null)
@@ -204,7 +203,6 @@ namespace GameCode.Models
 
         public override void Update(double deltaTime)
         {
-
             CheckInput(deltaTime);
 
             Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
