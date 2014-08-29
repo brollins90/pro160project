@@ -50,6 +50,15 @@ namespace GameCode.Models
         }
         }
 
+        private int _Team;
+        public int Team
+        {
+            get { return _Team; }
+            set { _Team = value;
+                this.FirePropertyChanged("Team");
+        }
+        }
+
 
         private int _Health;
         public int Health
