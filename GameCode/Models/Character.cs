@@ -26,9 +26,7 @@ namespace GameCode.Models
         public CharacterClasses Classes
         {
             get { return _Classes; }
-            set
-            {
-                _Classes = value;
+            set { _Classes = value;
                 this.FirePropertyChanged("Classes");
             }
         }
@@ -37,9 +35,7 @@ namespace GameCode.Models
         public double HealthBarLength
         {
             get { return _HealthBarLength; }
-            set 
-            {
-                _HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
+            set { _HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
                 FirePropertyChanged("HealthBarLength");
             }
         }
@@ -48,9 +44,7 @@ namespace GameCode.Models
         public int Constitution
         {
             get { return _Constitution; }
-            set
-            {
-                _Constitution = value;
+            set { _Constitution = value;
                 this.FirePropertyChanged("Constitution");
             }
         }
@@ -59,9 +53,7 @@ namespace GameCode.Models
         public int Defense
         {
             get { return _Defense; }
-            set
-            {
-                _Defense = value;
+            set { _Defense = value;
                 this.FirePropertyChanged("Defense");
             }
         }
@@ -70,9 +62,7 @@ namespace GameCode.Models
         public int Experience
         {
             get { return _Experience; }
-            set
-            {
-                _Experience = value;
+            set { _Experience = value;
                 this.FirePropertyChanged("Experience");
             }
         }
@@ -81,9 +71,7 @@ namespace GameCode.Models
         public int ExperienceCap
         {
             get { return _ExperienceCap; }
-            set
-            {
-                _ExperienceCap = value;
+            set { _ExperienceCap = value;
                 this.FirePropertyChanged("ExperienceCap");
             }
         }
@@ -92,9 +80,7 @@ namespace GameCode.Models
         public double ExpBarLength
         {
             get { return _ExpBarLength; }
-            set
-            {
-                _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
+            set { _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
                 FirePropertyChanged("ExpBarLength");
             }
         }
@@ -103,9 +89,7 @@ namespace GameCode.Models
         public int Level
         {
             get { return _Level; }
-            set
-            {
-                _Level = value;
+            set { _Level = value;
                 this.FirePropertyChanged("Level");
             }
         }
@@ -123,9 +107,7 @@ namespace GameCode.Models
         public int Strength
         {
             get { return _Strength; }
-            set
-            {
-                _Strength = value;
+            set { _Strength = value;
                 this.FirePropertyChanged("Strength");
             }
         }
@@ -134,9 +116,7 @@ namespace GameCode.Models
         public int Gold
         {
             get { return _Gold; }
-            set
-            {
-                _Gold = value;
+            set { _Gold = value;
                 this.FirePropertyChanged("Gold");
             }
         }
