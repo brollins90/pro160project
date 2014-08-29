@@ -51,6 +51,7 @@
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,74,27,360" Focusable="False">Gain 20 Exp.</Button>
 
+
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
             <Label VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="256" Canvas.Top="-9">Experience</Label>

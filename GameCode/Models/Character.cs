@@ -88,6 +88,17 @@ namespace GameCode.Models
             }
         }
 
+        private double _ExpBarLength;
+        public double ExpBarLength
+        {
+            get { return _ExpBarLength; }
+            set
+            {
+                _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
+                FirePropertyChanged("ExpBarLength");
+            }
+        }
+
         private int _Level;
         public int Level
         {
@@ -148,69 +159,82 @@ namespace GameCode.Models
                 case Models.CharacterClasses.Fighter:
                     Acceleration = new Vector3(8, 8, 0);
                     Weapon = new Sword(this);
+                    Size = new Vector3(32, 32, 0);
                     Angle = -90;
+
+                    Level = 1;
                     Constitution = 7;
-                    Defense = 8;
+                    Defense = 6;
+                    Strength = 3;
+
                     Experience = 0;
-                    Damage = Strength * 2;
                     ExperienceCap = 100;
-                    Gold = 0;
+
+                    Damage = Strength * 2;
                     MaxHealth = Constitution * 20;
                     RestoreHealthToMax();
-                    Level = 1;
-                    Size = new Vector3(32, 32, 0);
-                    Strength = 3;
+
+                    Gold = 0;
                     break;
 
                 case Models.CharacterClasses.Archer:
                     Acceleration = new Vector3(5, 5, 0);
                     Weapon = new CrossBow(this);
+                    Size = new Vector3(32, 32, 0);
                     Angle = -90;
+
+                    Level = 1;
                     Constitution = 5;
-                    Defense = 6;
+                    Defense = 5;
+                    Strength = 3;
+
                     Experience = 0;
-                    Damage = Strength * 2;
                     ExperienceCap = 100;
-                    Gold = 0;
+
+                    Damage = Strength * 2;
                     MaxHealth = Constitution * 20;
                     RestoreHealthToMax();
-                    Level = 1;
-                    Size = new Vector3(32, 32, 0);
-                    Strength = 3;
+
+                    Gold = 0;
                     break;
 
                 case Models.CharacterClasses.Mage:
                     Acceleration = new Vector3(3, 3, 0);
                     Weapon = new Magic(this);
+                    Size = new Vector3(32, 32, 0);
                     Angle = -90;
+
+                    Level = 1;
                     Constitution = 4;
                     Defense = 4;
+                    Strength = 3;
+
                     Experience = 0;
-                    Damage = Strength * 3;
                     ExperienceCap = 100;
-                    Gold = 0;
+
+                    Damage = Strength * 3;
                     MaxHealth = Constitution * 20;
                     RestoreHealthToMax();
-                    Level = 1;
-                    Size = new Vector3(32, 32, 0);
-                    Strength = 3;
+
+                    Gold = 0;
                     break;
             }
-            
-            
         }
 
 
         public void LevelUp()
         {
             this.Level += 1;
-            this.Strength += 2;
             this.Constitution += 2;
+            this.Strength += 2;
+            
             this.Experience = 0;
             this.ExperienceCap += 30;
+
             this.Damage = Strength * 2;
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
+
             this.Gold += 100;
             this.HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
             if (this.Level % 3 == 0)
@@ -218,7 +242,6 @@ namespace GameCode.Models
                 this.Defense += 1;
                 this.Gold += 150;
             }
-
         }
 
         public override void CheckInput(double deltaTime) {

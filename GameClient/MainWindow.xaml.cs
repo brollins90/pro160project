@@ -131,6 +131,8 @@ namespace GameClient
             CheckIfDead();
         }
 
+       
+
         private void GainExp(object sender, RoutedEventArgs e)
         {
             (CurrentController.CurrentCharacter as Character).Experience += 10;
