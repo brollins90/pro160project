@@ -108,7 +108,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Melee:
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
+                    this.AttackRadiusSquared = 1000 * 1000;
                     this.BotClass = type;
                     this.BotWeapon = new Sword(this);
                     this.Damage = 9;
@@ -130,7 +130,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Shooter: // ???
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 400 * 400;
+                    this.AttackRadiusSquared = 1000 * 1000;
                     this.BotClass = type;
                     this.BotWeapon = new CrossBow(this);
                     this.Damage = 7;
