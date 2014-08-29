@@ -31,13 +31,12 @@ namespace GameCode.Models
             this.FirePropertyChanged("AttackRadiusSquared");
             }
         }
+
         private BotClass _BotClass;
         public BotClass BotClass
         {
             get { return _BotClass; }
-            set
-            {
-                _BotClass = value;
+            set {   _BotClass = value;
                 this.FirePropertyChanged("BotClass");
         }
         }
@@ -46,9 +45,7 @@ namespace GameCode.Models
         public int Damage
         {
             get { return _Damage; }
-            set
-            {
-                _Damage = value;
+            set { _Damage = value;
                 this.FirePropertyChanged("Damage");
         }
         }
@@ -58,9 +55,7 @@ namespace GameCode.Models
         public int Health
         {
             get { return _Health; }
-            set
-            {
-                _Health = value;
+            set { _Health = value;
                 this.FirePropertyChanged("Health");
             }
         }
@@ -69,10 +64,17 @@ namespace GameCode.Models
         public int MaxHealth
         {
             get { return _MaxHealth; }
-            set
-            {
-                _MaxHealth = value;
+            set { _MaxHealth = value;
                 this.FirePropertyChanged("MaxHealth");
+            }
+        }
+
+        private int _ExpYield;
+        public int ExpYield
+            {
+            get { return _ExpYield; }
+            set { _ExpYield = value;
+            this.FirePropertyChanged("ExpYield");
             }
         }
 
@@ -99,16 +101,18 @@ namespace GameCode.Models
                     this.Damage = 25;
                     this.Health = 1000;
                     this.MaxHealth = Health;
+                    this.ExpYield = 250;
                     Size = new Vector3(50,50,0);
                     break;
                 case Models.BotClass.Melee:
-                    this.Acceleration = new Vector3(3, 3, 0);
-                    this.AttackRadiusSquared = 1000 * 1000;
+                    this.Acceleration = new Vector3(1, 1, 0);
+                    this.AttackRadiusSquared = 200 * 200;
                     this.BotClass = type;
                     this.BotWeapon = new Sword(this);
                     this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
+                    this.ExpYield = 15;
                     Size = new Vector3(20,20,0);
                     break;
                 case Models.BotClass.Mercenary: // Sentry
@@ -119,6 +123,7 @@ namespace GameCode.Models
                     this.Damage = 13;
                     this.Health = 500;
                     this.MaxHealth = Health;
+                    this.ExpYield = 100;
                     Size = new Vector3(30,30,0);
                     break;
                 case Models.BotClass.Shooter: // ???
@@ -129,6 +134,7 @@ namespace GameCode.Models
                     this.Damage = 7;
                     this.Health = 10;
                     this.MaxHealth = Health;
+                    this.ExpYield = 10;
                     Size = new Vector3(20, 20,0);
                     break;
                 case Models.BotClass.Tower: // Need to kill this to win
@@ -139,6 +145,7 @@ namespace GameCode.Models
                     this.Damage = 0;
                     this.Health = 1500;
                     this.MaxHealth = Health;
+                    this.ExpYield = 5000;
                     Size = new Vector3(100,100,0);
                     break;
                 case Models.BotClass.Turret: // stationary
@@ -149,6 +156,7 @@ namespace GameCode.Models
                     this.Damage = 16;
                     this.Health = 750;
                     this.MaxHealth = Health;
+                    this.ExpYield = 150;
                     Size = new Vector3(60,60,0);
                     break;
 
@@ -221,6 +229,7 @@ namespace GameCode.Models
                     else
                     {
                         collided = true;
+                        
                     }
             }
             // if collided dont perform the move
@@ -234,6 +243,8 @@ namespace GameCode.Models
         public void HasDied()
         {
             Alive = false;
+
+           
         }
 
         public void TakeDamage(int amount)
@@ -243,6 +254,7 @@ namespace GameCode.Models
             //Console.WriteLine("Health after: " + Health);
             if (Health <= 0)
             {
+                
                 HasDied();
             }
         }

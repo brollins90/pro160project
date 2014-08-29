@@ -9,7 +9,7 @@ namespace GameCode.Models.Projectiles
 {
     public class StabAttack : GameProjectile
     {
-        public StabAttack(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+        public StabAttack(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 30) :
             base(owner,
             manager,
             new Vector3(25, 12, 0), // Size of an arrow is always the same
