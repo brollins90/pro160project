@@ -1,6 +1,9 @@
-﻿using System;
+﻿using GameCode;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +24,7 @@ namespace GameClient
     /// 
     public partial class MainMenu : Window
     {
+        private NetworkClient NetClient;
 
         public MainMenu()
         {
@@ -52,8 +56,91 @@ namespace GameClient
 
         private void PlayOnlineButton(object sender, RoutedEventArgs e)
         {
-            
+            PlayVsAI.Visibility = Visibility.Hidden;
+            PlayOnline.Visibility = Visibility.Hidden;
+            Archer.Visibility = Visibility.Hidden;
+            Mage.Visibility = Visibility.Hidden;
+            Fighter.Visibility = Visibility.Hidden;
+            ServerNameText.Visibility = Visibility.Visible;
+            ConnectToServer.Visibility = Visibility.Visible;
+
         }
+
+        private void ConnectToServerButton(object sender, RoutedEventArgs e)
+        {
+            ServerNameText.Visibility = Visibility.Hidden;
+            ConnectToServer.Visibility = Visibility.Hidden;
+            ServerInfoText.Visibility = Visibility.Visible;
+            ServerSend.Visibility = Visibility.Visible;
+            ServerSendText.Visibility = Visibility.Visible;
+
+            try
+            {
+                TcpClient client = new TcpClient(ServerNameText.Text, 3333);
+                NetClient = new NetworkClient(client);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: {0}", ex.ToString());
+                NetClient = null;
+            }
+            if (NetClient == null)
+            {
+                Environment.Exit(1);
+            }
+            ListenForServer();
+        }
+
+        private void ListenForServer()
+        {
+            bool done = false;
+            string line = "";
+            do
+            {
+                try
+                {
+                    line = NetClient.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Lost connection to server: {0}", ex.ToString());
+                    Environment.Exit(1);
+                }
+                if (string.IsNullOrEmpty(line))
+                {
+                    ServerInfoText.AppendText("\n");
+                }
+                else if (line[0] == '!')
+                {
+                    done = true;
+                }
+                else if (line[0] == '?')
+                {
+                    ServerInfoText.AppendText(line.Substring(1) + "\n");
+                    Console.WriteLine(line.Substring(1));
+                    done = true;
+                    //String inLine = Console.ReadLine();
+                    //sw.WriteLine(inLine);
+                    //sw.Flush();
+                }
+                else
+                {
+                    ServerInfoText.AppendText(line + "\n");
+                    Console.WriteLine(line);
+                }
+
+            } while (!done);
+        }
+
+        private void ServerSendButton(object sender, RoutedEventArgs e)
+        {
+
+            String inLine = ServerSendText.Text;
+            NetClient.WriteLine(inLine);
+            ServerSendText.Text = "";
+            ListenForServer();
+        }
+        
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
@@ -64,7 +151,7 @@ namespace GameClient
         private void Mage_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Mage);
+            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_MAGE, NetClient, true);
             gamewindow.Show();
             this.Hide();
         }
@@ -72,7 +159,7 @@ namespace GameClient
         private void Archer_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Archer);            
+            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_ARCHER, NetClient, true);            
             gamewindow.Show();
             this.Hide();
         }
@@ -80,7 +167,7 @@ namespace GameClient
         private void Fighter_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameCode.Models.CharacterClasses.Fighter);
+            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_FIGHTER, NetClient, true);
             gamewindow.Show();
             this.Hide();
         }

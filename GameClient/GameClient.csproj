@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GameClient.Setup</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Setup.cs" />
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +113,10 @@
     <ProjectReference Include="..\GameCode\GameCode.csproj">
       <Project>{79fa9fe2-80de-49fc-bef6-2c3e63d53d4c}</Project>
       <Name>GameCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameServer\GameServer.csproj">
+      <Project>{7e3e2d27-af09-4a7d-a5d4-9f359626f426}</Project>
+      <Name>GameServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

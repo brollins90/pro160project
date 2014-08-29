@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -42,23 +43,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Debris.cs" />
+    <Compile Include="NetworkClient.cs" />
+    <Compile Include="UpdateThread.cs" />
+    <Compile Include="GameConstants.cs" />
+    <Compile Include="GameListener.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Helpers\Vector3.cs" />
     <Compile Include="Helpers\VectorHelpers.cs" />
     <Compile Include="Models\Bushes.cs" />
     <Compile Include="Models\CastleWalls.cs" />
-    <Compile Include="Models\InputListener.cs" />
+    <Compile Include="InputListener.cs" />
     <Compile Include="Models\Projectiles\Arrow.cs" />
     <Compile Include="Models\Projectiles\FireBall.cs" />
     <Compile Include="Models\Projectiles\GameProjectile.cs" />
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\GameCommand.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\GameWorld.cs" />
-    <Compile Include="Models\Controller.cs" />
     <Compile Include="Models\MovingObject.cs" />
-    <Compile Include="Models\PlayerInput.cs" />
     <Compile Include="Models\Projectiles\StabAttack.cs" />
     <Compile Include="Models\Projectiles\Weapons\CrossBow.cs" />
     <Compile Include="Models\Projectiles\Weapons\Magic.cs" />
@@ -67,9 +70,7 @@
     <Compile Include="Models\Rocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StateMachines\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

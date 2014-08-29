@@ -1,4 +1,5 @@
-﻿using GameCode.Models;
+﻿using GameCode;
+using GameCode.Models;
 using GameCode.Models.Projectiles;
 using System;
 using System.Collections.Generic;
@@ -22,24 +23,24 @@ namespace GameClient.Converters
                 { typeof(Character), () => picture = new Uri("Images/ArcherCharacter.png", UriKind.Relative) },
                 { typeof(Bot), () => {
                     Bot temp = (Bot)current;
-                    switch (temp.BotClass)
+                    switch (temp.ClassType)
                     {
-                        case BotClass.Boss:
+                        case GameConstants.TYPE_BOT_BOSS:
                             picture = new Uri("Images/BossTopView.png", UriKind.Relative);
                             break;
-                        case BotClass.Melee:
+                        case GameConstants.TYPE_BOT_MELEE:
                             picture = new Uri("Images/Minion.png", UriKind.Relative);
                             break;
-                        case BotClass.Mercenary:
+                        case GameConstants.TYPE_BOT_MERCENARY:
                             picture = new Uri("Images/MercenaryTopView.png", UriKind.Relative);
                             break;
-                        case BotClass.Shooter:
+                        case GameConstants.TYPE_BOT_SHOOTER:
                             picture = new Uri("Images/Minion.png", UriKind.Relative);
                             break;
-                        case BotClass.Tower:
+                        case GameConstants.TYPE_BOT_TOWER:
                             picture = new Uri("Images/TowerCastleThingTopView.png", UriKind.Relative);
                             break;
-                        case BotClass.Turret:
+                        case GameConstants.TYPE_BOT_TURRET:
                             picture = new Uri("Images/SentryTopView.png", UriKind.Relative);
                             break;
                     }

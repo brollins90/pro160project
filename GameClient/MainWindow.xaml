@@ -4,9 +4,7 @@
         Title="The World We Don't Know" Height="768" Width="1024"
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        xmlns:y="clr-namespace:GameClient.Converters"
-        KeyDown="Grid_KeyDown" MouseDown="MainGrid_MouseDown" MouseMove="MainGrid_MouseMove"
-        KeyUp="Window_KeyUp">
+        xmlns:y="clr-namespace:GameClient.Converters">
         
     <Window.Resources>
         <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
@@ -43,7 +41,7 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="OpenShopButton" Focusable="False">Open Shop</Button>
+        <!--<Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="OpenShopButton" Focusable="False">Open Shop</Button>
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,267,27,167" Click="LevelUpButton" Focusable="False">Level up!</Button>
 
@@ -53,7 +51,7 @@
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,74,27,360" Focusable="False">Gain 20 Exp.</Button>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainGold" Margin="0,10,27,424" Focusable="False">Gain 10 Gold.</Button>
+        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainGold" Margin="0,10,27,424" Focusable="False">Gain 10 Gold.</Button>-->
 
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
@@ -67,30 +65,30 @@
             </ItemsControl.Background>
             <Canvas Height="142" Margin="12,0,0,0">
                 <Label Canvas.Top="-5">Str:</Label>
-                <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>
+                <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>
 
                 <Label Canvas.Top="21">Def:</Label>
-                <Label Canvas.Left="32" Canvas.Top="21" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Defense}" Height="26"></Label>
+                <Label Canvas.Left="32" Canvas.Top="21" Width="68" Content="{Binding Path=CurrentCharacter.Defense}" Height="26"></Label>
 
                 <Label Canvas.Top="47">Con:</Label>
-                <Label Canvas.Left="32" Canvas.Top="47" Width="68" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Height="26"></Label>
+                <Label Canvas.Left="32" Canvas.Top="47" Width="68" Content="{Binding Path=CurrentCharacter.Constitution}" Height="26"></Label>
 
                 <Label Canvas.Top="73" Canvas.Left="-3">Health:</Label>
-                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentController.CurrentCharacter.Health}" Height="26"></Label>
+                <Label Canvas.Left="49" Canvas.Top="73" Width="51" RenderTransformOrigin="0.75,0.462" Content="{Binding Path=CurrentCharacter.Health}" Height="26"></Label>
 
                 <Label Canvas.Left="100" Width="50">Gold:</Label>
-                <Label Canvas.Left="154" Width="63" Content="{Binding Path=CurrentController.CurrentCharacter.Gold}"></Label>
+                <Label Canvas.Left="154" Width="63" Content="{Binding Path=CurrentCharacter.Gold}"></Label>
 
                 <Label Canvas.Left="100" Canvas.Top="26" Width="50" Height="32">Level</Label>
-                <Label Content="{Binding Path=CurrentController.CurrentCharacter.Level}" Canvas.Left="154" Canvas.Top="26" Height="27" Width="53"></Label>
+                <Label Content="{Binding Path=CurrentCharacter.Level}" Canvas.Left="154" Canvas.Top="26" Height="27" Width="53"></Label>
 
                 <Label Canvas.Left="100" Canvas.Top="58" Width="50" Height="25">Exp:</Label>
-                <Label Content="{Binding Path=CurrentController.CurrentCharacter.Experience}" Canvas.Left="150" Canvas.Top="58" Height="25" Width="36"></Label>
+                <Label Content="{Binding Path=CurrentCharacter.Experience}" Canvas.Left="150" Canvas.Top="58" Height="25" Width="36"></Label>
                 <Label Canvas.Left="176" Canvas.Top="57">/</Label>
-                <Label Content="{Binding Path=CurrentController.CurrentCharacter.ExperienceCap}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
+                <Label Content="{Binding Path=CurrentCharacter.ExperienceCap}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
 
                 <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentController.CurrentCharacter.HealthBarLength}" Fill="Green"/>
+                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentCharacter.HealthBarLength}" Fill="Green"/>
                 </Canvas>
             </Canvas>
         </ItemsControl>
@@ -123,17 +121,17 @@
             </Button>
             <UniformGrid Columns="3" Rows="1">
                 <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
-                <Label FontSize="60" Content="{Binding Path=CurrentController.CurrentCharacter.Gold}" Margin="-142,0,294,0"/>
+                <Label FontSize="60" Content="{Binding Path=CurrentCharacter.Gold}" Margin="-142,0,294,0"/>
                 <Label FontSize="60" Margin="-295,0,0,0" Background="Red" Visibility="Collapsed" x:Name="NotEnoughGold">Not Enough Gold!!!</Label>
             </UniformGrid>
-            <Button Click="Button_Click">Exit</Button>
+            <Button Click="CloseShopClick">Exit</Button>
             <UniformGrid Columns="6" Rows="1">
                 <Label FontSize="40">Strength: </Label>
-                <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Strength}" Margin="0,0,60,0"/>
+                <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Strength}" Margin="0,0,60,0"/>
                 <Label FontSize="40" Margin="-60,0,40,0">Defense: </Label>
-                <Label FontSize="40" Content="{Binding CurrentController.CurrentCharacter.Defense}" Margin="-40,0,82,0"/>
+                <Label FontSize="40" Content="{Binding CurrentCharacter.Defense}" Margin="-40,0,82,0"/>
                 <Label FontSize="40" Margin="-82,0,-4,0">Constitution: </Label>
-                <Label FontSize="40" Content="{Binding Path=CurrentController.CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
+                <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
             </UniformGrid>
         </UniformGrid>
         <StackPanel x:Name="GameOver" Visibility="Collapsed">

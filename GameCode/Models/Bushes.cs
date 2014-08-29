@@ -10,16 +10,11 @@ using System.Windows;
 
 namespace GameCode.Models
 {
-    public class Bushes : GameObject
+    public class Bushes : Debris
     {
         public Bushes(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
-            Team = GameManager.TEAM_INT_DEBRIS;
-        }
-        public override void Update(double deltaTime)
-        {
-            return;
         }
     }
 }

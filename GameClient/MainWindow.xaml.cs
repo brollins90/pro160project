@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GameCode;
 using GameCode.Models;
+using System.Net.Sockets;
+using GameCode.Helpers;
 
 namespace GameClient
 {
@@ -24,257 +26,110 @@ namespace GameClient
     {
 
         public GameManager Manager { get; set; }
-        public Controller CurrentController { get; set; }
-        public CharacterClasses ClassChosen { get; set; }
+        //public int ClassChosen { get; set; }
         public int UpgradeArmorCost { get; set; }
         public int UpgradeWeaponCost { get; set; }
         public int UpgradeHealthCost { get; set; }
+        public InputListener GL { get; set; }
+        public Character CurrentCharacter { get; set; }
 
 
-        public MainWindow(CharacterClasses classChosen)
+        public MainWindow(int classChosen, NetworkClient netClient, bool isServer)
         {
-            string absolute = System.IO.Path.GetFullPath("cursor.cur");
+            Console.WriteLine("{0} MainWindow - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
 
-            Cursor myCursor = new Cursor(absolute);
+            GL = new InputListener(netClient);
+
+            this.KeyDown += GL.Gui_KeyDown;
+            this.KeyDown += this.Gui_KeyDown;
+            this.KeyUp += GL.Gui_KeyUp;
+            this.MouseDown += GL.Gui_MouseDown;
+            this.MouseMove += GL.Gui_MouseMove;
 
             this.Cursor = myCursor;
-            
+
             UpgradeArmorCost = 50;
             UpgradeWeaponCost = 30;
             UpgradeHealthCost = 50; 
 
-            ClassChosen = classChosen;
+            //ClassChosen = classChosen;
             // Init the components
             InitializeComponent();
             // Every game needs a manager (instance of the game)
-            Manager = new GameManager();
+            Manager = new GameManager(isServer, netClient, GL);
+
+            // Create my character
+            CurrentCharacter = new Character(new Vector3(920, 800, 0), Manager, GL, classChosen)
+            {
+                Team = GameManager.TEAM_INT_PLAYER
+            };
+            Manager.World.Add(CurrentCharacter);
 
             this.DataContext = this;
             MainGrid.Focusable = true;
             MainGrid.Focus();
 
-            
-
-            // Create the interface component for the Play to submit commands
-            CurrentController = new Controller();
-            CurrentController.Connect(Manager);
-            CurrentController.CreateCharacter(ClassChosen);
-
-            PopulateGame();
-
             // create some objects to bind the HUD portion of the UI to
-            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+            CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
+            CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
 
-        private void PopulateGame()
+        private void Gui_KeyDown(object sender, KeyEventArgs e)
         {
-
-            // Add some Bots
-            //Manager.LoadWorld("");
-        }
-
-        private void Grid_KeyDown(object sender, KeyEventArgs e)
-        {
-            GameCommands keyPressed = GameCommands.None;
             switch (e.Key)
             {
-                case Key.Up:
-                case Key.W:
-                    keyPressed = GameCommands.Up;
-                    CurrentController.InputListener.KeyForward = true;
-                    break;
-
-                case Key.Down:
-                case Key.S:
-                    keyPressed = GameCommands.Down;
-                    CurrentController.InputListener.KeyBackward = true;
-                    break;
-
-                case Key.Left:
-                case Key.A:
-                    keyPressed = GameCommands.Left;
-                    CurrentController.InputListener.KeyLeft = true;
-                    break;
-
-                case Key.Right:
-                case Key.D:
-                    keyPressed = GameCommands.Right;
-                    CurrentController.InputListener.KeyRight = true;
-                    break;
                 case Key.Escape:
-                    Application.Current.Shutdown();
+                    if (ShopMenu.Visibility == Visibility.Visible) {
+                        CloseShop();
+                    } else {
+                        Application.Current.Shutdown();
+                    }
                     break;
-                case Key.Space:
-                case Key.T:
-                    keyPressed = GameCommands.Space;
-                    CurrentController.InputListener.KeyFire = true;
+                case Key.F10:
+                    OpenShop();
                     break;
             }
-            Console.WriteLine("{0} {1} KeyDown: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, keyPressed);
-//            Console.WriteLine("KeyDown: {0}", keyPressed);
-            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
-            //CurrentController.KeyDown(keyPressed);
-            CheckIfDead();
+        }
+
+        private void CloseShop()
+        {
+            ShopMenu.Visibility = Visibility.Collapsed;
+            NotEnoughGold.Visibility = Visibility.Collapsed;
+        }
+
+        private void OpenShop()
+        {
+            ShopMenu.Visibility = Visibility.Visible;
+            NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {            
+        {
             base.OnClosing(e);
             Application.Current.Shutdown();
         }
 
-        private void LevelUpButton(object sender, RoutedEventArgs e)
-        {
-            (CurrentController.CurrentCharacter as Character).LevelUp();
-            CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-            CheckIfDead();
-        }
-
-        private void TakeDamage(object sender, RoutedEventArgs e)
-        {
-            Random rand = new Random();
-
-            (CurrentController.CurrentCharacter as Character).Health = (CurrentController.CurrentCharacter as Character).Health - rand.Next(10) + 1;
-
-            double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).Health / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-
-            if (healthleft <= 0)
-            {
-                CurrentHealth.Width = 0;
-                GameOver.Visibility = Visibility.Visible;
-                MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
-                MainMenu mainmenu = new MainMenu();
-                mainmenu.Show();
-                this.Hide();
-            }
-            else
-            {
-                CurrentHealth.Width = healthleft;
-            }
-            CheckIfDead();
-        }
-
-        private void GainExp(object sender, RoutedEventArgs e)
-        {
-            (CurrentController.CurrentCharacter as Character).Experience += 10;
-
-            if ((CurrentController.CurrentCharacter as Character).Experience == (CurrentController.CurrentCharacter as Character).ExperienceCap)
-            {
-                (CurrentController.CurrentCharacter as Character).LevelUp();
-                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-            }
-            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-            CheckIfDead();
-        }
-
-        private void GainMoreExp(object sender, RoutedEventArgs e)
-        {
-            (CurrentController.CurrentCharacter as Character).Experience += 20;
-
-            if ((CurrentController.CurrentCharacter as Character).Experience >= (CurrentController.CurrentCharacter as Character).ExperienceCap)
-            {
-                int expleft = (CurrentController.CurrentCharacter as Character).Experience - (CurrentController.CurrentCharacter as Character).ExperienceCap;
-                (CurrentController.CurrentCharacter as Character).LevelUp();
-                (CurrentController.CurrentCharacter as Character).Experience = expleft;
-                CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-            }
-            CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-            CheckIfDead();
-        }
-
-        private void GainGold(object sender, RoutedEventArgs e)
-        {
-            (CurrentController.CurrentCharacter as Character).Gold += 10;
-            CheckIfDead();
-        }
-
-        private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("down");
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.LeftClick, Environment.TickCount, e.GetPosition(this)));
-            }
-            else if (e.ChangedButton == MouseButton.Right)
-            {
-                Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.RightClick, Environment.TickCount, e.GetPosition(this)));
-            }
-            CheckIfDead();
-        }
-
-        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
-        {
-            Console.WriteLine("move");
-            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
-            CheckIfDead();
-        }
-
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Up:
-                case Key.W:
-                    //keyPressed = GameCommands.Up;
-                    CurrentController.InputListener.KeyForward = false;
-                    break;
-
-                case Key.Down:
-                case Key.S:
-                    //keyPressed = GameCommands.Down;
-                    CurrentController.InputListener.KeyBackward = false;
-                    break;
-
-                case Key.Left:
-                case Key.A:
-                    //keyPressed = GameCommands.Left;
-                    CurrentController.InputListener.KeyLeft = false;
-                    break;
-
-                case Key.Right:
-                case Key.D:
-                    //keyPressed = GameCommands.Right;
-                    CurrentController.InputListener.KeyRight = false;
-                    break;
-                case Key.Escape:
-                    Application.Current.Shutdown();
-                    break;
-                case Key.Space:
-                case Key.T:
-                    //keyPressed = GameCommands.Space;
-                    CurrentController.InputListener.KeyFire = false;
-                    break;
-            }
-            ShopMenu.Visibility = Visibility.Collapsed;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            CheckIfDead();
-        }
         //Close shop
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseShopClick(object sender, RoutedEventArgs e)
         {
-            ShopMenu.Visibility = Visibility.Collapsed;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            CheckIfDead();
+            CloseShop();
         }
 
-        //Open shop
-        private void OpenShopButton(object sender, RoutedEventArgs e)
-        {
-            ShopMenu.Visibility = Visibility.Visible;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            CheckIfDead();
-        }
+        ////Open shop
+        //private void OpenShopClick(object sender, RoutedEventArgs e)
+        //{
+        //    OpenShop();
+        //}
 
         //Reinforce armor plating
         private void UpgradeArmorButton(object sender, RoutedEventArgs e)
         {
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= UpgradeArmorCost)
+            if (CurrentCharacter.Gold >= UpgradeArmorCost)
             {
-                CurrentController.CurrentCharacter.Gold -= UpgradeArmorCost;
-                CurrentController.CurrentCharacter.Defense += 1;
+                CurrentCharacter.Gold -= UpgradeArmorCost;
+                CurrentCharacter.Defense += 1;
 
                 UpgradeArmorCost += 20;
 
@@ -284,17 +139,17 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
-            CheckIfDead();
+            //CheckIfDead();
         }
 
         //Reforge weapon
         private void UpgradeWeaponButton(object sender, RoutedEventArgs e)
         {
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= UpgradeWeaponCost)
+            if (CurrentCharacter.Gold >= UpgradeWeaponCost)
             {
-                CurrentController.CurrentCharacter.Gold -= UpgradeWeaponCost;
-                CurrentController.CurrentCharacter.Strength += 1;
+                CurrentCharacter.Gold -= UpgradeWeaponCost;
+                CurrentCharacter.Strength += 1;
 
                 UpgradeWeaponCost += 20;
 
@@ -304,19 +159,19 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
-            CheckIfDead();
+            //CheckIfDead();
         }
 
         //Drink magic potion
         private void UpgradeHealthButton(object sender, RoutedEventArgs e)
         {
-            
+
 
             NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentController.CurrentCharacter.Gold >= UpgradeHealthCost)
+            if (CurrentCharacter.Gold >= UpgradeHealthCost)
             {
-                CurrentController.CurrentCharacter.Gold -= UpgradeHealthCost;
-                CurrentController.CurrentCharacter.Constitution += 1;
+                CurrentCharacter.Gold -= UpgradeHealthCost;
+                CurrentCharacter.Constitution += 1;
 
                 UpgradeHealthCost += 20;
 
@@ -326,25 +181,199 @@ namespace GameClient
             {
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
-            CheckIfDead();
+            //CheckIfDead();
         }
 
-        //ends game if player is dead
-        public void CheckIfDead()
-        {
-            if (CurrentController.CurrentCharacter.Health <= 0)
-            {
-                CurrentHealth.Width = 0;
-                GameOver.Visibility = Visibility.Visible;
-                MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
-                MainMenu mainmenu = new MainMenu();
-                mainmenu.Show();
-                this.Hide();
-            }
-            else
-            {
-                CurrentHealth.Width = CurrentController.CurrentCharacter.Health;
-            }
-        }
+        ////ends game if player is dead
+        //public void CheckIfDead()
+        //{
+        //    if (CurrentController.CurrentCharacter.Health <= 0)
+        //    {
+        //        CurrentHealth.Width = 0;
+        //        GameOver.Visibility = Visibility.Visible;
+        //        MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
+        //        MainMenu mainmenu = new MainMenu();
+        //        mainmenu.Show();
+        //        this.Hide();
+        //    }
+        //    else
+        //    {
+        //        CurrentHealth.Width = CurrentController.CurrentCharacter.Health;
+        //    }
+        //}
+
+        //private void LevelUpButton(object sender, RoutedEventArgs e)
+        //{
+        //    (CurrentController.CurrentCharacter as Character).LevelUp();
+        //    CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+        //    CheckIfDead();
+        //}
+
+        //private void TakeDamage(object sender, RoutedEventArgs e)
+        //{
+        //    Random rand = new Random();
+
+        //    (CurrentController.CurrentCharacter as Character).Health = (CurrentController.CurrentCharacter as Character).Health - rand.Next(10) + 1;
+
+        //    double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).Health / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+
+        //    if (healthleft <= 0)
+        //    {
+        //        CurrentHealth.Width = 0;
+        //        GameOver.Visibility = Visibility.Visible;
+        //        MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
+        //        MainMenu mainmenu = new MainMenu();
+        //        mainmenu.Show();
+        //        this.Hide();
+        //    }
+        //    else
+        //    {
+        //        CurrentHealth.Width = healthleft;
+        //    }
+        //    CheckIfDead();
+        //}
+
+        //private void GainExp(object sender, RoutedEventArgs e)
+        //{
+        //    (CurrentController.CurrentCharacter as Character).Experience += 10;
+
+        //    if ((CurrentController.CurrentCharacter as Character).Experience == (CurrentController.CurrentCharacter as Character).ExperienceCap)
+        //    {
+        //        (CurrentController.CurrentCharacter as Character).LevelUp();
+        //        CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+        //    }
+        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+        //    CheckIfDead();
+        //}
+
+        //private void GainMoreExp(object sender, RoutedEventArgs e)
+        //{
+        //    (CurrentController.CurrentCharacter as Character).Experience += 20;
+
+        //    if ((CurrentController.CurrentCharacter as Character).Experience >= (CurrentController.CurrentCharacter as Character).ExperienceCap)
+        //    {
+        //        int expleft = (CurrentController.CurrentCharacter as Character).Experience - (CurrentController.CurrentCharacter as Character).ExperienceCap;
+        //        (CurrentController.CurrentCharacter as Character).LevelUp();
+        //        (CurrentController.CurrentCharacter as Character).Experience = expleft;
+        //        CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
+        //    }
+        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
+        //    CheckIfDead();
+        //}
+
+        //private void GainGold(object sender, RoutedEventArgs e)
+        //{
+        //    (CurrentController.CurrentCharacter as Character).Gold += 10;
+        //    CheckIfDead();
+        //}
+
+
+//        private void Grid_KeyDown(object sender, KeyEventArgs e)
+//        {
+//            GameCommands keyPressed = GameCommands.None;
+//            switch (e.Key)
+//            {
+//                case Key.Up:
+//                case Key.W:
+//                    keyPressed = GameCommands.Up;
+//                    CurrentController.InputListener.KeyForward = true;
+//                    break;
+
+//                case Key.Down:
+//                case Key.S:
+//                    keyPressed = GameCommands.Down;
+//                    CurrentController.InputListener.KeyBackward = true;
+//                    break;
+
+//                case Key.Left:
+//                case Key.A:
+//                    keyPressed = GameCommands.Left;
+//                    CurrentController.InputListener.KeyLeft = true;
+//                    break;
+
+//                case Key.Right:
+//                case Key.D:
+//                    keyPressed = GameCommands.Right;
+//                    CurrentController.InputListener.KeyRight = true;
+//                    break;
+//                case Key.Escape:
+//                    Application.Current.Shutdown();
+//                    break;
+//                case Key.Space:
+//                case Key.T:
+//                    keyPressed = GameCommands.Space;
+//                    CurrentController.InputListener.KeyAttack = true;
+//                    break;
+//            }
+//            //Console.WriteLine("{0} {1} KeyDown: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, keyPressed);
+////            Console.WriteLine("KeyDown: {0}", keyPressed);
+//            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
+//            //CurrentController.KeyDown(keyPressed);
+//            CheckIfDead();
+//        }
+
+        //private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    Console.WriteLine("down");
+        //    if (e.ChangedButton == MouseButton.Left)
+        //    {
+        //        Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.LeftClick, Environment.TickCount, e.GetPosition(this)));
+        //    }
+        //    else if (e.ChangedButton == MouseButton.Right)
+        //    {
+        //        Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.RightClick, Environment.TickCount, e.GetPosition(this)));
+        //    }
+        //    CheckIfDead();
+        //}
+
+        //private void MainGrid_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    Console.WriteLine("move");
+        //    Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
+        //    CheckIfDead();
+        //}
+
+        //private void Window_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    switch (e.Key)
+        //    {
+        //        case Key.Up:
+        //        case Key.W:
+        //            //keyPressed = GameCommands.Up;
+        //            CurrentController.InputListener.KeyForward = false;
+        //            break;
+
+        //        case Key.Down:
+        //        case Key.S:
+        //            //keyPressed = GameCommands.Down;
+        //            CurrentController.InputListener.KeyBackward = false;
+        //            break;
+
+        //        case Key.Left:
+        //        case Key.A:
+        //            //keyPressed = GameCommands.Left;
+        //            CurrentController.InputListener.KeyLeft = false;
+        //            break;
+
+        //        case Key.Right:
+        //        case Key.D:
+        //            //keyPressed = GameCommands.Right;
+        //            CurrentController.InputListener.KeyRight = false;
+        //            break;
+        //        case Key.Escape:
+        //            Application.Current.Shutdown();
+        //            break;
+        //        case Key.Space:
+        //        case Key.T:
+        //            //keyPressed = GameCommands.Space;
+        //            CurrentController.InputListener.KeyAttack = false;
+        //            break;
+        //    }
+        //    ShopMenu.Visibility = Visibility.Collapsed;
+        //    NotEnoughGold.Visibility = Visibility.Collapsed;
+        //    CheckIfDead();
+        //}
+
     }
 }

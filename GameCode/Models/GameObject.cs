@@ -48,16 +48,16 @@ namespace GameCode.Models
             }
         }
 
-        private Controller _Controller;
-        public Controller Controller
-        {
-            get { return _Controller; }
-            set
-            {
-                    _Controller = value;
-                    this.FirePropertyChanged("Controller");
-            }
-        }
+        //private Controller _Controller;
+        //public Controller Controller
+        //{
+        //    get { return _Controller; }
+        //    set
+        //    {
+        //            _Controller = value;
+        //            this.FirePropertyChanged("Controller");
+        //    }
+        //}
 
         private GameManager _Manager;
         public GameManager Manager
@@ -69,17 +69,6 @@ namespace GameCode.Models
                     this.FirePropertyChanged("Manager");
             }
         }
-
-        //public GameObjectType _ObjectType;
-        //public GameObjectType ObjectType
-        //{
-        //    get { return _ObjectType; }
-        //    set
-        //    {
-        //        _ObjectType = value;
-        //        this.FirePropertyChanged("ObjectType");
-        //    }
-        //}
 
         private Vector3 _Position;
         public Vector3 Position
@@ -119,7 +108,7 @@ namespace GameCode.Models
         public int ID
         {
             get { return _ID; }
-            private set { _ID = value; }
+            set { _ID = value; }
         }
 
         public GameObject(
@@ -130,7 +119,7 @@ namespace GameCode.Models
             )
         {
             Alive = true;
-            Controller = new Controller();
+            //Controller = new Controller();
             Manager = manager;
             Position = position;
             Size = size;

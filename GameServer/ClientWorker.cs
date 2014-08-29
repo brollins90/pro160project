@@ -32,9 +32,9 @@ namespace GameServer
                 sr = new StreamReader(Client.GetStream());
                 sw = new StreamWriter(Client.GetStream());
             }
-            catch (IOException e)
+            catch (IOException ex)
             {
-                Console.WriteLine("in or out failed");
+                Console.WriteLine("in or out failed: {0}", ex.ToString());
                 return;
             }
 
@@ -47,17 +47,17 @@ namespace GameServer
                     //synchronized (AllClientWorkers) {
                     foreach (ClientWorker cw in AllClientWorkers)
                     {
-                        if (cw != this)
+                        if (cw != this) // Server should not update itself...
                         {
                             cw.sw.WriteLine(Connection + "," + line);
                         }
                     }
                     //}
                 }
-                catch (IOException e)
+                catch (IOException ex)
                 {
                     //remove the failed client
-                    Console.WriteLine("Fuck you guys.");
+                    Console.WriteLine("Fuck you guys: {0}",ex.ToString());
                     //synchronized (AllClientWorkers) {
                     int index = AllClientWorkers.FindIndex(x => x == this);
                     //if index == 0, remove the entire room (lost game server)

@@ -9,16 +9,11 @@ using System.Windows;
 
 namespace GameCode.Models
 {
-    public class Rocks : GameObject
+    public class Rocks : Debris
     {
         public Rocks(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
-            Team = GameManager.TEAM_INT_DEBRIS;
-        }
-        public override void Update(double deltaTime)
-        {
-            return;
         }
     }
 }

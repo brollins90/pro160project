@@ -19,6 +19,25 @@
             Play Online
         </Button>
 
+        <TextBox x:Name="ServerNameText" Width="250" Height="63"  Margin="277,245,276,165" Text="localhost" Visibility="Hidden">
+        </TextBox>
+        
+        <Button x:Name="ConnectToServer" Width="250" Height="63"  Margin="277,331,276,79" Click="ConnectToServerButton" Visibility="Hidden">
+            Connect
+        </Button>
+
+        <TextBox x:Name="ServerInfoText" Width="250" Height="63"  Margin="29,211,538,79" Text="blake" Visibility="Hidden" AcceptsReturn="True" TextWrapping="Wrap">
+        </TextBox>
+
+        <TextBox x:Name="ServerSendText" Width="250" Height="63"  Margin="284,211,283,79" Text="" Visibility="Hidden" AcceptsReturn="True" TextWrapping="Wrap">
+        </TextBox>
+
+        <Button x:Name="ServerSend" Width="250" Height="63"  Margin="539,211,28,79" Click="ServerSendButton" Visibility="Hidden">
+            Send
+        </Button>
+
+
+
         <Button x:Name="Mage" Width="250" Height="180" Click="Mage_Click" Visibility="Hidden" Margin="29,211,538,79">
             <Canvas>
                 <TextBlock FontSize="24" Canvas.Left="-114" Canvas.Top="-56">You're a Wizard Harry</TextBlock>

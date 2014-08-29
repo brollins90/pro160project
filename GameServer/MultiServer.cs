@@ -34,9 +34,9 @@ namespace GameServer
                     Connections++;
                     clientSetupAgent.Start();
                 }
-                catch (IOException e)
+                catch (IOException ex)
                 {
-                    Console.WriteLine("Accept failed");
+                    Console.WriteLine("Accept failed: {0}", ex.ToString());
                 }
             }
         }

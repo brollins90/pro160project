@@ -19,19 +19,6 @@ namespace GameCode.Models
     };
     public class Character : Bot
     {
-        //private float RotationSpeed = 3;
-        //private Vector3 acceleration = new Vector3(10,10,0);
-
-        private CharacterClasses _Classes;
-        public CharacterClasses Classes
-        {
-            get { return _Classes; }
-            set
-            {
-                _Classes = value;
-                this.FirePropertyChanged("Classes");
-            }
-        }
 
         private double _HealthBarLength;    
         public double HealthBarLength
@@ -88,6 +75,17 @@ namespace GameCode.Models
             }
         }
 
+        private InputListener _IL;
+        public InputListener IL
+        {
+            get { return _IL; }
+            set
+            {
+                _IL = value;
+                this.FirePropertyChanged("IL");
+            }
+        }        
+
         private int _Level;
         public int Level
         {
@@ -98,15 +96,6 @@ namespace GameCode.Models
                 this.FirePropertyChanged("Level");
             }
         }
-
-        //private PlayerInput _PlayerInput;
-
-        //public PlayerInput PlayerInput
-        //{
-        //    get { return _PlayerInput; }
-        //    set { _PlayerInput = value; }
-        //}
-
 
         private int _Strength;
         public int Strength
@@ -130,42 +119,18 @@ namespace GameCode.Models
             }
         }
 
-        private Weapon _Weapon;
-
-        public Weapon Weapon
+        public Character(Vector3 position, GameManager manager, InputListener il, int type = GameConstants.TYPE_CHARACTER_ARCHER)
+            : base(position, manager, type)
         {
-            get { return _Weapon; }
-            set { _Weapon = value; }
-        }
-
-
-        public Character(Vector3 position, GameManager manager, CharacterClasses type = Models.CharacterClasses.Fighter)
-            : base(position, manager)
-        {
+            IL = il;
 
             switch (type)
             {
-                case Models.CharacterClasses.Fighter:
-                    Acceleration = new Vector3(8, 8, 0);
-                    Weapon = new Sword(this);
-                    Angle = -90;
-                    Constitution = 7;
-                    Defense = 8;
-                    Experience = 0;
-                    Damage = Strength * 2;
-                    ExperienceCap = 100;
-                    Gold = 0;
-                    MaxHealth = Constitution * 20;
-                    RestoreHealthToMax();
-                    Level = 1;
-                    Size = new Vector3(32, 32, 0);
-                    Strength = 3;
-                    break;
-
-                case Models.CharacterClasses.Archer:
+                case GameConstants.TYPE_CHARACTER_ARCHER:
                     Acceleration = new Vector3(5, 5, 0);
                     Weapon = new CrossBow(this);
                     Angle = -90;
+                    ClassType = type;
                     Constitution = 5;
                     Defense = 6;
                     Experience = 0;
@@ -179,10 +144,29 @@ namespace GameCode.Models
                     Strength = 3;
                     break;
 
-                case Models.CharacterClasses.Mage:
+                case GameConstants.TYPE_CHARACTER_FIGHTER:
+                    Acceleration = new Vector3(8, 8, 0);
+                    Weapon = new Sword(this);
+                    Angle = -90;
+                    ClassType = type;
+                    Constitution = 7;
+                    Defense = 8;
+                    Experience = 0;
+                    Damage = Strength * 2;
+                    ExperienceCap = 100;
+                    Gold = 0;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
+                    Level = 1;
+                    Size = new Vector3(32, 32, 0);
+                    Strength = 3;
+                    break;
+
+                case GameConstants.TYPE_CHARACTER_MAGE:
                     Acceleration = new Vector3(3, 3, 0);
                     Weapon = new Magic(this);
                     Angle = -90;
+                    ClassType = type;
                     Constitution = 4;
                     Defense = 4;
                     Experience = 0;
@@ -196,10 +180,7 @@ namespace GameCode.Models
                     Strength = 3;
                     break;
             }
-            
-            
         }
-
 
         public void LevelUp()
         {
@@ -222,38 +203,36 @@ namespace GameCode.Models
         }
 
         public override void CheckInput(double deltaTime) {
-            // check for a command
-            GameCommand cmd = this.Controller.GetMove();
-            GameCommands keyPressed = cmd.Command;
-            if (Controller.InputListener.KeyForward)//(keyPressed == GameCommands.Up)
+
+            if (IL.KeyForward)//(keyPressed == GameCommands.Up)
             {
-                MoveForward(deltaTime);
+                this.MoveForward(deltaTime);
             }
-            if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.Down)
+            if (IL.KeyBackward)//(keyPressed == GameCommands.Down)
             {
-                MoveBackward(deltaTime);
+                this.MoveBackward(deltaTime);
             }
-            if (Controller.InputListener.KeyLeft)//(keyPressed == GameCommands.Left)
+            if (IL.KeyLeft)//(keyPressed == GameCommands.Left)
             {
-                MoveLeft(deltaTime);
+                this.MoveLeft(deltaTime);
             }
-            if (Controller.InputListener.KeyRight)//(keyPressed == GameCommands.Right)
+            if (IL.KeyRight)//(keyPressed == GameCommands.Right)
             {
-                MoveRight(deltaTime);
+                this.MoveRight(deltaTime);
             }
             //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
             //{
             //    StopMoving(deltaTime);
             //}
-            if (keyPressed == GameCommands.MouseMove)
-            {
-                System.Windows.Point mousePos = (System.Windows.Point)cmd.Additional;
-                RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
-            }
-            if (Controller.InputListener.KeyFire)//(keyPressed == GameCommands.Space || 
+            //if (keyPressed == GameCommands.MouseMove)
+            //{
+            System.Windows.Point mousePos = IL.MousePos;// (System.Windows.Point)cmd.Additional;
+            this.RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
+            //}
+            if (IL.KeyAttack)//(keyPressed == GameCommands.Space || 
             //keyPressed == GameCommands.LeftClick)
             {
-                Weapon.Attack();
+                this.Weapon.Attack();
             }
         }
 

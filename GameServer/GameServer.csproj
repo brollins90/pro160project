@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GameServer.SimpleServer</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,6 +49,7 @@
     <Compile Include="MultiServerClientSetup.cs" />
     <Compile Include="MultiServerRoom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

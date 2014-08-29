@@ -55,13 +55,13 @@ namespace GameServer
                     }
 
                 }
-                catch (IOException e)
+                catch (IOException ex)
                 {
                     sw.WriteLine("bye");
-                    Console.WriteLine("client disconnected before starting a game.");
+                    Console.WriteLine("client disconnected before starting a game: {0}",ex.ToString());
                     return;
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     i = -1;
                 }
@@ -89,10 +89,10 @@ namespace GameServer
                         name = sr.ReadLine();
 
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
                         sw.WriteLine("bye");
-                        Console.WriteLine("client disconnected before starting a game.");
+                        Console.WriteLine("client disconnected before starting a game: {0}",ex.ToString());
                         return;
                     }
                 } while (name == null);

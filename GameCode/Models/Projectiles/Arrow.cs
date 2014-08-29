@@ -31,7 +31,7 @@ namespace GameCode.Models.Projectiles
                 {
                     if (o.ID == 14)
                     {
-                        Console.WriteLine("asfd");
+                        //Console.WriteLine("asfd");
                     }
                     // dont check for collisions with self, owner
                     // TODO or team

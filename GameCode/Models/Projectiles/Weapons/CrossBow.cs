@@ -19,7 +19,7 @@ namespace GameCode.Models.Weapons
         public override void Attack()
         {
             if (IsReadyForNextAttack()) { 
-                Owner.Manager.AddProjectile(
+                Owner.Manager.Add(
                     new Arrow(Owner,
                         Owner.Manager,
                         Owner.Angle,

@@ -21,7 +21,7 @@ namespace GameCode.Models.Weapons
         {
             if (IsReadyForNextAttack())
             {
-                Owner.Manager.AddProjectile(
+                Owner.Manager.Add(
                     new StabAttack(Owner,
                         Owner.Manager,
                         Owner.Angle,
