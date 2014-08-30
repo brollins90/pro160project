@@ -69,7 +69,7 @@ namespace GameCode.Models
         public Bot(Vector3 position, GameManager manager, int type = GameConstants.TYPE_BOT_MELEE)
             : base(position, manager, new Vector3(0,0,0))
         {
-            Team = GameManager.TEAM_INT_BADDIES;
+            Team = GameConstants.TEAM_INT_BADDIES;
 
             switch (type)
             {
@@ -139,10 +139,31 @@ namespace GameCode.Models
         protected void DecreaseHealth(int val)
         {
             Health -= val;
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
         }
+
         protected void IncreaseHealth(int val)
         {
             Health += val;
+            if (Health >= MaxHealth)
+            {
+                Health = MaxHealth;
+            }
+        }
+
+        public virtual void TakeDamage(int amount, Bot attacker)
+        {
+            DecreaseHealth(amount);
+            if (!Alive)
+            {
+                if (attacker.GetType() == typeof(Character))
+                {
+                    ((Character)attacker).IncreaseExperience(this.ClassType);
+                }
+            }
         }
 
 
@@ -211,34 +232,6 @@ namespace GameCode.Models
                 this.Position = previousPosition;
             }
 
-        }
-
-        public void HasDied()
-        {
-            Alive = false;
-        }
-
-        public void TakeDamage(int amount, Bot owner)
-        {
-            //Console.WriteLine("TakeDamage() " + amount);
-            DecreaseHealth(amount);
-            //Console.WriteLine("Health after: " + Health);
-            if (Health <= 0)
-            {
-                HasDied();
-                if (owner.GetType() == typeof(Character)) { 
-                    ((Character)owner).IncreaseExperience(this.ClassType);
-                }
-            }
-        }
-
-        public void GiveHealth(int amount)
-        {
-            IncreaseHealth(amount);
-            if (Health >= MaxHealth)
-            {
-                Health = MaxHealth;
-            }
         }
     }
 }

@@ -10,15 +10,15 @@ namespace GameCode
 {
     public class NetworkClient
     {
-        private TcpClient Client;
+        private NetworkStream Stream;
         private StreamReader SR;
         private StreamWriter SW;
 
-        public NetworkClient(TcpClient client)
+        public NetworkClient(NetworkStream stream)
         {
-            Client = client;
-            SR = new StreamReader(Client.GetStream());
-            SW = new StreamWriter(Client.GetStream());
+            Stream = stream;
+            SR = new StreamReader(Stream);
+            SW = new StreamWriter(Stream);
         }
 
         public void WriteLine(string toWrite)
@@ -37,6 +37,19 @@ namespace GameCode
         public string ReadLine()
         {
             return SR.ReadLine();
+            //bool trying = true;
+            //while (trying)
+            //{
+            //    if (Stream.DataAvailable)
+            //    {
+            //        return SR.ReadLine();
+            //    }
+            //    else
+            //    {
+            //        //Thread.
+            //    }
+            //}
+            //return "";
         }
     }
 }

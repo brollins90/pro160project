@@ -17,6 +17,7 @@ namespace GameServer
         private StreamWriter sw;
         private int Connection;
         public bool Running { get; set; }
+        private int ErrorCount;
 
         public ClientWorker(TcpClient client, List<ClientWorker> allClientWorkers, int conn)
         {
@@ -25,12 +26,13 @@ namespace GameServer
             AllClientWorkers = allClientWorkers;
             Connection = conn;
             Running = false;
+            ErrorCount = 0;
         }
         internal void Start()
         {
             Console.WriteLine("{0} ClientWorker - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Running = true;
-            String line;
+            String line = "";
             try
             {
                 //ClientStream = Client.GetStream();
@@ -55,7 +57,19 @@ namespace GameServer
                         {
                             if (cw != this) // Server should not update itself...
                             {
-                                cw.sw.WriteLine(Connection + "," + line);
+                                try
+                                {
+                                    cw.sw.WriteLine(Connection + "," + line);
+                                }
+                                catch (Exception)
+                                {
+                                    // even if there is a temporary error, dont worry yet
+                                    ErrorCount++;
+                                    if (ErrorCount > 3)
+                                    {
+                                        throw;
+                                    }
+                                }
                             }
                         }
                     }
@@ -63,7 +77,8 @@ namespace GameServer
                 catch (IOException ex)
                 {
                     //remove the failed client
-                    Console.WriteLine("Fuck you guys: {0}",ex.ToString());
+                    Console.WriteLine("The client has failed: {0}", ex.Message);
+                    Console.WriteLine("last line was: {0}", line);
                     lock (AllClientWorkers) {
                         int index = AllClientWorkers.FindIndex(x => x == this);
                         //if index == 0, remove the entire room (lost game server)

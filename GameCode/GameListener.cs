@@ -49,9 +49,14 @@ namespace GameCode
                         //Console.WriteLine("messageType: {0}, objID: {1}, line: {2}:", messageType, objectID, line);
 
                         // Listen for client stuff
-                        if (messageType == GameConstants.MSG_ADD || messageType == GameConstants.MOVEMENT_ATTACK)
+                        if (messageType == GameConstants.MSG_ADD)// || messageType == GameConstants.MOVEMENT_ATTACK)
                         {
                             Add(objectID, data);
+                        }
+                        else if (messageType == GameConstants.MOVEMENT_ATTACK)
+                        {
+                            int ownerID = int.Parse(data[11]);
+                            ((Character)World.Get(ownerID)).Weapon.Attack();
                         }
                         else if (messageType == GameConstants.MSG_UPDATE)
                         {
@@ -121,6 +126,7 @@ namespace GameCode
             }
             else if (objectType > GameConstants.TYPE_CHARACTER_LOW && objectType < GameConstants.TYPE_CHARACTER_HIGH) // its a character
             {
+                //int damage = int.Parse(data[11]);
                 o = new Character(pos, Manager, null, objectType) 
                 {
                     Angle = ang,
@@ -201,20 +207,23 @@ namespace GameCode
 
         private void Update(int objectID, string[] data)
         {
-            //Console.WriteLine("{0} GameListener - Update: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
-            Vector3 pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
-            Vector3 vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
-            double ang = double.Parse(data[10]);
+            if (Manager.GetCurrentCharacter().ID != objectID)
+            {
+                //Console.WriteLine("{0} GameListener - Update: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
+                Vector3 pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
+                Vector3 vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
+                double ang = double.Parse(data[10]);
 
-            GameObject o = World.Get(objectID);
-            if (o != null)
-            {
-                o.Angle = ang;
-                o.Position = pos;
-            }
-            else
-            {
-                Add(objectID, data);
+                GameObject o = World.Get(objectID);
+                if (o != null)
+                {
+                    o.Angle = ang;
+                    o.Position = pos;
+                }
+                else
+                {
+                    Add(objectID, data);
+                }
             }
         }
 

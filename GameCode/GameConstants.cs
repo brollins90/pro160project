@@ -19,6 +19,11 @@ namespace GameCode
 
         public const int MOUSE_POS = 65;
 
+        public const int TEAM_INT_NONE = 100;
+        public const int TEAM_INT_PLAYERS = 101;
+        public const int TEAM_INT_BADDIES = 102;
+        public const int TEAM_INT_DEBRIS = 103;
+
         public const int MOVEMENT_LOW = 128;
         public const int MOVEMENT_DOWN = 129;
         public const int MOVEMENT_LEFT = 130;

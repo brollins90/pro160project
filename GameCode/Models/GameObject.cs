@@ -114,8 +114,7 @@ namespace GameCode.Models
         public GameObject(
             Vector3 position,
             GameManager manager,
-            Vector3 size,
-            int team = 1
+            Vector3 size
             )
         {
             Alive = true;
@@ -123,7 +122,7 @@ namespace GameCode.Models
             Manager = manager;
             Position = position;
             Size = size;
-            Team = team;
+            Team = GameConstants.TEAM_INT_NONE;
             ID = NextID++;
             Angle = 0;
         }

@@ -124,6 +124,7 @@ namespace GameCode.Models
         public Character(Vector3 position, GameManager manager, InputListener il, int type = GameConstants.TYPE_CHARACTER_ARCHER)
             : base(position, manager, type)
         {
+            Team = GameConstants.TEAM_INT_PLAYERS;
             IL = il;
 
             switch (type)
@@ -233,6 +234,13 @@ namespace GameCode.Models
             Health = MaxHealth;
         }
 
+        public override void TakeDamage(int amount, Bot attacker)
+        {
+            amount -= Defense;
+            amount = (amount <= 0) ? 1 : amount;
+            base.TakeDamage(amount, attacker);
+        }
+
         public override void CheckInput(double deltaTime) {
             if (IL != null)
             {
@@ -263,14 +271,12 @@ namespace GameCode.Models
                 System.Windows.Point mousePos = IL.MousePos;// (System.Windows.Point)cmd.Additional;
                 this.RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
                 //}
-                if (IL.KeyAttack)//(keyPressed == GameCommands.Space || 
-                //keyPressed == GameCommands.LeftClick)
-                {
-                    int projID = this.Weapon.Attack();
-                    string msgString = "" + GameConstants.MOVEMENT_ATTACK + "," + this.Weapon.Projectile.ClassType + "," + projID + "," + this.Position.x + "," + this.Position.y + "," + this.Position.z + ",0,0,0," + this.Angle + "," + this.ID;
-                    //msgString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
-                    Manager.SendInfo(msgString);
-                }
+                //if (IL.KeyAttack)//(keyPressed == GameCommands.Space || 
+                ////keyPressed == GameCommands.LeftClick)
+                //{
+                //    int projID = 0;// this.Weapon.Attack();
+                //    Manager.SendInfo(MessageBuilder.AttackMessage(this, projID));
+                //}
             }
         }
 

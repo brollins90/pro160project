@@ -20,6 +20,7 @@ namespace GameCode
         private InputListener GL;
         public Character CurrentCharacter; 
         public bool Running { get; set; }
+        private Random Rand;
 
 
         public UpdateThread(GameManager manager, bool isServer, InputListener gl, int classChosen)
@@ -31,20 +32,24 @@ namespace GameCode
             GL = gl;
             IsServer = isServer;
             Timer = new DispatcherTimer();
-            //Timer.Interval = TimeSpan.FromMilliseconds((1000));
             Timer.Interval = TimeSpan.FromMilliseconds((15));
             Timer.Tick += Timer_Tick;
+            Rand = new Random();
 
-            int r1 = new Random().Next(10000, 100000);
+            //int r1 = new Random().Next(10000, 100000);
 
-            CurrentCharacter = new Character(new Vector3(920, 800, 0), Manager, GL, classChosen)
+            CurrentCharacter = new Character(new Vector3(820 + Rand.Next(0,200), 800, 0), Manager, GL, classChosen)
             {
-                Team = GameManager.TEAM_INT_PLAYER,
-                ID = r1
+                ID = Rand.Next(10000, 100000)
             };
             Manager.AddObject(CurrentCharacter);
             //Console.WriteLine("{0} UpdateThread - CreatedCharacter: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, CurrentCharacter.ID);
 
+            // i think this is already somewhere else...
+            //if (!isServer)
+            //{
+            //    Manager.SendInfo(MessageBuilder.AddMessage(CurrentCharacter));
+            //}
 
 
         }
@@ -74,36 +79,25 @@ namespace GameCode
         {
             //Console.WriteLine("{0} UpdateThread - Update({1})", System.Threading.Thread.CurrentThread.ManagedThreadId, deltaTime);
 
+            // Since both the clients and the server are controlling a character, update the position before we check to see 
+            // if this is the client or not
+            CurrentCharacter.Update(deltaTime);
+
             if (IsServer)
             {
                 // If paused, return
                 // TODO
+                
                 // Update Pathing
                 // TODO
+
                 // Update Projectiles
                 foreach (GameProjectile o in World.Projectiles)
                 {
                     if (o.Alive)
                     {
                         o.Update(deltaTime);
-
-                        // Message sending code:
-                        int type = GameConstants.TYPE_PROJ_ARROW;
-                        if (o.GetType() == typeof(Arrow))
-                        {
-                            type = GameConstants.TYPE_PROJ_ARROW;
-                        }
-                        else if (o.GetType() == typeof(FireBall))
-                        {
-                            type = GameConstants.TYPE_PROJ_FIRE;
-                        }
-                        else if (o.GetType() == typeof(StabAttack))
-                        {
-                            type = GameConstants.TYPE_PROJ_STAB;
-                        }
-                        String msgString = "" + GameConstants.MSG_UPDATE + "," + type + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
-                        Manager.SendInfo(msgString);
-                        // End Message sending code:
+                        Manager.SendInfo(MessageBuilder.UpdateMessage(o));
                     }
                 }
 
@@ -113,11 +107,7 @@ namespace GameCode
                     if (o.Alive)
                     {
                         o.Update(deltaTime);
-
-                        // Message sending code:
-                        String msgString = "" + GameConstants.MSG_UPDATE + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
-                        Manager.SendInfo(msgString);
-                        // End Message sending code:
+                        Manager.SendInfo(MessageBuilder.UpdateMessage(o));
                     }
                 }
 
@@ -126,64 +116,41 @@ namespace GameCode
                 {
                     if (o.Alive)
                     {
-                        o.Update(deltaTime); // server shouldnt change this, just the clients
-
-                        // Message sending code:
-                        String msgString = "" + GameConstants.MSG_UPDATE + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
-                        Manager.SendInfo(msgString);
-                        // End Message sending code:
-                    }
-                }
-
-                foreach (Debris o in World.Debris)
-                {
-                    if (o.Alive)
-                    {
                         o.Update(deltaTime);
+                        Manager.SendInfo(MessageBuilder.UpdateMessage(o));
                     }
                 }
+
+                // Update the Debris  (Right now we dont need to do this since debris will never change)
+                //foreach (Debris o in World.Debris)
+                //{
+                //    if (o.Alive)
+                //    {
+                //        o.Update(deltaTime);
+                //    }
+                //}
 
                 // Remove the dead
                 Manager.RemoveDead();
 
-                //var toRemove = World.Objects.Where(obj => obj.Alive != true).ToList();
-                //foreach (var o in toRemove)
-                //{
-                //    World.Objects.Remove(o);
-                //    // Message sending code:
-                //    String msgString = "" + GameConstants.MSG_DEAD + "," + o.ClassType + "," + o.ID;
-                //     Manager.SendInfo(msgString);
-                //    // End Message sending code:
-                //}
-
-
-
+                // Check if the attack was pressed for the Current Character
+                if (CurrentCharacter.IL.KeyAttack)
+                {
+                    CurrentCharacter.Weapon.Attack();
+                }
 
             }
             else // not server
             {
-                //// Check input
-                ////CheckInput(deltaTime);
-                //if (CurrentCharacter.IL.KeyAttack)
-                //{
-                //    //msgString = "" + GameConstants.MSG_ADD + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Size.x + "," + o.Size.y + "," + o.Size.z + "," + o.Angle;
-                //}
+                // Check if the attack was pressed for the Current Character
+                if (CurrentCharacter.IL.KeyAttack)
+                {
+                    Manager.SendInfo(MessageBuilder.AttackMessage(CurrentCharacter, 0));
+                }
 
-                //// Message sending code:
-                //String msgString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
-                //Manager.SendInfo(msgString);
-                //// End Message sending code:
-
-                //// input
-                //// send self
-
-
-
-            } // both client and server:
-            CurrentCharacter.Update(deltaTime);
-            
-            String updateString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
-            Manager.SendInfo(updateString);
+                // Update Character position
+                Manager.SendInfo(MessageBuilder.UpdateMessage(CurrentCharacter));
+            }
         }
 
         public int GetCurrentTime()

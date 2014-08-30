@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="MessageBuilder.cs" />
     <Compile Include="Models\Debris.cs" />
+    <Compile Include="MTObservableCollection.cs" />
     <Compile Include="NetworkClient.cs" />
     <Compile Include="UpdateThread.cs" />
     <Compile Include="GameConstants.cs" />

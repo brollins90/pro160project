@@ -12,8 +12,8 @@ namespace GameCode.Models
 {
     public class GameWorld
     {
-        private ObservableCollection<GameObject> _Objects;
-        public ObservableCollection<GameObject> Objects
+        private MTObservableCollection<GameObject> _Objects;
+        public MTObservableCollection<GameObject> Objects
         {
             get { return _Objects; }
             set { _Objects = value; }
@@ -21,7 +21,7 @@ namespace GameCode.Models
 
         public GameWorld()
         {
-            Objects = new ObservableCollection<GameObject>();
+            Objects = new MTObservableCollection<GameObject>();
         }
 
         public void AddObject(GameObject o)

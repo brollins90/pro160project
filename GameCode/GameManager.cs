@@ -17,19 +17,17 @@ namespace GameCode
 {
     public class GameManager
     {
-        public string Name;
         private GameWorld _World;
-
         public GameWorld World
         {
             get { return _World; }
             set { _World = value; }
         }
-        
+        //public string Name;        
         private NetworkClient NetClient;
         private bool IsServer;
-        public UpdateThread UT;
-        public GameListener LT;
+        private UpdateThread UT;
+        private GameListener LT;
 
         public GameManager(bool isServer, NetworkClient netClient, InputListener gl, int classChosen)
         {
@@ -44,39 +42,18 @@ namespace GameCode
             LT = new GameListener(NetClient, this);
             new Thread(LT.Start).Start();
 
-            
             if (IsServer)
             {
-                //UpdateThread ut = new UpdateThread(myGUI.bmt);
                 LoadWorld();
-
-                // do the update and use the send
             }
             else
             {
-                //string[] data = s.Split(',');
-                ////int connectionID = int.Parse(data[0]);
-                //int messageType = int.Parse(data[0]);
-                //if (messageType == GameConstants.MSG_REQUEST_ALL_DATA)
-                //{
-                //    string s2 = "";
-                //}
-
                 SendInfo(MessageBuilder.RequestAllMessage());
-                // bind to the client keyboard to send messages
             }
             //new Thread(UT.Start).Start();
             UT.Start();
-            
 
         }
-        public const int TEAM_INT_DEBRIS = 97;
-        public const int TEAM_INT_PLAYER = 98;
-        public const int TEAM_INT_BADDIES = 99;
-
-        public int tempMyTeam = 15;
-        public int tempOtherTeam = 20;
-        
 
 
         public void AddObject(GameObject o)
@@ -92,10 +69,31 @@ namespace GameCode
                 World.AddObject(o);
             }));
         }
+
+        public void EndGame()
+        {
+            // Called from listen thread, so LT is already stopped
+            LT.Running = false;
+            UT.Running = false;
+            Application.Current.Shutdown();
+            Environment.Exit(0);
+        }
         
         public Character GetCurrentCharacter()
         {
             return UT.CurrentCharacter;
+        }
+
+        public void RemoveDead()
+        {
+            foreach (GameObject o in World.Dead)
+            {
+                RemoveObject(o);
+                if (IsServer)
+                {
+                    SendInfo(MessageBuilder.DeadMessage(o));
+                }
+            }
         }
 
         public void RemoveObject(int id)
@@ -124,42 +122,6 @@ namespace GameCode
             {
                 World.RemoveObject(id);
             }));
-        }
-
-        public void RemoveDead()
-        {
-            foreach (GameObject o in World.Dead)
-            {
-                RemoveObject(o);
-                if (IsServer)
-                {
-                    String msgString = "" + GameConstants.MSG_DEAD + "," + o.ClassType + "," + o.ID + ",0,0,0,0,0,0,0";
-                    SendInfo(msgString);
-                }
-            }
-        }
-
-
-        public void ResetGame()
-        {
-
-        }
-
-        public void SendState()
-        {
-
-        }
-
-        public void StartGame()
-        {
-        }
-
-        public void EndGame()
-        {
-            // Called from listen thread, so LT is already stopped
-            LT.Running = false;
-            UT.Running = false;
-            Application.Current.Shutdown();
         }
 
         internal void SendInfo(String toSend)

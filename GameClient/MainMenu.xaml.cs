@@ -77,7 +77,7 @@ namespace GameClient
             try
             {
                 TcpClient client = new TcpClient(ServerNameText.Text, 3333);
-                NetClient = new NetworkClient(client);
+                NetClient = new NetworkClient(client.GetStream());
             }
             catch (Exception ex)
             {

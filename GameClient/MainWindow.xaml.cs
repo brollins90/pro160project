@@ -82,6 +82,8 @@ namespace GameClient
                         Manager.EndGame();
                     }
                     break;
+                case Key.O:
+                case Key.P:
                 case Key.F10:
                     OpenShop();
                     break;
