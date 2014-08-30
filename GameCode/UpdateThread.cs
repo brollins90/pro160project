@@ -18,22 +18,40 @@ namespace GameCode
         private int LastTimeMillis = 0;
         private bool IsServer;
         private InputListener GL;
+        public Character CurrentCharacter; 
+        public bool Running { get; set; }
 
-        public UpdateThread(GameManager manager, bool isServer, InputListener gl)
+
+        public UpdateThread(GameManager manager, bool isServer, InputListener gl, int classChosen)
         {
             Console.WriteLine("{0} UpdateThread - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Running = false;
             Manager = manager;
             World = Manager.World;
             GL = gl;
             IsServer = isServer;
             Timer = new DispatcherTimer();
+            //Timer.Interval = TimeSpan.FromMilliseconds((1000));
             Timer.Interval = TimeSpan.FromMilliseconds((15));
             Timer.Tick += Timer_Tick;
+
+            int r1 = new Random().Next(10000, 100000);
+
+            CurrentCharacter = new Character(new Vector3(920, 800, 0), Manager, GL, classChosen)
+            {
+                Team = GameManager.TEAM_INT_PLAYER,
+                ID = r1
+            };
+            Manager.AddObject(CurrentCharacter);
+            //Console.WriteLine("{0} UpdateThread - CreatedCharacter: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, CurrentCharacter.ID);
+
+
 
         }
         public void Start()
         {
             Console.WriteLine("{0} UpdateThread - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Running = true;
             LastTimeMillis = GetCurrentTime();
             Timer.Start();
         }
@@ -108,7 +126,7 @@ namespace GameCode
                 {
                     if (o.Alive)
                     {
-                        o.Update(deltaTime);
+                        o.Update(deltaTime); // server shouldnt change this, just the clients
 
                         // Message sending code:
                         String msgString = "" + GameConstants.MSG_UPDATE + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
@@ -126,17 +144,46 @@ namespace GameCode
                 }
 
                 // Remove the dead
-                World.RemoveDead();
+                Manager.RemoveDead();
+
+                //var toRemove = World.Objects.Where(obj => obj.Alive != true).ToList();
+                //foreach (var o in toRemove)
+                //{
+                //    World.Objects.Remove(o);
+                //    // Message sending code:
+                //    String msgString = "" + GameConstants.MSG_DEAD + "," + o.ClassType + "," + o.ID;
+                //     Manager.SendInfo(msgString);
+                //    // End Message sending code:
+                //}
+
+
+
+
             }
             else // not server
             {
-                // Check input
-                //CheckInput(deltaTime);
-                // input
-                // send self
+                //// Check input
+                ////CheckInput(deltaTime);
+                //if (CurrentCharacter.IL.KeyAttack)
+                //{
+                //    //msgString = "" + GameConstants.MSG_ADD + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Size.x + "," + o.Size.y + "," + o.Size.z + "," + o.Angle;
+                //}
 
-            }
+                //// Message sending code:
+                //String msgString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
+                //Manager.SendInfo(msgString);
+                //// End Message sending code:
 
+                //// input
+                //// send self
+
+
+
+            } // both client and server:
+            CurrentCharacter.Update(deltaTime);
+            
+            String updateString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
+            Manager.SendInfo(updateString);
         }
 
         public int GetCurrentTime()

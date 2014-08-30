@@ -16,15 +16,20 @@ namespace GameServer
         private StreamReader sr;
         private StreamWriter sw;
         private int Connection;
+        public bool Running { get; set; }
 
         public ClientWorker(TcpClient client, List<ClientWorker> allClientWorkers, int conn)
         {
+            Console.WriteLine("{0} ClientWorker - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Client = client;
             AllClientWorkers = allClientWorkers;
             Connection = conn;
+            Running = false;
         }
         internal void Start()
         {
+            Console.WriteLine("{0} ClientWorker - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Running = true;
             String line;
             try
             {
@@ -38,49 +43,56 @@ namespace GameServer
                 return;
             }
 
-            while (true)
+            while (Running)
             {
                 try
                 {
                     line = sr.ReadLine();
+                    //Console.WriteLine("{0} ClientWorker - Read: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, line);
                     //Send data back to other clients
-                    //synchronized (AllClientWorkers) {
+                    lock (AllClientWorkers) {
                     foreach (ClientWorker cw in AllClientWorkers)
-                    {
-                        if (cw != this) // Server should not update itself...
                         {
-                            cw.sw.WriteLine(Connection + "," + line);
+                            if (cw != this) // Server should not update itself...
+                            {
+                                cw.sw.WriteLine(Connection + "," + line);
+                            }
                         }
                     }
-                    //}
                 }
                 catch (IOException ex)
                 {
                     //remove the failed client
                     Console.WriteLine("Fuck you guys: {0}",ex.ToString());
-                    //synchronized (AllClientWorkers) {
-                    int index = AllClientWorkers.FindIndex(x => x == this);
-                    //if index == 0, remove the entire room (lost game server)
-                    if (index == 0)
-                    {
-                        foreach (ClientWorker cw in AllClientWorkers)
+                    lock (AllClientWorkers) {
+                        int index = AllClientWorkers.FindIndex(x => x == this);
+                        //if index == 0, remove the entire room (lost game server)
+                        if (index == 0)
                         {
-                            if (cw != this)
+                            foreach (ClientWorker cw in AllClientWorkers)
                             {
-                                cw.sw.WriteLine(Connection + ",e");
+                                if (cw != this)
+                                {
+                                    cw.sw.WriteLine(Connection + ",e");
+                                }
                             }
-                        }
-                        AllClientWorkers.Clear();
+                            AllClientWorkers.Clear();
 
+                        }
+                        else
+                        {
+                            AllClientWorkers.RemoveAt(index);
+                        }
+                        return;
                     }
-                    else
-                    {
-                        AllClientWorkers.RemoveAt(index);
-                    }
-                    return;
-                    //}
                 }
             }
+        }
+        public void Stop()
+        {
+            sr.Close();
+            sw.Close();
+            Running = false;
         }
     }
 }

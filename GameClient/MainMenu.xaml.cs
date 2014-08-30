@@ -151,7 +151,7 @@ namespace GameClient
         private void Mage_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_MAGE, NetClient, true);
+            MainWindow gamewindow = new MainWindow(true, NetClient, GameConstants.TYPE_CHARACTER_MAGE);
             gamewindow.Show();
             this.Hide();
         }
@@ -159,7 +159,7 @@ namespace GameClient
         private void Archer_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_ARCHER, NetClient, true);            
+            MainWindow gamewindow = new MainWindow(true, NetClient, GameConstants.TYPE_CHARACTER_ARCHER);            
             gamewindow.Show();
             this.Hide();
         }
@@ -167,7 +167,7 @@ namespace GameClient
         private void Fighter_Click(object sender, RoutedEventArgs e)
         {
 
-            MainWindow gamewindow = new MainWindow(GameConstants.TYPE_CHARACTER_FIGHTER, NetClient, true);
+            MainWindow gamewindow = new MainWindow(true, NetClient, GameConstants.TYPE_CHARACTER_FIGHTER);
             gamewindow.Show();
             this.Hide();
         }

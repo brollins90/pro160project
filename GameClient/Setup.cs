@@ -17,22 +17,40 @@ namespace GameClient
         [STAThread()]
         public static void Main(string[] args)
         {
-            string serverName = "localhost";
+            string serverName ="";
             int serverPort = SimpleServer.ServerPort;
+
+            Console.WriteLine("Do you want to play online?");
+            string onlineString = "no";// Console.ReadLine();
+            bool online = onlineString.ToLower()[0] == 'y';
+
+            if (online)
+            {
+                Console.WriteLine("What server do you want to connect to? [localhost]");
+                serverName = Console.ReadLine();
+                serverName = (string.IsNullOrEmpty(serverName)) ? "localhost" : serverName;
+
+                Console.WriteLine("What port? [4444]");
+                string portString = Console.ReadLine();
+                serverPort = SimpleServer.ServerPort;
+            }
             //bool playOnline = false;
 
-            //if (!playOnline)
-            //{
-            //    try
-            //    {
-            //        SimpleServer simple = new SimpleServer();
-            //        new Thread(simple.Start).Start();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine("Could not listen one server port: {0}", ex.ToString());
-            //    }
-            //}
+            if (!online)
+            {
+                try
+                {
+                    SimpleServer simple = new SimpleServer();
+                    new Thread(simple.Start)
+                    {
+                        IsBackground = true
+                    }.Start();
+                }
+                catch (SocketException ex)
+                {
+                    Console.WriteLine("Could not listen on server port: {0}", ex.ToString());
+                }
+            }
             Main_Text(serverName, serverPort);
         }
 
@@ -104,10 +122,21 @@ namespace GameClient
                 Environment.Exit(-1);
             }
 
+            // I already have my network client
+
+            // Create the GUI
             App app = new App();
-            app.MainWindow = new MainWindow(GameConstants.TYPE_CHARACTER_ARCHER, netClient, isServer);
+            app.MainWindow = new MainWindow(isServer, netClient, GameConstants.TYPE_CHARACTER_ARCHER);
             app.MainWindow.Show();
             app.Run();
+
+            //netClient.GrabGui(app.MainWindow);
+            //app.MainWindow.Timer.Start();
+
+            if (isServer)
+            {
+                // server update thread
+            }
         }
     }
 }

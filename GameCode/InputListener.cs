@@ -12,7 +12,7 @@ namespace GameCode.Models
 {
     public class InputListener
     {
-        private NetworkClient NetClient;
+        //private NetworkClient NetClient;
         public bool KeyForward;
         public bool KeyBackward;
         public bool KeyLeft;
@@ -23,9 +23,9 @@ namespace GameCode.Models
         public bool F11;
         public Point MousePos;
 
-        public InputListener(NetworkClient netClient)
+        public InputListener()
         {
-            NetClient = netClient;
+            //NetClient = netClient;
         }
 
         public void Gui_KeyDown(object sender, KeyEventArgs e)

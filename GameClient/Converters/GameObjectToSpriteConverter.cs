@@ -50,7 +50,8 @@ namespace GameClient.Converters
                 { typeof(FireBall), () => picture = new Uri("Images/FireBall.png", UriKind.Relative) },
                 { typeof(Bushes), () => picture = new Uri("Images/ItsATree.png", UriKind.Relative) },
                 { typeof(Rocks), () => picture = new Uri("Images/RockPower.png", UriKind.Relative) },
-                { typeof(CastleWalls), () => picture = new Uri("Images/BrickWall2.0.png", UriKind.Relative) }
+                { typeof(CastleWalls), () => picture = new Uri("Images/BrickWall2.0.png", UriKind.Relative) },
+                { typeof(Debris), () => picture = new Uri("Images/BrickWall2.0.png", UriKind.Relative) }
             };
 
             typeSwitch[current.GetType()]();

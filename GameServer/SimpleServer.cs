@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCode;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,22 +17,36 @@ namespace GameServer
         private List<ClientWorker> AllClientWorkers = new List<ClientWorker>();
         private int Connections = 1337;
         public static int ServerPort = 3333;
+        public bool Running { get; set; }
 
         public SimpleServer()
         {
             Console.WriteLine("{0} SimpleServer - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
-            tcpListener = new TcpListener(IPAddress.Any, ServerPort);
-            Console.WriteLine("Server running");
+            Running = false;
+            //Console.WriteLine("Server running");
         }
 
         public void Start()
         {
             Console.WriteLine("{0} SimpleServer - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
-            tcpListener.Start();
-            while (true)
+            Running = true;
+            bool started = false;
+            while (Running)
             {
                 try
                 {
+                    if (!started)
+                    {
+                        tcpListener = new TcpListener(IPAddress.Any, ServerPort);
+                        tcpListener.Start();
+                        started = true;
+                    }
+                    if (!tcpListener.Pending())
+                    {
+                        Thread.Sleep(500);
+                        continue;
+                    }
+
                     TcpClient c = tcpListener.AcceptTcpClient();
                     StreamReader sr = new StreamReader(c.GetStream());
                     StreamWriter sw = new StreamWriter(c.GetStream());
@@ -45,11 +60,38 @@ namespace GameServer
                     Connections++;
                     AllClientWorkers.Add(w);
                     new Thread(w.Start).Start();
-                } catch (IOException ex) {
-                    Console.WriteLine("Accept failed: {0}", ex.ToString());
-                    Environment.Exit(-1);
                 }
+                catch (SocketException)
+                {
+                    Console.WriteLine("cannot bind to socket, already in use.");// {0}", ex.ToString());
+                    break;
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine("Accept failed: {0}", ex.ToString());
+                    
+                    Running = false;
+                    Stop();
+                    break;
+                }
+                
             }            
+        }
+
+        public void Stop()
+        {
+            try
+            {
+                foreach (ClientWorker cw in AllClientWorkers)
+                {
+                    cw.Stop();
+                }
+                tcpListener.Stop();
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine("Failed to Stop tcplistener: {0}", ex.Message);
+            }
         }
 
         public static void Main(string[] args)
@@ -62,7 +104,7 @@ namespace GameServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Could not listen one server port: {0}", ex.ToString());
+                Console.WriteLine("Could not listen on server port: {0}", ex.ToString());
             }
         }
     }

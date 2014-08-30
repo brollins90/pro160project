@@ -23,8 +23,15 @@ namespace GameCode
 
         public void WriteLine(string toWrite)
         {
-            SW.WriteLine(toWrite);
-            SW.Flush();
+            try 
+            { 
+                SW.WriteLine(toWrite);
+                SW.Flush();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to write: {0}", ex.Message);
+            }
         }
 
         public string ReadLine()

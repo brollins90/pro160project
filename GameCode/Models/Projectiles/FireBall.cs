@@ -12,14 +12,15 @@ namespace GameCode.Models.Projectiles
      public class FireBall : GameProjectile
     {
 
-         public FireBall(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
-            base(owner,
+         public FireBall(int ownerID, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+            base(ownerID,
             manager, 
             new Vector3(20, 10, 0), // Size of an arrow is always the same
             angle,
             damage, // damage is dependant on owner but we specify a default anyway
             rangeSquared)
-        {
+         {
+             ClassType = GameConstants.TYPE_PROJ_FIRE;
         }
 
         public override void Update(double deltaTime)
@@ -43,7 +44,7 @@ namespace GameCode.Models.Projectiles
                         // only apply damage if collision is with a bot
                         if (o.GetType() == typeof(Bot) || o.GetType() == typeof(Character))
                         {
-                            ((Bot)o).TakeDamage(Damage);
+                            ((Bot)o).TakeDamage(Damage, Owner);
                         }
                         // After collision, remove from play
                         Alive = false;

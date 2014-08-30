@@ -48,16 +48,16 @@ namespace GameCode.Models
             }
         }
 
-        //private Controller _Controller;
-        //public Controller Controller
-        //{
-        //    get { return _Controller; }
-        //    set
-        //    {
-        //            _Controller = value;
-        //            this.FirePropertyChanged("Controller");
-        //    }
-        //}
+        private int _ClassType;
+        public int ClassType
+        {
+            get { return _ClassType; }
+            set
+            {
+                _ClassType = value;
+                this.FirePropertyChanged("ClassType");
+            }
+        }
 
         private GameManager _Manager;
         public GameManager Manager

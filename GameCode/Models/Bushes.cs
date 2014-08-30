@@ -15,6 +15,7 @@ namespace GameCode.Models
         public Bushes(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
+            ClassType = GameConstants.TYPE_DEBRIS_BUSH;
         }
     }
 }

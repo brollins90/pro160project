@@ -14,6 +14,7 @@ namespace GameCode.Models
         public Rocks(Vector3 position, GameManager manager, Vector3 size)
             : base(position, manager, size)
         {
+            ClassType = GameConstants.TYPE_DEBRIS_ROCK;
         }
     }
 }

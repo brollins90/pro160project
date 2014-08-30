@@ -23,17 +23,6 @@ namespace GameCode.Models
             }
         }
 
-        private int _ClassType;
-        public int ClassType
-        {
-            get { return _ClassType; }
-            set
-            {
-                _ClassType = value;
-                this.FirePropertyChanged("ClassType");
-            }
-        }
-
         private int _Damage;
         public int Damage
         {
@@ -180,7 +169,7 @@ namespace GameCode.Models
             {
                 if (RotateTowardPosition(closestEnemy.Position))
                 {
-                    if (closestLengthSquared > Weapon.ProjectileRangeSquared)
+                    if (closestLengthSquared > Weapon.Projectile.RangeSquared)
                     {
                         // get closer
                         MoveForward(deltaTime);
@@ -229,7 +218,7 @@ namespace GameCode.Models
             Alive = false;
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int amount, Bot owner)
         {
             //Console.WriteLine("TakeDamage() " + amount);
             DecreaseHealth(amount);
@@ -237,6 +226,9 @@ namespace GameCode.Models
             if (Health <= 0)
             {
                 HasDied();
+                if (owner.GetType() == typeof(Character)) { 
+                    ((Character)owner).IncreaseExperience(this.ClassType);
+                }
             }
         }
 

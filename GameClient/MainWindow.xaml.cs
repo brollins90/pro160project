@@ -34,12 +34,18 @@ namespace GameClient
         public Character CurrentCharacter { get; set; }
 
 
-        public MainWindow(int classChosen, NetworkClient netClient, bool isServer)
+        public MainWindow(bool isServer, NetworkClient netClient, int classChosen)
         {
             Console.WriteLine("{0} MainWindow - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
-            Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
 
-            GL = new InputListener(netClient);
+            UpgradeArmorCost = 50;
+            UpgradeWeaponCost = 30;
+            UpgradeHealthCost = 50;
+
+            Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
+            this.Cursor = myCursor;
+
+            GL = new InputListener();
 
             this.KeyDown += GL.Gui_KeyDown;
             this.KeyDown += this.Gui_KeyDown;
@@ -47,24 +53,14 @@ namespace GameClient
             this.MouseDown += GL.Gui_MouseDown;
             this.MouseMove += GL.Gui_MouseMove;
 
-            this.Cursor = myCursor;
-
-            UpgradeArmorCost = 50;
-            UpgradeWeaponCost = 30;
-            UpgradeHealthCost = 50; 
-
-            //ClassChosen = classChosen;
             // Init the components
             InitializeComponent();
-            // Every game needs a manager (instance of the game)
-            Manager = new GameManager(isServer, netClient, GL);
 
-            // Create my character
-            CurrentCharacter = new Character(new Vector3(920, 800, 0), Manager, GL, classChosen)
-            {
-                Team = GameManager.TEAM_INT_PLAYER
-            };
-            Manager.World.Add(CurrentCharacter);
+            // Every game needs a manager (instance of the game)
+            Manager = new GameManager(isServer, netClient, GL, classChosen);
+
+            //// Create my character
+            CurrentCharacter = Manager.GetCurrentCharacter();
 
             this.DataContext = this;
             MainGrid.Focusable = true;
@@ -83,7 +79,7 @@ namespace GameClient
                     if (ShopMenu.Visibility == Visibility.Visible) {
                         CloseShop();
                     } else {
-                        Application.Current.Shutdown();
+                        Manager.EndGame();
                     }
                     break;
                 case Key.F10:

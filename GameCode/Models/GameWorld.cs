@@ -24,30 +24,54 @@ namespace GameCode.Models
             Objects = new ObservableCollection<GameObject>();
         }
 
-        public void Add(GameObject o)
+        public void AddObject(GameObject o)
         {
-            Objects.Add(o);
+            //Console.WriteLine("{0} GameWorld - Add: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
+            lock (Objects)
+            {
+                Objects.Add(o);
+            }
         }
+
+        //public bool Contains(int id)
+        //{
+        //    return Get(id) != null;
+        //}
 
         public GameObject Get(int id)
         {
+            //Console.WriteLine("{0} GameWorld - get: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, id);
+            GameObject o = null;
             try
             {
-                return Objects.First((obj) => obj.ID == id);
+                lock (Objects)
+                {
+                    o = Objects.FirstOrDefault((obj) => obj.ID == id);
+                    //o = Objects.FirstOrDefault((obj) => obj.ID == id);
+                }
             }
-            catch (InvalidOperationException ex)
+            //catch (InvalidOperationException ex)
+            //{
+            //    //Console.WriteLine("OBJ doesnt exist: {0}", ex.ToString());
+            //}
+            catch (Exception)
             {
-                Console.WriteLine("OBJ doesnt exist: {0}", ex.ToString());
+
             }
-            return null;
+            return o;
         }
 
-        internal void RemoveDead()
+        public void RemoveObject(int objectID)
         {
-            var toRemove = Objects.Where(obj => obj.Alive != true).ToList();
-            foreach (var item in toRemove)
+            RemoveObject(Get(objectID));
+        }
+
+        public void RemoveObject(GameObject o)
+        {
+            //Console.WriteLine("{0} GameWorld - remove: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
+            lock (Objects)
             {
-                Objects.Remove(item);
+                Objects.Remove(o);
             }
         }
 
@@ -78,6 +102,15 @@ namespace GameCode.Models
             }
         }
 
+        public List<GameObject> Dead
+        {
+            get
+            {
+                var retVal = Objects.Where(obj => obj.Alive != true).ToList();
+                return retVal;
+            }
+        }
+
         public List<GameObject> Debris
         {
             get
@@ -100,12 +133,6 @@ namespace GameCode.Models
                 var retVal = Objects.Where((obj, r) => { return (obj.Alive && (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall))); }).ToList();
                 return retVal;
             }
-        }
-
-        public bool Contains(int id)
-        {
-            var retVal = Objects.Where((obj, r) => { return obj.ID == id; }).ToList();
-            return retVal.Count == 1;
         }
     }
 }

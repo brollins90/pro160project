@@ -23,10 +23,10 @@ namespace GameCode.Models
         private double _HealthBarLength;    
         public double HealthBarLength
         {
-            get { return HealthBarLength; }
+            get { return _HealthBarLength; }
             set 
             {
-                HealthBarLength = (double)((double)Health / (double)MaxHealth) * 100;
+                _HealthBarLength = (double)((double)Health / (double)MaxHealth) * 100;
                 FirePropertyChanged("HealthBarLength");
             }
         }
@@ -63,6 +63,8 @@ namespace GameCode.Models
                 this.FirePropertyChanged("Experience");
             }
         }
+
+        private int ExperienceNextLevel = 10;
 
         private int _ExperienceCap;
         public int ExperienceCap
@@ -134,14 +136,15 @@ namespace GameCode.Models
                     Constitution = 5;
                     Defense = 6;
                     Experience = 0;
-                    Damage = Strength * 2;
                     ExperienceCap = 100;
                     Gold = 0;
-                    MaxHealth = Constitution * 20;
-                    RestoreHealthToMax();
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
                     Strength = 3;
+
+                    Damage = Strength * 2;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
                     break;
 
                 case GameConstants.TYPE_CHARACTER_FIGHTER:
@@ -152,14 +155,15 @@ namespace GameCode.Models
                     Constitution = 7;
                     Defense = 8;
                     Experience = 0;
-                    Damage = Strength * 2;
                     ExperienceCap = 100;
                     Gold = 0;
-                    MaxHealth = Constitution * 20;
-                    RestoreHealthToMax();
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
                     Strength = 3;
+
+                    Damage = Strength * 2;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
                     break;
 
                 case GameConstants.TYPE_CHARACTER_MAGE:
@@ -170,16 +174,39 @@ namespace GameCode.Models
                     Constitution = 4;
                     Defense = 4;
                     Experience = 0;
-                    Damage = Strength * 3;
                     ExperienceCap = 100;
                     Gold = 0;
-                    MaxHealth = Constitution * 20;
-                    RestoreHealthToMax();
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
                     Strength = 3;
+
+                    Damage = Strength * 3;
+                    MaxHealth = Constitution * 20;
+                    RestoreHealthToMax();
                     break;
             }
+        }
+
+        public void IncreaseExperience(int killType)
+        {
+            int amount = 10;
+            switch (killType)
+            {
+                case GameConstants.TYPE_BOT_BOSS:
+                    amount = 20;
+                    break;
+                case GameConstants.TYPE_BOT_MELEE:
+                default:
+                    amount = 10;
+                    break;
+
+            }
+ 
+            Experience += amount;
+            if (Experience > ExperienceCap) { 
+                Experience = ExperienceCap;
+            }
+            
         }
 
         public void LevelUp()
@@ -199,79 +226,6 @@ namespace GameCode.Models
                 this.Defense += 1;
                 this.Gold += 150;
             }
-
-        }
-
-        public override void CheckInput(double deltaTime) {
-
-            if (IL.KeyForward)//(keyPressed == GameCommands.Up)
-            {
-                this.MoveForward(deltaTime);
-            }
-            if (IL.KeyBackward)//(keyPressed == GameCommands.Down)
-            {
-                this.MoveBackward(deltaTime);
-            }
-            if (IL.KeyLeft)//(keyPressed == GameCommands.Left)
-            {
-                this.MoveLeft(deltaTime);
-            }
-            if (IL.KeyRight)//(keyPressed == GameCommands.Right)
-            {
-                this.MoveRight(deltaTime);
-            }
-            //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
-            //{
-            //    StopMoving(deltaTime);
-            //}
-            //if (keyPressed == GameCommands.MouseMove)
-            //{
-            System.Windows.Point mousePos = IL.MousePos;// (System.Windows.Point)cmd.Additional;
-            this.RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
-            //}
-            if (IL.KeyAttack)//(keyPressed == GameCommands.Space || 
-            //keyPressed == GameCommands.LeftClick)
-            {
-                this.Weapon.Attack();
-            }
-        }
-
-        public override void Update(double deltaTime)
-        {
-            // add some natural breaking forces
-            //Velocity *= BreakingSpeed;
-            CheckInput(deltaTime);
-
-            base.Update(deltaTime);
-
-
-
-            ////Velocity = Heading * (Speed * deltaTime);
-
-            //// save previous position
-            //Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
-            //// update position that we already calculated
-            //Position = Position + Velocity;
-
-            //// check for new collisions
-            //bool collided = false;
-            //foreach (GameObject o in Manager.World.Objects)
-            //{
-            //    if (this.ID != o.ID && this.CollidesWith(o))
-            //        if (o.GetType() == typeof(GameProjectile) && ((GameProjectile)o).Owner.ID == this.ID)
-            //        {
-            //            // do nothing
-            //        }
-            //        else
-            //        {
-            //            collided = true;
-            //        }
-            //}
-            //// if collided dont perform the move
-            //if (collided)
-            //{
-            //    this.Position = previousPosition;
-            //}
         }
 
         public void RestoreHealthToMax()
@@ -279,11 +233,61 @@ namespace GameCode.Models
             Health = MaxHealth;
         }
 
-        public void IncreaseExperience(int amount)
+        public override void CheckInput(double deltaTime) {
+            if (IL != null)
+            {
+
+
+                if (IL.KeyForward)//(keyPressed == GameCommands.Up)
+                {
+                    this.MoveForward(deltaTime);
+                }
+                if (IL.KeyBackward)//(keyPressed == GameCommands.Down)
+                {
+                    this.MoveBackward(deltaTime);
+                }
+                if (IL.KeyLeft)//(keyPressed == GameCommands.Left)
+                {
+                    this.MoveLeft(deltaTime);
+                }
+                if (IL.KeyRight)//(keyPressed == GameCommands.Right)
+                {
+                    this.MoveRight(deltaTime);
+                }
+                //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
+                //{
+                //    StopMoving(deltaTime);
+                //}
+                //if (keyPressed == GameCommands.MouseMove)
+                //{
+                System.Windows.Point mousePos = IL.MousePos;// (System.Windows.Point)cmd.Additional;
+                this.RotateTowardPosition(new Vector3(mousePos.X, mousePos.Y, 0));
+                //}
+                if (IL.KeyAttack)//(keyPressed == GameCommands.Space || 
+                //keyPressed == GameCommands.LeftClick)
+                {
+                    int projID = this.Weapon.Attack();
+                    string msgString = "" + GameConstants.MOVEMENT_ATTACK + "," + this.Weapon.Projectile.ClassType + "," + projID + "," + this.Position.x + "," + this.Position.y + "," + this.Position.z + ",0,0,0," + this.Angle + "," + this.ID;
+                    //msgString = "" + GameConstants.MSG_UPDATE + "," + CurrentCharacter.ClassType + "," + CurrentCharacter.ID + "," + CurrentCharacter.Position.x + "," + CurrentCharacter.Position.y + "," + CurrentCharacter.Position.z + "," + CurrentCharacter.Velocity.x + "," + CurrentCharacter.Velocity.y + "," + CurrentCharacter.Velocity.z + "," + CurrentCharacter.Angle;
+                    Manager.SendInfo(msgString);
+                }
+            }
+        }
+
+        public override void Update(double deltaTime)
         {
-            Experience += amount;
-            if (Experience > ExperienceCap)
-                Experience = ExperienceCap;
+            if (Experience >= ExperienceNextLevel)
+            {
+                ExperienceNextLevel += ExperienceNextLevel;
+                LevelUp();
+            }
+
+            if (IL != null)
+            {
+                CheckInput(deltaTime);
+            }
+
+            base.Update(deltaTime);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace GameCode.Models
             : base(position, manager, size)
         {
             Team = GameManager.TEAM_INT_DEBRIS;
+            ClassType = GameConstants.TYPE_DEBRIS_BUSH;
         }
         public override void Update(double deltaTime)
         {
