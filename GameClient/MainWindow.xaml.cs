@@ -40,7 +40,7 @@ namespace GameClient
 
             UpgradeArmorCost = 50;
             UpgradeWeaponCost = 30;
-            UpgradeHealthCost = 50;
+            UpgradeHealthCost = 50; 
 
             Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
             this.Cursor = myCursor;
@@ -91,7 +91,7 @@ namespace GameClient
         }
 
         private void CloseShop()
-        {
+        {            
             ShopMenu.Visibility = Visibility.Collapsed;
             NotEnoughGold.Visibility = Visibility.Collapsed;
         }
@@ -105,8 +105,8 @@ namespace GameClient
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            Application.Current.Shutdown();
-        }
+                    Application.Current.Shutdown();
+            }
 
         //Close shop
         private void CloseShopClick(object sender, RoutedEventArgs e)
@@ -163,7 +163,7 @@ namespace GameClient
         //Drink magic potion
         private void UpgradeHealthButton(object sender, RoutedEventArgs e)
         {
-
+            
 
             NotEnoughGold.Visibility = Visibility.Collapsed;
             if (CurrentCharacter.Gold >= UpgradeHealthCost)

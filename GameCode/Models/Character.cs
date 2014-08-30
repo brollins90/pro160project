@@ -20,7 +20,7 @@ namespace GameCode.Models
     public class Character : Bot
     {
 
-        private double _HealthBarLength;    
+        private double _HealthBarLength;
         public double HealthBarLength
         {
             get { return _HealthBarLength; }
@@ -35,9 +35,7 @@ namespace GameCode.Models
         public int Constitution
         {
             get { return _Constitution; }
-            set
-            {
-                _Constitution = value;
+            set { _Constitution = value;
                 this.FirePropertyChanged("Constitution");
             }
         }
@@ -46,9 +44,7 @@ namespace GameCode.Models
         public int Defense
         {
             get { return _Defense; }
-            set
-            {
-                _Defense = value;
+            set { _Defense = value;
                 this.FirePropertyChanged("Defense");
             }
         }
@@ -57,9 +53,7 @@ namespace GameCode.Models
         public int Experience
         {
             get { return _Experience; }
-            set
-            {
-                _Experience = value;
+            set { _Experience = value;
                 this.FirePropertyChanged("Experience");
             }
         }
@@ -70,9 +64,7 @@ namespace GameCode.Models
         public int ExperienceCap
         {
             get { return _ExperienceCap; }
-            set
-            {
-                _ExperienceCap = value;
+            set { _ExperienceCap = value;
                 this.FirePropertyChanged("ExperienceCap");
             }
         }
@@ -88,13 +80,20 @@ namespace GameCode.Models
             }
         }        
 
+        private double _ExpBarLength;
+        public double ExpBarLength
+        {
+            get { return _ExpBarLength; }
+            set { _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
+                FirePropertyChanged("ExpBarLength");
+            }
+        }
+
         private int _Level;
         public int Level
         {
             get { return _Level; }
-            set
-            {
-                _Level = value;
+            set { _Level = value;
                 this.FirePropertyChanged("Level");
             }
         }
@@ -103,9 +102,7 @@ namespace GameCode.Models
         public int Strength
         {
             get { return _Strength; }
-            set
-            {
-                _Strength = value;
+            set { _Strength = value;
                 this.FirePropertyChanged("Strength");
             }
         }
@@ -114,9 +111,7 @@ namespace GameCode.Models
         public int Gold
         {
             get { return _Gold; }
-            set
-            {
-                _Gold = value;
+            set { _Gold = value;
                 this.FirePropertyChanged("Gold");
             }
         }
@@ -201,13 +196,13 @@ namespace GameCode.Models
                     amount = 10;
                     break;
 
-            }
- 
+        }
+
             Experience += amount;
             if (Experience > ExperienceCap) { 
                 Experience = ExperienceCap;
             }
-            
+
         }
 
         public void LevelUp()
@@ -221,7 +216,7 @@ namespace GameCode.Models
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
             this.Gold += 100;
-
+            this.HealthBarLength = ((double)Health / (double)MaxHealth) * 100;
             if (this.Level % 3 == 0)
             {
                 this.Defense += 1;
@@ -249,23 +244,23 @@ namespace GameCode.Models
                 if (IL.KeyForward)//(keyPressed == GameCommands.Up)
                 {
                     this.MoveForward(deltaTime);
-                }
+            }
                 if (IL.KeyBackward)//(keyPressed == GameCommands.Down)
-                {
+            {
                     this.MoveBackward(deltaTime);
-                }
+            }
                 if (IL.KeyLeft)//(keyPressed == GameCommands.Left)
-                {
+            {
                     this.MoveLeft(deltaTime);
-                }
+            }
                 if (IL.KeyRight)//(keyPressed == GameCommands.Right)
-                {
+            {
                     this.MoveRight(deltaTime);
-                }
-                //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
-                //{
-                //    StopMoving(deltaTime);
-                //}
+            }
+            //else if (Controller.InputListener.KeyBackward)//(keyPressed == GameCommands.None)
+            //{
+            //    StopMoving(deltaTime);
+            //}
                 //if (keyPressed == GameCommands.MouseMove)
                 //{
                 System.Windows.Point mousePos = IL.MousePos;// (System.Windows.Point)cmd.Additional;
@@ -286,12 +281,12 @@ namespace GameCode.Models
             {
                 ExperienceNextLevel += ExperienceNextLevel;
                 LevelUp();
-            }
+        }
 
             if (IL != null)
-            {
+        {
                 CheckInput(deltaTime);
-            }
+        }
 
             base.Update(deltaTime);
         }

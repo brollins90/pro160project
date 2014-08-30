@@ -8,6 +8,7 @@ using System.Windows;
 using GameCode.Models.Weapons;
 using GameCode.Helpers;
 using GameCode.Models.Projectiles;
+using System.Timers;
 
 namespace GameCode.Models
 {
@@ -27,21 +28,18 @@ namespace GameCode.Models
         public int Damage
         {
             get { return _Damage; }
-            set
-            {
-                _Damage = value;
+            set { _Damage = value;
                 this.FirePropertyChanged("Damage");
         }
         }
+
 
 
         private int _Health;
         public int Health
         {
             get { return _Health; }
-            set
-            {
-                _Health = value;
+            set { _Health = value;
                 this.FirePropertyChanged("Health");
             }
         }
@@ -50,10 +48,17 @@ namespace GameCode.Models
         public int MaxHealth
         {
             get { return _MaxHealth; }
-            set
-            {
-                _MaxHealth = value;
+            set { _MaxHealth = value;
                 this.FirePropertyChanged("MaxHealth");
+            }
+        }
+
+        private int _ExpYield;
+        public int ExpYield
+            {
+            get { return _ExpYield; }
+            set { _ExpYield = value;
+            this.FirePropertyChanged("ExpYield");
             }
         }
 
@@ -81,6 +86,7 @@ namespace GameCode.Models
                     this.Damage = 25;
                     this.Health = 1000;
                     this.MaxHealth = Health;
+                    this.ExpYield = 250;
                     Size = new Vector3(50,50,0);
                     break;
                 case GameConstants.TYPE_BOT_MELEE:
@@ -91,6 +97,7 @@ namespace GameCode.Models
                     this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
+                    this.ExpYield = 15;
                     Size = new Vector3(20,20,0);
                     break;
                 case GameConstants.TYPE_BOT_MERCENARY: // Sentry
@@ -101,6 +108,7 @@ namespace GameCode.Models
                     this.Damage = 13;
                     this.Health = 500;
                     this.MaxHealth = Health;
+                    this.ExpYield = 100;
                     Size = new Vector3(30,30,0);
                     break;
                 case GameConstants.TYPE_BOT_SHOOTER: // ???
@@ -111,6 +119,7 @@ namespace GameCode.Models
                     this.Damage = 7;
                     this.Health = 10;
                     this.MaxHealth = Health;
+                    this.ExpYield = 10;
                     Size = new Vector3(20, 20,0);
                     break;
                 case GameConstants.TYPE_BOT_TOWER: // Need to kill this to win
@@ -121,6 +130,7 @@ namespace GameCode.Models
                     this.Damage = 0;
                     this.Health = 1500;
                     this.MaxHealth = Health;
+                    this.ExpYield = 5000;
                     Size = new Vector3(100,100,0);
                     break;
                 case GameConstants.TYPE_BOT_TURRET: // stationary
@@ -131,6 +141,7 @@ namespace GameCode.Models
                     this.Damage = 16;
                     this.Health = 750;
                     this.MaxHealth = Health;
+                    this.ExpYield = 150;
                     Size = new Vector3(60,60,0);
                     break;
 
@@ -184,6 +195,7 @@ namespace GameCode.Models
                     //target = b.Position;
                     closestLengthSquared = distanceFromSquared;
                 }
+            
             }
 
             if (closestEnemy != null)
@@ -205,7 +217,6 @@ namespace GameCode.Models
 
         public override void Update(double deltaTime)
         {
-
             CheckInput(deltaTime);
 
             Vector3 previousPosition = new Vector3(Position.x, Position.y, Position.z);
@@ -224,6 +235,7 @@ namespace GameCode.Models
                     else
                     {
                         collided = true;
+                        
                     }
             }
             // if collided dont perform the move

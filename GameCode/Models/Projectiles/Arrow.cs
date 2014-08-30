@@ -19,7 +19,6 @@ namespace GameCode.Models.Projectiles
         {
             ClassType = GameConstants.TYPE_PROJ_ARROW;
         }
-
         public override void Update(double deltaTime)
         {
              //perform movement

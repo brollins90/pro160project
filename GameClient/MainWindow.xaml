@@ -45,8 +45,6 @@
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,267,27,167" Click="LevelUpButton" Focusable="False">Level up!</Button>
 
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="TakeDamage" Margin="0,203,27,231" Focusable="False">Take Damage!</Button>
-
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,139,27,295" Focusable="False">Gain 10 Exp.</Button>
 
         <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,74,27,360" Focusable="False">Gain 20 Exp.</Button>

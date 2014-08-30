@@ -17,6 +17,7 @@ namespace GameCode
 {
     public class GameManager
     {
+        int spawnCount = 0;
         private GameWorld _World;
         public GameWorld World
         {
@@ -35,7 +36,7 @@ namespace GameCode
 
             IsServer = isServer;
             NetClient = netClient;
-            World = new GameWorld(); 
+            World = new GameWorld();
 
             UT = new UpdateThread(this, IsServer, gl, classChosen);
 
@@ -43,13 +44,13 @@ namespace GameCode
             new Thread(LT.Start).Start();
 
             if (IsServer)
-            {
+        {
                 LoadWorld();
-            }
+        }
             else
-            {
+        {
                 SendInfo(MessageBuilder.RequestAllMessage());
-            }
+        }
             //new Thread(UT.Start).Start();
             UT.Start();
 
@@ -78,7 +79,7 @@ namespace GameCode
             Application.Current.Shutdown();
             Environment.Exit(0);
         }
-        
+
         public Character GetCurrentCharacter()
         {
             return UT.CurrentCharacter;
@@ -93,42 +94,42 @@ namespace GameCode
                 {
                     SendInfo(MessageBuilder.DeadMessage(o));
                 }
+                }
             }
-        }
 
         public void RemoveObject(int id)
-        {
+                {
             RemoveObjectThreadSafe(id);
-        }
+            }
 
         public void RemoveObject(GameObject o)
-        {
+                {
             RemoveObjectThreadSafe(o);
-        }
+            }
 
         private delegate void RemoveObjectThreadSafeDelegate(GameObject o);
         public void RemoveObjectThreadSafe(GameObject o)
-        {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
             {
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
                 World.RemoveObject(o);
             }));
-        }
+            }
 
         private delegate void RemoveObjectThreadSafeDelegateInt(int id);
         public void RemoveObjectThreadSafe(int id)
-        {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
             {
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
                 World.RemoveObject(id);
             }));
-        }
+            }
 
         internal void SendInfo(String toSend)
-        {
+                {
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
-        }
+            }
 
         public void LoadWorld()
         {
@@ -138,7 +139,7 @@ namespace GameCode
             AddObject(new Bot(new Vector3(800, 400, 0), this, GameConstants.TYPE_BOT_SHOOTER));
             AddObject(new Bot(new Vector3(930, 260, 0), this, GameConstants.TYPE_BOT_TOWER));
             AddObject(new Bot(new Vector3(910, -10, 0), this, GameConstants.TYPE_BOT_TURRET));
-            
+
             //Left side of enemy castle
             AddObject(new Bushes(new Vector3(580, -30, 0), this, new Vector3(60, 60, 0)));
             AddObject(new Bushes(new Vector3(520, -30, 0), this, new Vector3(60, 60, 0)));
