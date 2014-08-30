@@ -16,6 +16,7 @@ namespace GameCode
         private GameManager Manager;
         private GameWorld World;
         private int LastTimeMillis = 0;
+        private int LastSpawnTimeMillis = 0;
         private bool IsServer;
         private InputListener GL;
         public Character CurrentCharacter; 
@@ -58,6 +59,7 @@ namespace GameCode
             Console.WriteLine("{0} UpdateThread - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Running = true;
             LastTimeMillis = GetCurrentTime();
+            LastSpawnTimeMillis = LastTimeMillis;
             Timer.Start();
         }
 
@@ -78,6 +80,13 @@ namespace GameCode
         public void Update(float deltaTime)
         {
             //Console.WriteLine("{0} UpdateThread - Update({1})", System.Threading.Thread.CurrentThread.ManagedThreadId, deltaTime);
+
+            // Spawn some bad guys
+            if ((LastTimeMillis - LastSpawnTimeMillis) > 30000) // spawn every 30 seconds
+            {
+                LastSpawnTimeMillis = LastTimeMillis;
+                Manager.SpawnEnemy();
+            }
 
             // Since both the clients and the server are controlling a character, update the position before we check to see 
             // if this is the client or not

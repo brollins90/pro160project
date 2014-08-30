@@ -91,7 +91,7 @@ namespace GameCode.Models
                     break;
                 case GameConstants.TYPE_BOT_MELEE:
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
+                    this.AttackRadiusSquared = 2000 * 2000;
                     this.ClassType = type;
                     this.Weapon = new Sword(this);
                     this.Damage = 9;

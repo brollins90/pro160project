@@ -17,7 +17,6 @@ namespace GameCode
 {
     public class GameManager
     {
-        int spawnCount = 0;
         private GameWorld _World;
         public GameWorld World
         {
@@ -130,6 +129,10 @@ namespace GameCode
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
             }
+        public void SpawnEnemy()
+        {
+            AddObject(new Bot(new Vector3(950, 200, 0), this, GameConstants.TYPE_BOT_MELEE));
+        }
 
         public void LoadWorld()
         {
