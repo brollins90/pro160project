@@ -5,14 +5,14 @@
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:y="clr-namespace:GameClient.Converters">
-        
+
     <Window.Resources>
         <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
         <y:BlakeDebugConverter x:Key="BlakeDebugConverter"/>
         <y:RadToDegConverter x:Key="RadToDegConverter"/>
     </Window.Resources>
     <Window.Background>
-        <ImageBrush ImageSource="Images\GameBackground.png"/>    
+        <ImageBrush ImageSource="Images\GameBackground.png"/>
     </Window.Background>
     <Grid x:Name="MainGrid">
         <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}" Margin="-10,10,10,-10">
@@ -26,7 +26,7 @@
                     <Rectangle Width="{Binding Size.x}" Height="{Binding Size.y}" RenderTransformOrigin="0.5,0.5">
                         <Rectangle.Fill>
                             <ImageBrush Stretch="Fill" ImageSource="{Binding Converter={StaticResource GameObjectToSpriteConverter}}"/>
-                        </Rectangle.Fill>                    
+                        </Rectangle.Fill>
                         <Rectangle.RenderTransform>
                             <RotateTransform Angle="{Binding Angle}"/>
                         </Rectangle.RenderTransform>
@@ -108,7 +108,7 @@
                         <TextBlock x:Name="ArmorCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeArmorCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
                         <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
                     </Canvas>
-                </UniformGrid>                
+                </UniformGrid>
             </Button>
             <Button Click="UpgradeWeaponButton">
                 <UniformGrid Rows="1">
@@ -122,7 +122,7 @@
                         <TextBlock x:Name="WeaponCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeWeaponCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
                         <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
                     </Canvas>
-                </UniformGrid>                
+                </UniformGrid>
             </Button>
             <Button Click="UpgradeHealthButton">
                 <UniformGrid Rows="1">
@@ -136,21 +136,39 @@
                         <TextBlock x:Name="HealthCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeHealthCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
                         <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
                     </Canvas>
-                </UniformGrid>             
+                </UniformGrid>
             </Button>
             <UniformGrid Columns="3" Rows="1">
-                <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
+                <Label FontSize="60" Margin="0,0,142,0">Gold:</Label>
                 <Label FontSize="60" Content="{Binding Path=CurrentCharacter.Gold}" Margin="-142,0,294,0"/>
                 <Label FontSize="60" Margin="-295,0,0,0" Background="Red" Visibility="Collapsed" x:Name="NotEnoughGold">Not Enough Gold!!!</Label>
             </UniformGrid>
             <Button Click="CloseShopClick">Exit</Button>
             <UniformGrid Columns="6" Rows="1">
-                <Label FontSize="40">Strength: </Label>
+                <Label FontSize="40">Strength:</Label>
                 <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Strength}" Margin="0,0,60,0"/>
-                <Label FontSize="40" Margin="-60,0,40,0">Defense: </Label>
+                <Label FontSize="40" Margin="-60,0,40,0">Defense:</Label>
                 <Label FontSize="40" Content="{Binding CurrentCharacter.Defense}" Margin="-40,0,82,0"/>
-                <Label FontSize="40" Margin="-82,0,-4,0">Constitution: </Label>
+                <Label FontSize="40" Margin="-82,0,-4,0">Constitution:</Label>
                 <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
+            </UniformGrid>
+        </UniformGrid>
+        <UniformGrid x:Name="QuitMenu" Columns="1" Visibility="Collapsed">
+            <UniformGrid.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </UniformGrid.Background>
+            <Label FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center">Are you sure you want to quit?</Label>
+            <UniformGrid Rows="2" Columns="1">
+                <Button Click="ConfirmQuit">
+                    <Canvas>
+                        <TextBlock FontSize="64" Canvas.Left="-40" Canvas.Top="-40"><Run Text="Yes"/></TextBlock>
+                    </Canvas>
+                </Button>
+                <Button Click="NoQuit">
+                    <Canvas>
+                        <TextBlock FontSize="64" Canvas.Left="-40" Canvas.Top="-40"><Run Text="No"/></TextBlock>
+                    </Canvas>
+                </Button>
             </UniformGrid>
         </UniformGrid>
         <StackPanel x:Name="GameOver" Visibility="Collapsed">
