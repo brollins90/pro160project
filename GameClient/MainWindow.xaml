@@ -97,25 +97,46 @@
             </UniformGrid.Background>
             <Label FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center">Welcome to the shop!!!</Label>
             <Button Click="UpgradeArmorButton">
-                <Canvas>
-                    <TextBlock FontSize="24" Canvas.Left="-171" Canvas.Top="-13"> Upgrade Armor: </TextBlock>
-                    <TextBlock x:Name="ArmorCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeArmorCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                </Canvas>
+                <UniformGrid Rows="1">
+                    <Label Height="100" Width="120">
+                        <Label.Background>
+                            <ImageBrush ImageSource="Images\Shield.png"/>
+                        </Label.Background>
+                    </Label>
+                    <Canvas HorizontalAlignment="Right">
+                        <TextBlock FontSize="24" Canvas.Left="-171" Canvas.Top="-13"> Upgrade Armor:</TextBlock>
+                        <TextBlock x:Name="ArmorCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeArmorCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                    </Canvas>
+                </UniformGrid>                
             </Button>
             <Button Click="UpgradeWeaponButton">
-                <Canvas>
-                    <TextBlock FontSize="24" Canvas.Left="-193" Canvas.Top="-13"> Upgrade Weapon:</TextBlock>
-                    <TextBlock x:Name="WeaponCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeWeaponCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                </Canvas>
+                <UniformGrid Rows="1">
+                    <Label Height="100" Width="120">
+                        <Label.Background>
+                            <ImageBrush ImageSource="Images\Sword.png"/>
+                        </Label.Background>
+                    </Label>
+                    <Canvas>
+                        <TextBlock FontSize="24" Canvas.Left="-193" Canvas.Top="-13"> Upgrade Weapon:</TextBlock>
+                        <TextBlock x:Name="WeaponCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeWeaponCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                    </Canvas>
+                </UniformGrid>                
             </Button>
             <Button Click="UpgradeHealthButton">
-                <Canvas>
-                    <TextBlock FontSize="24" Canvas.Left="-173" Canvas.Top="-13"> Upgrade Health:</TextBlock>
-                    <TextBlock x:Name="HealthCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeHealthCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                    <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                </Canvas>
+                <UniformGrid Rows="1">
+                    <Label Height="100" Width="120">
+                        <Label.Background>
+                            <ImageBrush ImageSource="Images\Potion.png"/>
+                        </Label.Background>
+                    </Label>
+                    <Canvas>
+                        <TextBlock FontSize="24" Canvas.Left="-173" Canvas.Top="-13"> Upgrade Health:</TextBlock>
+                        <TextBlock x:Name="HealthCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeHealthCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
+                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
+                    </Canvas>
+                </UniformGrid>             
             </Button>
             <UniformGrid Columns="3" Rows="1">
                 <Label FontSize="60" Margin="0,0,142,0">Gold: </Label>
