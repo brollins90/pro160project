@@ -124,9 +124,9 @@ namespace GameCode
         {
             AddNPC(new Bot(new Vector3(930, 100,0),this, BotClass.Boss));
             AddNPC(new Bot(new Vector3(750, 100, 0), this, BotClass.Melee));
-            AddNPC(new Bot(new Vector3(945, 420, 0), this, BotClass.Mercenary));
+            AddNPC(new Bot(new Vector3(980, 420, 0), this, BotClass.Mercenary));
             AddNPC(new Bot(new Vector3(800, 400, 0), this, BotClass.Shooter));
-            AddNPC(new Bot(new Vector3(930, 260, 0), this, BotClass.Turret));
+            AddNPC(new Bot(new Vector3(880, 260, 0), this, BotClass.Turret));
             AddNPC(new Bot(new Vector3(910, -10, 0), this, BotClass.Tower));
 
 

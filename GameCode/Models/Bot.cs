@@ -74,7 +74,8 @@ namespace GameCode.Models
             {
             get { return _ExpYield; }
             set { _ExpYield = value;
-            this.FirePropertyChanged("ExpYield");
+                
+                this.FirePropertyChanged("ExpYield");
             }
         }
 
@@ -106,7 +107,7 @@ namespace GameCode.Models
                     break;
                 case Models.BotClass.Melee:
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
+                    this.AttackRadiusSquared = 1000 * 1000;
                     this.BotClass = type;
                     this.BotWeapon = new Sword(this);
                     this.Damage = 9;

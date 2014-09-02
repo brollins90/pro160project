@@ -303,9 +303,9 @@ namespace GameCode.Models
             Health = MaxHealth;
         }
 
-        public void IncreaseExperience(int amount)
+        public void IncreaseExperience(int ExpYield)
         {
-            Experience += amount;
+            Experience += ExpYield;
             if (Experience >= ExperienceCap)
             {
                 int expleft = Experience - ExperienceCap;
