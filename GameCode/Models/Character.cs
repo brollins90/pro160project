@@ -19,7 +19,7 @@ namespace GameCode.Models
     };
     public class Character : Bot
     {
-
+        
         private double _HealthBarLength;
         public double HealthBarLength
         {
