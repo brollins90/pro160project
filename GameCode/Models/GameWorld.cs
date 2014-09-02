@@ -12,8 +12,8 @@ namespace GameCode.Models
 {
     public class GameWorld
     {
-        private ObservableCollection<GameObject> _Objects;
-        public ObservableCollection<GameObject> Objects
+        private MTObservableCollection<GameObject> _Objects;
+        public MTObservableCollection<GameObject> Objects
         {
             get { return _Objects; }
             set { _Objects = value; }
@@ -21,14 +21,65 @@ namespace GameCode.Models
 
         public GameWorld()
         {
-            Objects = new ObservableCollection<GameObject>();
+            Objects = new MTObservableCollection<GameObject>();
+        }
+
+        public void AddObject(GameObject o)
+        {
+            //Console.WriteLine("{0} GameWorld - Add: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
+            lock (Objects)
+            {
+                Objects.Add(o);
+            }
+        }
+
+        //public bool Contains(int id)
+        //{
+        //    return Get(id) != null;
+        //}
+
+        public GameObject Get(int id)
+        {
+            //Console.WriteLine("{0} GameWorld - get: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, id);
+            GameObject o = null;
+            try
+            {
+                lock (Objects)
+                {
+                    o = Objects.FirstOrDefault((obj) => obj.ID == id);
+                    //o = Objects.FirstOrDefault((obj) => obj.ID == id);
+                }
+            }
+            //catch (InvalidOperationException ex)
+            //{
+            //    //Console.WriteLine("OBJ doesnt exist: {0}", ex.ToString());
+            //}
+            catch (Exception)
+            {
+
+            }
+            return o;
+        }
+
+        public void RemoveObject(int objectID)
+        {
+            RemoveObject(Get(objectID));
+        }
+
+        public void RemoveObject(GameObject o)
+        {
+            //Console.WriteLine("{0} GameWorld - remove: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
+            lock (Objects)
+            {
+                Objects.Remove(o);
+            }
         }
 
         public List<GameObject> Bots
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bot); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Bot)); }).ToList();
                 return retVal;
             }
         }
@@ -37,7 +88,7 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Character); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Character)); }).ToList();
                 return retVal;
             }
         }
@@ -46,41 +97,32 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow) && obj.GetType() != typeof(StabAttack) && obj.GetType() != typeof(FireBall)); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow) && obj.GetType() != typeof(StabAttack) && obj.GetType() != typeof(FireBall)); }).ToList();
                 return retVal;
             }
         }
 
-        public List<GameObject> CastleWalls
+        public List<GameObject> Dead
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(CastleWalls); }).ToList();
+                var retVal = Objects.Where(obj => obj.Alive != true).ToList();
                 return retVal;
             }
         }
 
-        public List<GameObject> Rocks
+        public List<GameObject> Debris
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Rocks); }).ToList();
-                return retVal;
-            }
-        }
-
-        public List<GameObject> Bushes
-        {
-            get
-            {
-                var retVal = Objects.Where((obj, r) => { return obj.GetType() == typeof(Bushes); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Debris) && obj.GetType() == typeof(CastleWalls) && obj.GetType() == typeof(Bushes) && obj.GetType() == typeof(Rocks)); }).ToList();
                 return retVal;
             }
         }
 
         public List<GameObject> Enemies(int currentTeam)
-        {            
-            var retVal = Objects.Where((obj, r) => { return ((obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam ); }).ToList();
+        {
+            var retVal = Objects.Where((obj, r) => { return (obj.Alive && (obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam); }).ToList();
             return retVal;           
         }
 
@@ -88,18 +130,8 @@ namespace GameCode.Models
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall)); }).ToList();
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive && (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall))); }).ToList();
                 return retVal;
-            }
-        }
-
-
-        internal void Remove()
-        {
-            var toRemove = Objects.Where(obj => obj.Alive != true).ToList();
-            foreach (var item in toRemove)
-            {
-                Objects.Remove(item);
             }
         }
     }

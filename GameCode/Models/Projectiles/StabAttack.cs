@@ -9,14 +9,15 @@ namespace GameCode.Models.Projectiles
 {
     public class StabAttack : GameProjectile
     {
-        public StabAttack(Bot owner, GameManager manager, double angle, int damage = 10, double rangeSquared = 25) :
-            base(owner,
+        public StabAttack(int ownerID, GameManager manager, double angle, int damage = 10, double rangeSquared = 200) :
+            base(ownerID,
             manager,
             new Vector3(25, 12, 0), // Size of an arrow is always the same
             angle,
             damage, // damage is dependant on owner but we specify a default anyway
             rangeSquared)
         {
+            ClassType = GameConstants.TYPE_PROJ_STAB;
         }
 
         public override void Update(double deltaTime)
@@ -31,7 +32,7 @@ namespace GameCode.Models.Projectiles
                 {
                     if (o.ID == 14)
                     {
-                        Console.WriteLine("asfd");
+                        //Console.WriteLine("asfd");
                     }
                     // dont check for collisions with self, owner
                     // TODO or team
@@ -40,7 +41,7 @@ namespace GameCode.Models.Projectiles
                         // only apply damage if collision is with a bot
                         if (o.GetType() == typeof(Bot) || o.GetType() == typeof(Character))
                         {
-                            ((Bot)o).TakeDamage(Damage);
+                            ((Bot)o).TakeDamage(Damage, Owner);
                         }
                         // After collision, remove from play
                         Alive = false;

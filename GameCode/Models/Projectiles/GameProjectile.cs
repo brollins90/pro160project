@@ -17,17 +17,30 @@ namespace GameCode.Models.Projectiles
         /// <summary>
         /// Location the projectile originated
         /// </summary>
-        protected Vector3 StartPosition;
+        public Vector3 StartPosition;
 
         /// <summary>
         /// The Bot the "shot" the projectile
         /// </summary>
         internal Bot Owner;
+        internal int OwnerID;
+        /// <summary>
+        /// The range the projectile shot fom this weapon will travel before disapearing
+        /// </summary>
+        public double Range { get; set; }
+        /// <summary>
+        /// The range the projectile shot fom this weapon will travel before disapearing
+        /// </summary>
+        public double RangeSquared { get; set; }
+        /// <summary>
+        /// The speed at which the projectile will accelerate
+        /// </summary>
+        //public Vector3 ProjectileSpeed { get; set; }
 
         /// <summary>
         /// The distance the projectile can move (stored in squared form to ease math)
         /// </summary>
-        protected double RangeSquared;
+        //protected double RangeSquared;
 
         /// <summary>
         /// The amount of damage the projectile causes
@@ -40,14 +53,17 @@ namespace GameCode.Models.Projectiles
         }
 
         
-        public GameProjectile(Bot owner, GameManager manager, Vector3 size, double angle, int damage, double rangeSquared)
-            : base(owner.Position, manager, size)
+        public GameProjectile(int ownerID, GameManager manager, Vector3 size, double angle, int damage, double rangeSquared)
+            : base(new Vector3(0,0,0), manager, size)
         {
-            Owner = owner;
-            StartPosition = new Vector3(Position.x, Position.y, Position.z);
+            OwnerID = ownerID;
+            Owner = (Bot)manager.World.Get(OwnerID);
+            //StartPosition = new Vector3(Position.x, Position.y, Position.z);
             RangeSquared = rangeSquared;
             this.Damage = damage;
             this.Angle = angle;
+            ClassType = GameConstants.TYPE_PROJ_ARROW;
+            //Position = Owner.Position;
         }
 
         /// <summary>

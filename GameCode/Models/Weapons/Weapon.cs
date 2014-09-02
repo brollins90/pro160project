@@ -1,4 +1,5 @@
 ﻿using GameCode.Helpers;
+using GameCode.Models.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,28 +26,24 @@ namespace GameCode.Models.Weapons
         /// The counter that holds the next time the weapon will become available to fire
         /// </summary>
         public double TimeNextAvailable { get; set; }
-        /// <summary>
-        /// The range the projectile shot fom this weapon will travel before disapearing
-        /// </summary>
-        public double ProjectileRange { get; set; }
-        /// <summary>
-        /// The range the projectile shot fom this weapon will travel before disapearing
-        /// </summary>
-        public double ProjectileRangeSquared { get; set; }
-        /// <summary>
-        /// The speed at which the projectile will accelerate
-        /// </summary>
-        public Vector3 ProjectileSpeed { get; set; }
-        //public double MaximumSpeed { get; set; }
+        public GameProjectile Projectile { get; set; }
 
         public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 20)
         {
             Owner = owner;
             RateOfFire = rateOfFire;
             TimeNextAvailable = Environment.TickCount;
-            ProjectileRange = distance;
-            ProjectileRangeSquared = ProjectileRange * ProjectileRange;
-            ProjectileSpeed = new Vector3(speed, speed, 0);
+            Projectile = new Arrow(Owner.ID, Owner.Manager, 0)
+            {
+                Range = distance,
+                RangeSquared = distance * distance,
+                Acceleration = new Vector3(speed, speed,0)
+            };
+
+            //ProjectileRange = distance;
+            //ProjectileRangeSquared = ProjectileRange * ProjectileRange;
+            //ProjectileSpeed = new Vector3(speed, speed, 0);
+            //Attackype = GameConstants.TYPE_PROJ_ARROW;
         }
 
         /// <summary>
@@ -73,6 +70,6 @@ namespace GameCode.Models.Weapons
         /// <summary>
         /// Performs the attack with the weapon
         /// </summary>
-        public abstract void Attack();
+        public abstract int Attack();
     }
 }
