@@ -79,7 +79,7 @@ namespace GameClient
                     if (ShopMenu.Visibility == Visibility.Visible) {
                         CloseShop();
                     } else {
-                        Manager.EndGame();
+                        QuitMenu.Visibility = Visibility.Visible;
                     }
                     break;
                 case Key.O:
@@ -180,6 +180,16 @@ namespace GameClient
                 NotEnoughGold.Visibility = Visibility.Visible;
             }
             //CheckIfDead();
+        }
+
+        private void ConfirmQuit(object sender, RoutedEventArgs e)
+        {
+            Manager.EndGame();
+        }
+
+        private void NoQuit(object sender, RoutedEventArgs e)
+        {
+            QuitMenu.Visibility = Visibility.Collapsed;
         }
 
         ////ends game if player is dead

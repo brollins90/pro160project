@@ -195,7 +195,6 @@ namespace GameCode.Models
                     //target = b.Position;
                     closestLengthSquared = distanceFromSquared;
                 }
-            
             }
 
             if (closestEnemy != null)
