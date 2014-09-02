@@ -32,10 +32,6 @@
         <TextBox x:Name="ServerSendText" Width="250" Height="63"  Margin="284,211,283,79" Text="" Visibility="Hidden" AcceptsReturn="True" TextWrapping="Wrap">
         </TextBox>
 
-        <Button x:Name="ServerSend" Width="250" Height="63"  Margin="539,211,28,79" Click="ServerSendButton" Visibility="Hidden">
-            Send
-        </Button>
-
 
 
         <Button x:Name="Mage" Width="250" Height="180" Click="Mage_Click" Visibility="Hidden" Margin="29,211,538,79">

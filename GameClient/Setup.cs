@@ -9,20 +9,54 @@ using System.IO;
 using System.Net.Sockets;
 using GameCode.Models;
 using GameCode;
+using System.Runtime.InteropServices;
 
 namespace GameClient
 {
     public class Setup
     {
+        [DllImport("kernel32.dll", EntryPoint = "AllocConsole", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern int AllocConsole();
+
         [STAThread()]
         public static void Main(string[] args)
         {
-            string serverName ="";
+
+
+            bool text = false;
+            bool online = false;
+            string serverName = "localhost";
             int serverPort = SimpleServer.ServerPort;
+            int classChosen = GameConstants.TYPE_CHARACTER_ARCHER;
+
+            if (text)
+            {
+                Main_Text(ref online, ref serverName, ref serverPort, ref classChosen);
+            }
+            else
+            {
+                Main_GUI(ref online, ref serverName, ref serverPort, ref classChosen);
+            }
+        }
+
+        private static void Main_GUI(ref bool online, ref string serverName, ref int serverPort, ref int classChosen)
+        {
+            App app = new App();
+            app.MainWindow = new MainMenu(ref online, ref serverName, ref serverPort, ref classChosen);
+            app.MainWindow.Show();
+            app.Run();
+
+            Main_Connect(!online, serverName, serverPort, null, classChosen);
+        }
+
+        private static void Main_Text(ref bool online, ref string serverName, ref int serverPort, ref int classChosen)
+        {
+            AllocConsole();
 
             Console.WriteLine("Do you want to play online?");
-            string onlineString = "no";// Console.ReadLine();
-            bool online = onlineString.ToLower()[0] == 'y';
+            string onlineString = Console.ReadLine();
+            onlineString = (string.IsNullOrEmpty(onlineString)) ? "no" : onlineString;
+            online = onlineString.ToLower()[0] == 'y';
 
             if (online)
             {
@@ -30,13 +64,21 @@ namespace GameClient
                 serverName = Console.ReadLine();
                 serverName = (string.IsNullOrEmpty(serverName)) ? "localhost" : serverName;
 
-                Console.WriteLine("What port? [4444]");
+                Console.WriteLine("What port? [" + SimpleServer.ServerPort + "]");
                 string portString = Console.ReadLine();
                 serverPort = SimpleServer.ServerPort;
             }
-            //bool playOnline = false;
+            Console.WriteLine("What class do you want to be? [Archer]");
+            string classString = Console.ReadLine();
 
-            if (!online)
+
+            Main_Connect(!online, serverName, serverPort, null, classChosen);
+        }
+
+        public static void Main_Connect(bool startServer, string serverName, int serverPort, MainMenu menu, int classChosen)
+        {
+
+            if (startServer)
             {
                 try
                 {
@@ -51,11 +93,7 @@ namespace GameClient
                     Console.WriteLine("Could not listen on server port: {0}", ex.ToString());
                 }
             }
-            Main_Text(serverName, serverPort);
-        }
 
-        public static void Main_Text(string servername, int serverport)
-        {
             TcpClient client = null;
             NetworkClient netClient = null;
             string line = null;
@@ -64,7 +102,7 @@ namespace GameClient
 
             try
             {
-                client = new TcpClient(servername, serverport);
+                client = new TcpClient(serverName, serverPort);
                 netClient = new NetworkClient(client.GetStream());
             }
             catch (IOException ex)
@@ -124,11 +162,8 @@ namespace GameClient
 
             // I already have my network client
 
-            // Create the GUI
-            App app = new App();
-            app.MainWindow = new MainWindow(isServer, netClient, GameConstants.TYPE_CHARACTER_ARCHER);
-            app.MainWindow.Show();
-            app.Run();
+
+            StartGameWindow(netClient, isServer, menu, classChosen);
 
             //netClient.GrabGui(app.MainWindow);
             //app.MainWindow.Timer.Start();
@@ -137,6 +172,27 @@ namespace GameClient
             {
                 // server update thread
             }
+        }
+
+        private static void StartGameWindow(NetworkClient netClient, bool isServer, MainMenu menu, int classChosen)
+        {
+
+            if (menu == null)
+            {
+                // Create the GUI
+                App app = new App();
+            }
+
+
+            MainWindow gamewindow = new MainWindow(isServer, netClient, classChosen);
+            gamewindow.Show();
+            menu.Hide();
+
+
+
+            //app.MainWindow = new MainWindow(isServer, netClient, GameConstants.TYPE_CHARACTER_ARCHER);
+            //app.MainWindow.Show();
+            //app.Run();
         }
     }
 }
