@@ -12,14 +12,6 @@ using System.Timers;
 
 namespace GameCode.Models
 {
-    public enum BotClass { 
-        Boss,
-        Melee,
-        Mercenary,
-        Shooter,
-        Tower,
-        Turret };
-
     //The main class for all Non Playable Characters. The information on them is based off of the information passed through the constructor.
     public class Bot : MovingObject
     {
@@ -32,15 +24,6 @@ namespace GameCode.Models
             }
         }
 
-        private BotClass _BotClass;
-        public BotClass BotClass
-        {
-            get { return _BotClass; }
-            set {   _BotClass = value;
-                this.FirePropertyChanged("BotClass");
-        }
-        }
-
         private int _Damage;
         public int Damage
         {
@@ -50,14 +33,6 @@ namespace GameCode.Models
         }
         }
 
-        private int _Team;
-        public int Team
-        {
-            get { return _Team; }
-            set { _Team = value;
-                this.FirePropertyChanged("Team");
-        }
-        }
 
 
         private int _Health;
@@ -87,81 +62,82 @@ namespace GameCode.Models
             }
         }
 
-        private Weapon _BotWeapon;
-        public Weapon BotWeapon
+        private Weapon _Weapon;
+        public Weapon Weapon
         {
-            get { return _BotWeapon; }
-            set { _BotWeapon = value;
-                this.FirePropertyChanged("BotWeapon"); 
+            get { return _Weapon; }
+            set { _Weapon = value;
+                this.FirePropertyChanged("Weapon"); 
             }
         }
 
-        public Bot(Vector3 position, GameManager manager, BotClass type = Models.BotClass.Melee)
+        public Bot(Vector3 position, GameManager manager, int type = GameConstants.TYPE_BOT_MELEE)
             : base(position, manager, new Vector3(0,0,0))
         {
+            Team = GameConstants.TEAM_INT_BADDIES;
 
             switch (type)
             {
-                case Models.BotClass.Boss:
+                case GameConstants.TYPE_BOT_BOSS:
                     this.Acceleration = new Vector3(1, 1, 0);
                     this.AttackRadiusSquared = 200 * 200;
-                    this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.ClassType = type;
+                    this.Weapon = new CrossBow(this);
                     this.Damage = 25;
                     this.Health = 1000;
                     this.MaxHealth = Health;
                     this.ExpYield = 250;
                     Size = new Vector3(50,50,0);
                     break;
-                case Models.BotClass.Melee:
+                case GameConstants.TYPE_BOT_MELEE:
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 200 * 200;
-                    this.BotClass = type;
-                    this.BotWeapon = new Sword(this);
+                    this.AttackRadiusSquared = 2000 * 2000;
+                    this.ClassType = type;
+                    this.Weapon = new Sword(this);
                     this.Damage = 9;
                     this.Health = 25;
                     this.MaxHealth = Health;
                     this.ExpYield = 15;
                     Size = new Vector3(20,20,0);
                     break;
-                case Models.BotClass.Mercenary: // Sentry
+                case GameConstants.TYPE_BOT_MERCENARY: // Sentry
                     this.Acceleration = new Vector3(2, 2, 0);
                     this.AttackRadiusSquared = 100 * 100;
-                    this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.ClassType = type;
+                    this.Weapon = new CrossBow(this);
                     this.Damage = 13;
                     this.Health = 500;
                     this.MaxHealth = Health;
                     this.ExpYield = 100;
                     Size = new Vector3(30,30,0);
                     break;
-                case Models.BotClass.Shooter: // ???
+                case GameConstants.TYPE_BOT_SHOOTER: // ???
                     this.Acceleration = new Vector3(1, 1, 0);
-                    this.AttackRadiusSquared = 1000 * 1000;
-                    this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.AttackRadiusSquared = 400 * 400;
+                    this.ClassType = type;
+                    this.Weapon = new CrossBow(this);
                     this.Damage = 7;
                     this.Health = 10;
                     this.MaxHealth = Health;
                     this.ExpYield = 10;
                     Size = new Vector3(20, 20,0);
                     break;
-                case Models.BotClass.Tower: // Need to kill this to win
+                case GameConstants.TYPE_BOT_TOWER: // Need to kill this to win
                     this.Acceleration = new Vector3(0, 0, 0);
                     this.AttackRadiusSquared = 1 * 1;
-                    this.BotClass = type;
-                    this.BotWeapon = new CrossBow(this);
+                    this.ClassType = type;
+                    this.Weapon = new CrossBow(this);
                     this.Damage = 0;
                     this.Health = 1500;
                     this.MaxHealth = Health;
                     this.ExpYield = 5000;
                     Size = new Vector3(100,100,0);
                     break;
-                case Models.BotClass.Turret: // stationary
+                case GameConstants.TYPE_BOT_TURRET: // stationary
                     this.Acceleration = new Vector3(0, 0, 0);
                     this.AttackRadiusSquared = 200 * 200;
-                    this.BotClass = type;
-                    this.BotWeapon = new Magic(this);
+                    this.ClassType = type;
+                    this.Weapon = new Magic(this);
                     this.Damage = 16;
                     this.Health = 750;
                     this.MaxHealth = Health;
@@ -174,10 +150,31 @@ namespace GameCode.Models
         protected void DecreaseHealth(int val)
         {
             Health -= val;
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
         }
+
         protected void IncreaseHealth(int val)
         {
             Health += val;
+            if (Health >= MaxHealth)
+            {
+                Health = MaxHealth;
+            }
+        }
+
+        public virtual void TakeDamage(int amount, Bot attacker)
+        {
+            DecreaseHealth(amount);
+            if (!Alive)
+            {
+                if (attacker.GetType() == typeof(Character))
+                {
+                    ((Character)attacker).IncreaseExperience(this.ClassType);
+                }
+            }
         }
 
 
@@ -204,14 +201,14 @@ namespace GameCode.Models
             {
                 if (RotateTowardPosition(closestEnemy.Position))
                 {
-                    if (closestLengthSquared > BotWeapon.ProjectileRangeSquared)
+                    if (closestLengthSquared > Weapon.Projectile.RangeSquared)
                     {
                         // get closer
                         MoveForward(deltaTime);
                     }
                     else
                     {
-                        BotWeapon.Attack();
+                        Weapon.Attack();
                     }
                 }
             }
@@ -246,34 +243,6 @@ namespace GameCode.Models
                 this.Position = previousPosition;
             }
 
-        }
-
-        public void HasDied()
-        {
-            Alive = false;
-
-           
-        }
-
-        public void TakeDamage(int amount)
-        {
-            //Console.WriteLine("TakeDamage() " + amount);
-            DecreaseHealth(amount);
-            //Console.WriteLine("Health after: " + Health);
-            if (Health <= 0)
-            {
-                
-                HasDied();
-            }
-        }
-
-        public void GiveHealth(int amount)
-        {
-            IncreaseHealth(amount);
-            if (Health >= MaxHealth)
-            {
-                Health = MaxHealth;
-            }
         }
     }
 }
