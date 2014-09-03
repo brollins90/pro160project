@@ -179,6 +179,7 @@
     <Content Include="Images\Minion.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\Potion.png" />
     <Content Include="Images\RockPower.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -188,6 +189,8 @@
     <Content Include="Images\Sentry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\Shield.png" />
+    <Resource Include="Images\Sword.png" />
     <Content Include="Images\SwordCharacter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

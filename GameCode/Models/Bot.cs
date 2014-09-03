@@ -90,7 +90,7 @@ namespace GameCode.Models
                     Size = new Vector3(50,50,0);
                     break;
                 case GameConstants.TYPE_BOT_MELEE:
-                    this.Acceleration = new Vector3(1, 1, 0);
+                    this.Acceleration = new Vector3(3, 3, 0);
                     this.AttackRadiusSquared = 2000 * 2000;
                     this.ClassType = type;
                     this.Weapon = new Sword(this);
@@ -112,7 +112,7 @@ namespace GameCode.Models
                     Size = new Vector3(30,30,0);
                     break;
                 case GameConstants.TYPE_BOT_SHOOTER: // ???
-                    this.Acceleration = new Vector3(1, 1, 0);
+                    this.Acceleration = new Vector3(2, 2, 0);
                     this.AttackRadiusSquared = 400 * 400;
                     this.ClassType = type;
                     this.Weapon = new CrossBow(this);
