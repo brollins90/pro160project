@@ -130,7 +130,7 @@ namespace GameCode.Models
                     Angle = -90;
                     ClassType = type;
                     Constitution = 5;
-                    Defense = 6;
+                    Defense = 5;
                     Experience = 0;
                     ExperienceCap = 100;
                     Gold = 0;
@@ -149,7 +149,7 @@ namespace GameCode.Models
                     Angle = -90;
                     ClassType = type;
                     Constitution = 7;
-                    Defense = 8;
+                    Defense = 6;
                     Experience = 0;
                     ExperienceCap = 100;
                     Gold = 0;
