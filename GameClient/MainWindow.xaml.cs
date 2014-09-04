@@ -61,6 +61,7 @@ namespace GameClient
             this.KeyUp += GL.Gui_KeyUp;
             this.MouseDown += GL.Gui_MouseDown;
             this.MouseMove += GL.Gui_MouseMove;
+            this.MouseUp += GL.Gui_MouseUp;
 
             // Init the components
             InitializeComponent();

@@ -118,6 +118,20 @@ namespace GameCode.Models
             }
         }
 
+
+        public void Gui_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            //Console.WriteLine("{0} InputListener - MouseDown: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, e.ChangedButton);
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                KeyAttack = false;
+            }
+            else if (e.ChangedButton == MouseButton.Right)
+            {
+                //
+            }
+        }
+
         public void Gui_MouseMove(object sender, MouseEventArgs e)
         {
             MousePos = e.GetPosition((IInputElement)sender);

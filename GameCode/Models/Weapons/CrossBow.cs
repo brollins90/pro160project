@@ -28,7 +28,7 @@ namespace GameCode.Models.Weapons
                         Owner.Manager,
                         Owner.Angle,
                         Owner.Damage,
-                        Projectile.RangeSquared)
+                        Projectile.Range)
                         {
                             Acceleration = Projectile.Acceleration,
                             Position = Owner.Position,
