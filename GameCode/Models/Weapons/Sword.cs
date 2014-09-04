@@ -12,14 +12,12 @@ namespace GameCode.Models.Weapons
     {
         public Sword(Bot owner) : base(owner)
         {
-            this.Projectile = new StabAttack(owner.ID, owner.Manager, Owner.Angle, Owner.Damage, 25 * 25)
+            this.Projectile = new StabAttack(owner.ID, owner.Manager, Owner.Angle, Owner.Damage, 25)
             {
-                Acceleration = new Vector3(10, 10, 0)
+                Acceleration = new Vector3(10, 10, 0),
+                Position = Owner.Position
             };
-            //this.ProjectileRange = 25;
-            //this.ProjectileSpeed = new Vector3(10, 10, 0);
             this.RateOfFire = .762;
-            //Attackype = GameConstants.TYPE_PROJ_STAB;
         }
 
         public override int Attack()

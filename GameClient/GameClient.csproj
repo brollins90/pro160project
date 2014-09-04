@@ -57,7 +57,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BotHealthBarConverter.cs" />
+    <Compile Include="DisplayControls\HealthBarControl.xaml.cs">
+      <DependentUpon>HealthBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setup.cs" />
+    <Page Include="DisplayControls\HealthBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

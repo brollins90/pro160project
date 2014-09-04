@@ -18,32 +18,32 @@ namespace GameCode.Models.Weapons
         /// Who is holding the weapon
         /// </summary>
         public Bot Owner { get; set; }
+
+        /// <summary>
+        /// The projectile to clone when firing
+        /// </summary>
+        public GameProjectile Projectile { get; set; }
+
         /// <summary>
         /// The rate of fire in number of seconds
         /// </summary>
         public double RateOfFire { get; set; }
+        
         /// <summary>
         /// The counter that holds the next time the weapon will become available to fire
         /// </summary>
         public double TimeNextAvailable { get; set; }
-        public GameProjectile Projectile { get; set; }
 
         public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 20)
         {
-            Owner = owner;
-            RateOfFire = rateOfFire;
-            TimeNextAvailable = Environment.TickCount;
-            Projectile = new Arrow(Owner.ID, Owner.Manager, 0)
-            {
-                Range = distance,
-                RangeSquared = distance * distance,
-                Acceleration = new Vector3(speed, speed,0)
-            };
-
-            //ProjectileRange = distance;
-            //ProjectileRangeSquared = ProjectileRange * ProjectileRange;
-            //ProjectileSpeed = new Vector3(speed, speed, 0);
-            //Attackype = GameConstants.TYPE_PROJ_ARROW;
+            this.Owner = owner;
+            //this.Projectile = new Arrow(Owner.ID, Owner.Manager, 0)
+            //{
+            //    Range = distance,
+            //    Acceleration = new Vector3(speed, speed,0)
+            //};
+            this.RateOfFire = rateOfFire;
+            this.TimeNextAvailable = Environment.TickCount;
         }
 
         /// <summary>

@@ -183,7 +183,7 @@ namespace GameCode.Models
             }
         }
 
-        public void IncreaseExperience(int killType)
+        public int IncreaseExperience(int killType)
         {
             int amount = 10;
             switch (killType)
@@ -195,6 +195,18 @@ namespace GameCode.Models
                 default:
                     amount = 10;
                     break;
+                case GameConstants.TYPE_BOT_MERCENARY:
+                    amount = 10;
+                    break;
+                case GameConstants.TYPE_BOT_SHOOTER:
+                    amount = 10;
+                    break;
+                case GameConstants.TYPE_BOT_TOWER:
+                    amount = 10;
+                    break;
+                case GameConstants.TYPE_BOT_TURRET:
+                    amount = 10;
+                    break;
 
         }
 
@@ -202,6 +214,7 @@ namespace GameCode.Models
             if (Experience > ExperienceCap) { 
                 Experience = ExperienceCap;
             }
+            return amount;
 
         }
 
@@ -229,11 +242,11 @@ namespace GameCode.Models
             Health = MaxHealth;
         }
 
-        public override void TakeDamage(int amount, Bot attacker)
+        public override int TakeDamage(int amount)
         {
             amount -= Defense;
             amount = (amount <= 0) ? 1 : amount;
-            base.TakeDamage(amount, attacker);
+            return base.TakeDamage(amount);
         }
 
         public override void CheckInput(double deltaTime) {
