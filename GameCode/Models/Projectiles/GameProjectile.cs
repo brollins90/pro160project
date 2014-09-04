@@ -15,55 +15,42 @@ namespace GameCode.Models.Projectiles
     public abstract class GameProjectile : MovingObject
     {
         /// <summary>
-        /// Location the projectile originated
+        /// The amount of damage the projectile causes
         /// </summary>
-        public Vector3 StartPosition;
+        public int Damage { get; set; }
 
         /// <summary>
         /// The Bot the "shot" the projectile
         /// </summary>
-        internal Bot Owner;
-        internal int OwnerID;
+        internal Bot Owner { get; set; }
+        internal int OwnerID { get; set; }
+
         /// <summary>
         /// The range the projectile shot fom this weapon will travel before disapearing
         /// </summary>
-        public double Range { get; set; }
-        /// <summary>
-        /// The range the projectile shot fom this weapon will travel before disapearing
-        /// </summary>
-        public double RangeSquared { get; set; }
-        /// <summary>
-        /// The speed at which the projectile will accelerate
-        /// </summary>
-        //public Vector3 ProjectileSpeed { get; set; }
+        protected double _Range;
+        public double Range { get { return _Range; } set { _Range = value; } }
 
         /// <summary>
-        /// The distance the projectile can move (stored in squared form to ease math)
+        /// The range the projectile shot fom this weapon will travel before disapearing (squared)
         /// </summary>
-        //protected double RangeSquared;
+        public double RangeSquared { get { return _Range * _Range; } }
 
         /// <summary>
-        /// The amount of damage the projectile causes
+        /// Location the projectile originated
         /// </summary>
-        private int _Damage;
-        public int Damage
-        {
-            get { return _Damage; }
-            set { _Damage = value; }
-        }
+        public Vector3 StartPosition { get; set; }
 
         
-        public GameProjectile(int ownerID, GameManager manager, Vector3 size, double angle, int damage, double rangeSquared)
+        public GameProjectile(int ownerID, GameManager manager, Vector3 size, double angle, int damage, double range)
             : base(new Vector3(0,0,0), manager, size)
         {
-            OwnerID = ownerID;
-            Owner = (Bot)manager.World.Get(OwnerID);
-            //StartPosition = new Vector3(Position.x, Position.y, Position.z);
-            RangeSquared = rangeSquared;
-            this.Damage = damage;
             this.Angle = angle;
-            ClassType = GameConstants.TYPE_PROJ_ARROW;
-            //Position = Owner.Position;
+            this.Damage = damage;
+            this.OwnerID = ownerID;
+            this.Owner = (Bot)manager.World.Get(OwnerID);
+            this.Range = range;
+            this.ClassType = GameConstants.TYPE_PROJ_ARROW;
         }
 
         /// <summary>
@@ -72,15 +59,37 @@ namespace GameCode.Models.Projectiles
         /// <param name="deltaTime">time since last update</param>
         public override void Update(double deltaTime)
         {
-            // Change velocity
+            // Projectiles always move straight forward
             MoveForward(deltaTime);
 
+            // Perform the generic move
             base.Update(deltaTime);
 
-            // check range
+            // check range and remove object if moved too far
             if ((Position - StartPosition).LengthSquared() > RangeSquared)
             {
                 Alive = false;
+            }
+
+            // Since projectiles die in the base class because of distance, if still alive, check collision
+            if (Alive)
+            {
+                foreach (GameObject o in Manager.World.Objects)
+                {
+                    // Dont check for collisions with Team, self, owner
+                    // TODO or team
+                    if (o.Team != this.Team && o.ID != this.ID && o.ID != Owner.ID && this.CollidesWith(o))
+                    {
+                        // Only apply damage if collision is with a bot (cannot hurt walls)
+                        if (o.GetType() == typeof(Bot) || o.GetType() == typeof(Character))
+                        {
+                            Owner.Manager.DamageBot((Bot)o,Damage, Owner);
+                            //((Bot)o).TakeDamage(Damage, Owner);
+                        }
+                        // After collision, remove from play
+                        Alive = false;
+                    }
+                }
             }
         }
     }

@@ -75,12 +75,21 @@ namespace GameCode.Models
             }
         }
 
-        public List<GameObject> Bots
+        public MTObservableCollection<GameObject> Alive
+        {
+            get
+            {
+                var retVal = Objects.Where((obj, r) => { return (obj.Alive); }).ToList();
+                return new MTObservableCollection<GameObject>(retVal);
+            }
+        }
+
+        public MTObservableCollection<GameObject> Bots
         {
             get
             {
                 var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Bot)); }).ToList();
-                return retVal;
+                return new MTObservableCollection<GameObject>(retVal);
             }
         }
 

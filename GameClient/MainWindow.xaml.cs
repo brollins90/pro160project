@@ -19,6 +19,22 @@ using GameCode.Helpers;
 
 namespace GameClient
 {
+    public static class DisplayExtensions
+    {
+        public static int HealthBarHeight(this Bot b)
+        {
+            return 6;
+        }
+        public static int HealthBarWidthFull(this Bot b)
+        {
+            return 60;
+        }
+        public static int HealthBarWidth(this Bot b)
+        {
+            return (b.Health / b.MaxHealth) * b.HealthBarWidthFull();
+        }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -59,6 +75,9 @@ namespace GameClient
             // Every game needs a manager (instance of the game)
             Manager = new GameManager(isServer, netClient, GL, classChosen);
 
+            //Alive.Source = Manager.World;
+            //Alive.Filter += AliveFilter;
+
             //// Create my character
             CurrentCharacter = Manager.GetCurrentCharacter();
 
@@ -70,6 +89,18 @@ namespace GameClient
             CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
         }
+
+
+        //public CollectionViewSource Alive { get; set; }
+        private void AliveFilter(object sender, FilterEventArgs e)
+        {
+            e.Accepted = (e.Item as GameObject).Alive;
+        }
+        private void BotsFilter(object sender, FilterEventArgs e)
+        {
+            e.Accepted = (e.Item as GameObject).Alive && (e.Item as GameObject).ClassType > GameConstants.TYPE_BOT_LOW && (e.Item as GameObject).ClassType < GameConstants.TYPE_BOT_HIGH;
+        }
+
 
         private void Gui_KeyDown(object sender, KeyEventArgs e)
         {

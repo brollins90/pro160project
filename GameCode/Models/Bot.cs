@@ -165,16 +165,17 @@ namespace GameCode.Models
             }
         }
 
-        public virtual void TakeDamage(int amount, Bot attacker)
+        public virtual int TakeDamage(int amount)
         {
             DecreaseHealth(amount);
-            if (!Alive)
-            {
-                if (attacker.GetType() == typeof(Character))
-                {
-                    ((Character)attacker).IncreaseExperience(this.ClassType);
-                }
-            }
+            return (amount);
+            //if (!Alive)
+            //{
+            //    if (attacker.GetType() == typeof(Character))
+            //    {
+            //        ((Character)attacker).IncreaseExperience(this.ClassType);
+            //    }
+            //}
         }
 
 

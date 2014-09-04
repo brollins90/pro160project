@@ -70,6 +70,22 @@ namespace GameCode
             }));
         }
 
+        internal void DamageBot(Bot bot, int Damage, Bot Attacker)
+        {
+            Bot b = bot;// (Bot)World.Get(bot.ID);
+            int damageAmount = b.TakeDamage(Damage);
+            SendInfo(MessageBuilder.DecreaseHPMessage(b.ID, damageAmount));
+
+            if (!b.Alive && Attacker.GetType() == typeof(Character))
+            {
+                Character c = (Character)World.Get(Attacker.ID);
+                int experienceAmount = c.IncreaseExperience(b.ClassType);
+                SendInfo(MessageBuilder.IncreaseXPMessage(c.ID, experienceAmount));
+            }
+
+
+        }
+
         public void EndGame()
         {
             // Called from listen thread, so LT is already stopped
@@ -122,13 +138,15 @@ namespace GameCode
                 {
                 World.RemoveObject(id);
             }));
-            }
+
+        }
 
         internal void SendInfo(String toSend)
-                {
+        {
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
             }
+
         public void SpawnEnemy()
         {
             AddObject(new Bot(new Vector3(950, 200, 0), this, GameConstants.TYPE_BOT_MELEE));

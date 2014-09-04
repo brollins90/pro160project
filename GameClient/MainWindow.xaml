@@ -4,18 +4,26 @@
         Title="The World We Don't Know" Height="768" Width="1024"
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        xmlns:y="clr-namespace:GameClient.Converters">
+        xmlns:y="clr-namespace:GameClient.Converters"
+        xmlns:z="clr-namespace:GameClient.DisplayControls"
+        >
 
     <Window.Resources>
         <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
         <y:BlakeDebugConverter x:Key="BlakeDebugConverter"/>
         <y:RadToDegConverter x:Key="RadToDegConverter"/>
+        <y:BotHealthBarConverterWidth x:Key="BotHealthBarConverterWidth"/>
+        <y:BotHealthBarConverterX x:Key="BotHealthBarConverterX"/>
+        <y:BotHealthBarConverterY x:Key="BotHealthBarConverterY"/>
+        <z:HealthBarControl x:Key="HealthBarControl"/>
+        <CollectionViewSource x:Key="ObjectsAlive" x:Name="ObjectsAlive" Filter="AliveFilter" Source="{Binding Path=Manager.World.Objects}" />
+        <CollectionViewSource x:Key="ObjectsBots" x:Name="ObjectsBots" Filter="BotsFilter" Source="{Binding Path=Manager.World.Objects}" />
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images\GameBackground.png"/>
     </Window.Background>
     <Grid x:Name="MainGrid">
-        <ItemsControl ItemsSource="{Binding Path=Manager.World.Objects}" Margin="-10,10,10,-10">
+        <ItemsControl ItemsSource="{Binding Source={StaticResource ObjectsAlive}}" Margin="-10,10,10,-10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -37,6 +45,35 @@
                 <Style>
                     <Setter Property="Canvas.Left" Value="{Binding Position.x}"/>
                     <Setter Property="Canvas.Top" Value="{Binding Position.y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+
+        <ItemsControl ItemsSource="{Binding Source={StaticResource ObjectsBots}}" Margin="-10,10,10,-10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Canvas>
+                        <Rectangle x:Name="redRect" Width="60" Height="6" Fill="Red"/>
+                        <Rectangle x:Name="greenRect" Height="6" Fill="Green">
+                            <Rectangle.Width>
+                                <MultiBinding Converter="{StaticResource BotHealthBarConverterWidth}">
+                                    <Binding Path="Health"/>
+                                    <Binding Path="MaxHealth"/>                                    
+                                </MultiBinding>
+                            </Rectangle.Width>
+                        </Rectangle>
+                    </Canvas>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Canvas.Left" Value="{Binding Position.x, Converter={StaticResource BotHealthBarConverterX}}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Position.y, Converter={StaticResource BotHealthBarConverterY}}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>

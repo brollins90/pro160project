@@ -16,6 +16,7 @@ namespace GameCode
         {
             NotifyCollectionChangedEventHandler CollectionChanged = this.CollectionChanged;
             if (CollectionChanged != null)
+            {
                 foreach (NotifyCollectionChangedEventHandler nh in CollectionChanged.GetInvocationList())
                 {
                     DispatcherObject dispObj = nh.Target as DispatcherObject;
@@ -33,6 +34,16 @@ namespace GameCode
                     }
                     nh.Invoke(this, e);
                 }
+            }
+        }
+
+        public MTObservableCollection(List<T> list)
+        : base(list)
+        {
+        }
+
+        public MTObservableCollection() : base()
+        {
         }
     }
 }
