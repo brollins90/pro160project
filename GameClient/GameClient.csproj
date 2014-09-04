@@ -58,14 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BotHealthBarConverter.cs" />
-    <Compile Include="DisplayControls\HealthBarControl.xaml.cs">
-      <DependentUpon>HealthBarControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Setup.cs" />
-    <Page Include="DisplayControls\HealthBarControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -78,10 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\BlakeDebugConverter.cs" />
-    <Compile Include="Converters\CharacterSpriteConverter.cs" />
     <Compile Include="Converters\GameObjectToSpriteConverter.cs" />
-    <Compile Include="Health Bars\BotHealthBar.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
