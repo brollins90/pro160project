@@ -43,9 +43,6 @@ namespace GameClient
 
         public GameManager Manager { get; set; }
         //public int ClassChosen { get; set; }
-        public int UpgradeArmorCost { get; set; }
-        public int UpgradeWeaponCost { get; set; }
-        public int UpgradeHealthCost { get; set; }
         public InputListener GL { get; set; }
         public Character CurrentCharacter { get; set; }
 
@@ -53,10 +50,6 @@ namespace GameClient
         public MainWindow(bool isServer, NetworkClient netClient, int classChosen)
         {
             Console.WriteLine("{0} MainWindow - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
-
-            UpgradeArmorCost = 50;
-            UpgradeWeaponCost = 30;
-            UpgradeHealthCost = 50; 
 
             Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
             this.Cursor = myCursor;
@@ -124,13 +117,11 @@ namespace GameClient
         private void CloseShop()
         {            
             ShopMenu.Visibility = Visibility.Collapsed;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
         private void OpenShop()
         {
             ShopMenu.Visibility = Visibility.Visible;
-            NotEnoughGold.Visibility = Visibility.Collapsed;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -145,73 +136,33 @@ namespace GameClient
             CloseShop();
         }
 
-        ////Open shop
-        //private void OpenShopClick(object sender, RoutedEventArgs e)
-        //{
-        //    OpenShop();
-        //}
 
-        //Reinforce armor plating
-        private void UpgradeArmorButton(object sender, RoutedEventArgs e)
-        {
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentCharacter.Gold >= UpgradeArmorCost)
-            {
-                CurrentCharacter.Gold -= UpgradeArmorCost;
-                CurrentCharacter.Defense += 1;
 
-                UpgradeArmorCost += 20;
 
-                ArmorCostText.Text = "" + UpgradeArmorCost;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-            //CheckIfDead();
-        }
 
-        //Reforge weapon
-        private void UpgradeWeaponButton(object sender, RoutedEventArgs e)
-        {
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentCharacter.Gold >= UpgradeWeaponCost)
-            {
-                CurrentCharacter.Gold -= UpgradeWeaponCost;
-                CurrentCharacter.Strength += 1;
 
-                UpgradeWeaponCost += 20;
 
-                WeaponCostText.Text = "" + UpgradeWeaponCost;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-            //CheckIfDead();
-        }
 
-        //Drink magic potion
-        private void UpgradeHealthButton(object sender, RoutedEventArgs e)
-        {
-            
 
-            NotEnoughGold.Visibility = Visibility.Collapsed;
-            if (CurrentCharacter.Gold >= UpgradeHealthCost)
-            {
-                CurrentCharacter.Gold -= UpgradeHealthCost;
-                CurrentCharacter.Constitution += 1;
 
-                UpgradeHealthCost += 20;
 
-                HealthCostText.Text = "" + UpgradeHealthCost;
-            }
-            else
-            {
-                NotEnoughGold.Visibility = Visibility.Visible;
-            }
-            //CheckIfDead();
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private void ConfirmQuit(object sender, RoutedEventArgs e)
         {

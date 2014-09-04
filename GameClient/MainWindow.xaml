@@ -63,7 +63,7 @@
                             <Rectangle.Width>
                                 <MultiBinding Converter="{StaticResource BotHealthBarConverterWidth}">
                                     <Binding Path="Health"/>
-                                    <Binding Path="MaxHealth"/>                                    
+                                    <Binding Path="MaxHealth"/>
                                 </MultiBinding>
                             </Rectangle.Width>
                         </Rectangle>
@@ -128,68 +128,47 @@
             </Canvas>
         </ItemsControl>
 
-        <UniformGrid x:Name="ShopMenu" Columns="1" Visibility="Collapsed">
-            <UniformGrid.Background>
+        <Grid x:Name="ShopMenu" Visibility="Visible" >
+            <Grid.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
-            </UniformGrid.Background>
-            <Label FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center">Welcome to the shop!!!</Label>
-            <Button Click="UpgradeArmorButton">
-                <UniformGrid Rows="1">
-                    <Label Height="100" Width="120">
-                        <Label.Background>
-                            <ImageBrush ImageSource="Images\Shield.png"/>
-                        </Label.Background>
-                    </Label>
-                    <Canvas HorizontalAlignment="Right">
-                        <TextBlock FontSize="24" Canvas.Left="-171" Canvas.Top="-13"> Upgrade Armor:</TextBlock>
-                        <TextBlock x:Name="ArmorCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeArmorCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                    </Canvas>
-                </UniformGrid>
-            </Button>
-            <Button Click="UpgradeWeaponButton">
-                <UniformGrid Rows="1">
-                    <Label Height="100" Width="120">
-                        <Label.Background>
-                            <ImageBrush ImageSource="Images\Sword.png"/>
-                        </Label.Background>
-                    </Label>
-                    <Canvas>
-                        <TextBlock FontSize="24" Canvas.Left="-193" Canvas.Top="-13"> Upgrade Weapon:</TextBlock>
-                        <TextBlock x:Name="WeaponCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeWeaponCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                    </Canvas>
-                </UniformGrid>
-            </Button>
-            <Button Click="UpgradeHealthButton">
-                <UniformGrid Rows="1">
-                    <Label Height="100" Width="120">
-                        <Label.Background>
-                            <ImageBrush ImageSource="Images\Potion.png"/>
-                        </Label.Background>
-                    </Label>
-                    <Canvas>
-                        <TextBlock FontSize="24" Canvas.Left="-173" Canvas.Top="-13"> Upgrade Health:</TextBlock>
-                        <TextBlock x:Name="HealthCostText" FontSize="24" Width="76" Text="{Binding Path=UpgradeHealthCost}" Canvas.Left="5" Canvas.Top="-13"></TextBlock>
-                        <TextBlock FontSize="24" Canvas.Left="81" Canvas.Top="-13">Gold</TextBlock>
-                    </Canvas>
-                </UniformGrid>
-            </Button>
-            <UniformGrid Columns="3" Rows="1">
-                <Label FontSize="60" Margin="0,0,142,0">Gold:</Label>
-                <Label FontSize="60" Content="{Binding Path=CurrentCharacter.Gold}" Margin="-142,0,294,0"/>
-                <Label FontSize="60" Margin="-295,0,0,0" Background="Red" Visibility="Collapsed" x:Name="NotEnoughGold">Not Enough Gold!!!</Label>
-            </UniformGrid>
-            <Button Click="CloseShopClick">Exit</Button>
-            <UniformGrid Columns="6" Rows="1">
-                <Label FontSize="40">Strength:</Label>
-                <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Strength}" Margin="0,0,60,0"/>
-                <Label FontSize="40" Margin="-60,0,40,0">Defense:</Label>
-                <Label FontSize="40" Content="{Binding CurrentCharacter.Defense}" Margin="-40,0,82,0"/>
-                <Label FontSize="40" Margin="-82,0,-4,0">Constitution:</Label>
-                <Label FontSize="40" Content="{Binding Path=CurrentCharacter.Constitution}" Margin="4,0,0,0"/>
-            </UniformGrid>
-        </UniformGrid>
+            </Grid.Background>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Grid.Column="0">
+                    <TextBlock Height="48" Width="150" FontSize="28" FontWeight="Bold" Canvas.Top="25" Canvas.Left="55">Head Piece</TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill: </TextBlock>
+                </Canvas>
+            </Grid>
+
+
+        </Grid>
+
+
+
+
+
+
+
+
+
+
+
+
         <UniformGrid x:Name="QuitMenu" Columns="1" Visibility="Collapsed">
             <UniformGrid.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
