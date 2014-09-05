@@ -158,8 +158,8 @@ namespace GameCode
             AddObject(new Bot(new Vector3(750, 100, 0), this, GameConstants.TYPE_BOT_MELEE));
             AddObject(new Bot(new Vector3(945, 420, 0), this, GameConstants.TYPE_BOT_MERCENARY));
             AddObject(new Bot(new Vector3(800, 400, 0), this, GameConstants.TYPE_BOT_SHOOTER));
-            AddObject(new Bot(new Vector3(930, 260, 0), this, GameConstants.TYPE_BOT_TOWER));
-            AddObject(new Bot(new Vector3(910, -10, 0), this, GameConstants.TYPE_BOT_TURRET));
+            AddObject(new Bot(new Vector3(930, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
+            AddObject(new Bot(new Vector3(910, -10, 0), this, GameConstants.TYPE_BOT_TOWER));
 
             //Left side of enemy castle
             AddObject(new Bushes(new Vector3(580, -30, 0), this, new Vector3(60, 60, 0)));
