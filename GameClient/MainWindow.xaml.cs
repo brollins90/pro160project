@@ -179,14 +179,14 @@ namespace GameClient
             int StatIncrease = 2;
             int GoldAmount = 300;
 
-            if (RingsSlots == 2 && CurrentCharacter.Gold > GoldAmount)
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
                 RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
                 Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if (RingsSlots == 1 && CurrentCharacter.Gold > GoldAmount)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
@@ -204,14 +204,14 @@ namespace GameClient
             int StatIncrease = 2;
             int GoldAmount = 300; 
 
-            if (RingsSlots == 2 && CurrentCharacter.Gold > GoldAmount)
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
                 RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
                 Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if (RingsSlots == 1 && CurrentCharacter.Gold > GoldAmount)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
@@ -229,14 +229,14 @@ namespace GameClient
             int StatIncrease = 2;
             int GoldAmount = 300; 
 
-            if (RingsSlots == 2 && CurrentCharacter.Gold > GoldAmount)
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
                 RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
                 Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if (RingsSlots == 1 && CurrentCharacter.Gold > GoldAmount)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
@@ -257,7 +257,7 @@ namespace GameClient
             int StatIncrease = 3;
             int GoldAmount = 500;
 
-            if (NeckSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
@@ -275,7 +275,7 @@ namespace GameClient
             int StatIncrease = 3;
             int GoldAmount = 500;
 
-            if (NeckSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
@@ -293,7 +293,7 @@ namespace GameClient
             int StatIncrease = 3;
             int GoldAmount = 500;
 
-            if (NeckSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
@@ -314,7 +314,7 @@ namespace GameClient
             int StatIncrease = 2;
             int GoldAmount = 1000;
 
-            if (PantsSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
@@ -333,7 +333,7 @@ namespace GameClient
             int StatIncrease = 4;
             int GoldAmount = 1000;
 
-            if (PantsSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
@@ -351,7 +351,7 @@ namespace GameClient
             int StatIncrease = 4;
             int GoldAmount = 1000;
 
-            if (PantsSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
@@ -375,7 +375,7 @@ namespace GameClient
             int StatIncrease = 4;
             int GoldAmount = 1500;
 
-            if (ChestSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
@@ -394,7 +394,7 @@ namespace GameClient
             int StatIncrease = 4;
             int GoldAmount = 1500;
 
-            if (ChestSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
@@ -412,7 +412,7 @@ namespace GameClient
             int StatIncrease = 6;
             int GoldAmount = 1500;
 
-            if (ChestSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
@@ -438,7 +438,7 @@ namespace GameClient
             int StatIncrease = 3;
             int GoldAmount = 1250;
 
-            if (HeadSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
@@ -458,7 +458,7 @@ namespace GameClient
             int StatIncrease = 6;
             int GoldAmount = 1250;
 
-            if (HeadSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
@@ -476,7 +476,7 @@ namespace GameClient
             int StatIncrease = 5;
             int GoldAmount = 1250;
 
-            if (HeadSlots > 0 && CurrentCharacter.Gold > GoldAmount)
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
