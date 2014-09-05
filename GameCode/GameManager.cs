@@ -133,7 +133,7 @@ namespace GameCode
 
         private delegate void RemoveObjectThreadSafeDelegateInt(int id);
         public void RemoveObjectThreadSafe(int id)
-            {
+        {
             Application.Current.Dispatcher.Invoke((Action)(() =>
                 {
                 World.RemoveObject(id);
@@ -141,15 +141,30 @@ namespace GameCode
 
         }
 
+        public void UpgradeStr(Character CurrentCharacter, int StatIncrease)
+        {
+            CurrentCharacter.Strength += StatIncrease;
+        }
+
+        public void UpgradeLife(Character CurrentCharacter,  int StatIncrease)
+        {
+            CurrentCharacter.Constitution += StatIncrease;
+        }
+
+        public void UpgradeDef(Character CurrentCharacter,  int StatIncrease)
+        {
+            CurrentCharacter.Defense += StatIncrease;
+        }
+
         internal void SendInfo(String toSend)
         {
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
-            }
+        }
 
         public void SpawnEnemy()
         {
-            AddObject(new Bot(new Vector3(950, 200, 0), this, GameConstants.TYPE_BOT_MELEE));
+            AddObject(new Bot(new Vector3(950, 200, 0), this, GameConstants.TYPE_BOT_SHOOTER));
         }
 
         public void LoadWorld()
