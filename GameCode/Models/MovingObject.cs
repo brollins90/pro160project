@@ -215,6 +215,31 @@ namespace GameCode.Models
 
             // update position that we already calculated
             Position = Position + Velocity;
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (this.ID != o.ID && this.CollidesWith(o))
+                    if (o.GetType() == typeof(Character))
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        collided = true;
+                    }
+            }
+            if (collided)
+            {
+                if (this.Position.y >= 384)
+                {
+                    this.RotateTowardPosition(new Vector3(950, 700, 0));
+                }
+                else
+                {
+                    this.RotateTowardPosition(new Vector3(950, 0, 0));
+                }
+            }
         }
     }
 }

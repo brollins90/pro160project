@@ -24,7 +24,7 @@ namespace GameCode.Models
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
+        
 
         private bool _Alive;
         public bool Alive

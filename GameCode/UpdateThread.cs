@@ -79,6 +79,8 @@ namespace GameCode
 
         public void Update(float deltaTime)
         {
+            
+
             //Console.WriteLine("{0} UpdateThread - Update({1})", System.Threading.Thread.CurrentThread.ManagedThreadId, deltaTime);
 
             // Spawn some bad guys
