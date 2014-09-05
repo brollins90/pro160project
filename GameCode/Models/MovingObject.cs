@@ -220,7 +220,7 @@ namespace GameCode.Models
             foreach (GameObject o in Manager.World.Objects)
             {
                 if (this.ID != o.ID && this.CollidesWith(o))
-                    if (o.GetType() == typeof(MovingObject))
+                    if (o.GetType() == typeof(Character))
                     {
                         // do nothing
                     }
@@ -229,10 +229,9 @@ namespace GameCode.Models
                         collided = true;
                     }
             }
-            // if collided dont perform the move
             if (collided)
             {
-                //this.Position = new Vector3(5, 5, 0);
+                this.RotateTowardPosition(new Vector3(950, 0, 0));
             }
         }
     }
