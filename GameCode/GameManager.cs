@@ -141,17 +141,18 @@ namespace GameCode
 
         }
 
-        public void UpgradeStr(Character CurrentCharacter, int StatIncrease)
+        public void UpgradeStr(Character CurrentCharacter, int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Strength += StatIncrease;
+            
         }
 
-        public void UpgradeLife(Character CurrentCharacter,  int StatIncrease)
+        public void UpgradeLife(Character CurrentCharacter,  int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Constitution += StatIncrease;
         }
 
-        public void UpgradeDef(Character CurrentCharacter,  int StatIncrease)
+        public void UpgradeDef(Character CurrentCharacter,  int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Defense += StatIncrease;
         }
