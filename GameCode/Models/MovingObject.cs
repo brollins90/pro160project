@@ -215,6 +215,25 @@ namespace GameCode.Models
 
             // update position that we already calculated
             Position = Position + Velocity;
+
+            bool collided = false;
+            foreach (GameObject o in Manager.World.Objects)
+            {
+                if (this.ID != o.ID && this.CollidesWith(o))
+                    if (o.GetType() == typeof(MovingObject))
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        collided = true;
+                    }
+            }
+            // if collided dont perform the move
+            if (collided)
+            {
+                //this.Position = new Vector3(5, 5, 0);
+            }
         }
     }
 }
