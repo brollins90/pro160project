@@ -45,6 +45,12 @@ namespace GameClient
         //public int ClassChosen { get; set; }
         public InputListener GL { get; set; }
         public Character CurrentCharacter { get; set; }
+        public int HeadSlots { get; set; }
+        public int ChestSlots { get; set; }
+        public int PantsSlots { get; set; }
+        public int RingsSlots { get; set; }
+        public int NeckSlots { get; set; }
+
 
 
         public MainWindow(bool isServer, NetworkClient netClient, int classChosen)
@@ -53,6 +59,14 @@ namespace GameClient
 
             Cursor myCursor = new Cursor(System.IO.Path.GetFullPath("cursor.cur"));
             this.Cursor = myCursor;
+
+            HeadSlots = 1;
+            ChestSlots = 1;
+            PantsSlots = 1;
+            RingsSlots = 2;
+            NeckSlots = 1;
+
+            
 
             GL = new InputListener();
 
@@ -82,6 +96,15 @@ namespace GameClient
             // create some objects to bind the HUD portion of the UI to
             CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
             CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+
+            if (CurrentCharacter.ClassType == 238)
+            {
+                StrLabel.Content = "Int: ";
+            }
+            else if (CurrentCharacter.ClassType == 237)
+            {
+                StrLabel.Content = "Dex: ";
+            }
         }
 
 
@@ -137,34 +160,6 @@ namespace GameClient
             CloseShop();
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private void ConfirmQuit(object sender, RoutedEventArgs e)
         {
             Manager.EndGame();
@@ -174,6 +169,262 @@ namespace GameClient
         {
             QuitMenu.Visibility = Visibility.Collapsed;
         }
+
+        #region ShopItems
+
+        #region Rings
+
+        private void BuyOnyxRing_Click(object sender, RoutedEventArgs e)
+        {
+            if (RingsSlots == 2)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else if(RingsSlots == 1)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyZerkRing_Click(object sender, RoutedEventArgs e)
+        {
+            if (RingsSlots == 2)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else if (RingsSlots == 1)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyRingOfLife_Click(object sender, RoutedEventArgs e)
+        {
+            if (RingsSlots == 2)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else if (RingsSlots == 1)
+            {
+                RingsSlots -= 1;
+                RingSlotsLeft.Content = "" + RingsSlots;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+#endregion
+
+        #region Amulets
+        private void BuyAmmyOfLife_Click(object sender, RoutedEventArgs e)
+        {
+            if (NeckSlots > 0)
+            {
+                NeckSlots -= 1;
+                NeckSlotsLeft.Content = "" + NeckSlots;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfGlory.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyAmmyOfPower_Click(object sender, RoutedEventArgs e)
+        {
+            if (NeckSlots > 0)
+            {
+                NeckSlots -= 1;
+                NeckSlotsLeft.Content = "" + NeckSlots;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfPower.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyAmmyOfDef_Click(object sender, RoutedEventArgs e)
+        {
+            if (NeckSlots > 0)
+            {
+                NeckSlots -= 1;
+                NeckSlotsLeft.Content = "" + NeckSlots;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfDef.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        #endregion
+
+        #region Bottom
+        private void BuyDragonChaps_Click(object sender, RoutedEventArgs e)
+        {
+            if (PantsSlots > 0)
+            {
+                PantsSlots -= 1;
+                PantSlotsLeft.Content = "" + PantsSlots;
+                BotSlot.Source = new BitmapImage(new Uri("Images/RangeChaps.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+                 
+            }
+        }
+
+        private void BuyWizBot_Click(object sender, RoutedEventArgs e)
+        {
+            if (PantsSlots > 0)
+            {
+                PantsSlots -= 1;
+                PantSlotsLeft.Content = "" + PantsSlots;
+                BotSlot.Source = new BitmapImage(new Uri("Images/WizBot.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyPlatelegs_Click(object sender, RoutedEventArgs e)
+        {
+            if (PantsSlots > 0)
+            {
+                PantsSlots -= 1;
+                PantSlotsLeft.Content = "" + PantsSlots;
+                BotSlot.Source = new BitmapImage(new Uri("Images/PlateLegs.png", UriKind.RelativeOrAbsolute)); ;
+                BotSlot.Height = 100;
+                BotSlot.Width = 100;
+            }
+            else
+            {
+
+            }
+
+        }
+
+        #endregion
+
+        #region Chest
+        private void BuyDragonHide_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChestSlots > 0)
+            {
+                ChestSlots -= 1;
+                ChestSlotsLeft.Content = "" + ChestSlots;
+                MidSlot.Source = new BitmapImage(new Uri("Images/RangeBody.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+                
+            }
+        }
+
+        private void BuyWizTop_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChestSlots > 0)
+            {
+                ChestSlots -= 1;
+                ChestSlotsLeft.Content = "" + ChestSlots;
+                MidSlot.Source = new BitmapImage(new Uri("Images/Wiztop.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyBreastplate_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChestSlots > 0)
+            {
+                ChestSlots -= 1;
+                ChestSlotsLeft.Content = "" + ChestSlots;
+                MidSlot.Source = new BitmapImage(new Uri("Images/Chestplate.png", UriKind.RelativeOrAbsolute)); ;
+                MidSlot.Height = 100;
+                MidSlot.Width = 100;
+            }
+            else
+            {
+
+            }
+        }
+
+        #endregion
+
+        #region Head
+
+        private void BuyCoif_Click(object sender, RoutedEventArgs e)
+        {
+            if (HeadSlots > 0)
+            {
+                HeadSlots -= 1;
+                HeadSlotsLeft.Content = "" + HeadSlots;
+                TopSlot.Source = new BitmapImage(new Uri("Images/Coif.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+                
+            }
+        }
+
+        private void BuyWizHat_Click(object sender, RoutedEventArgs e)
+        {
+            if (HeadSlots > 0)
+            {
+                HeadSlots -= 1;
+                HeadSlotsLeft.Content = "" + HeadSlots;
+                TopSlot.Source = new BitmapImage(new Uri("Images/WizHat.png", UriKind.RelativeOrAbsolute)); ;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void BuyFullHelm_Click(object sender, RoutedEventArgs e)
+        {
+            if (HeadSlots > 0)
+            {
+                HeadSlots -= 1;
+                HeadSlotsLeft.Content = "" + HeadSlots;
+                TopSlot.Source = new BitmapImage(new Uri("Images/FullHelm.png", UriKind.RelativeOrAbsolute)); ;
+                TopSlot.Height = 100;
+                TopSlot.Width = 100;
+            }
+            else
+            {
+
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         ////ends game if player is dead
         //public void CheckIfDead()

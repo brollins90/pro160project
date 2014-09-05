@@ -94,7 +94,7 @@
                 <ImageBrush Stretch="None" ImageSource="Images\GameOverlay.jpg"/>
             </ItemsControl.Background>
             <Canvas Height="142" Margin="12,0,0,0">
-                <Label Canvas.Top="-5">Str:</Label>
+                <Label x:Name="StrLabel" Canvas.Top="-5">Str:</Label>
                 <Label Canvas.Left="32" Width="68" Content="{Binding Path=CurrentCharacter.Strength}" Height="26" Canvas.Top="-5"></Label>
 
                 <Label Canvas.Top="21">Def:</Label>
@@ -123,7 +123,7 @@
             </Canvas>
         </ItemsControl>
 
-        <Grid x:Name="ShopMenu" Visibility="Visible" >
+        <Grid x:Name="ShopMenu" Visibility="Collapsed" >
             <Grid.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
             </Grid.Background>
@@ -146,11 +146,198 @@
 
                 <Canvas Grid.Column="0">
                     <TextBlock Height="48" Width="150" FontSize="28" FontWeight="Bold" Canvas.Top="25" Canvas.Left="55">Head Piece</TextBlock>
-                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill: </TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill:</TextBlock>
+                    <Label x:Name="HeadSlotsLeft" FontSize="24" Content="{Binding Path=HeadSlots}" Canvas.Left="169" Canvas.Top="75" Height="40" Width="59"></Label>
+                    <Image x:Name="TopSlot" Source="Images/Ui-paperdoll-slot-head.png" Canvas.Left="294" Canvas.Top="51"/>
                 </Canvas>
+
+                <Button x:Name="BuyFullHelm" Grid.Column="1" Margin="8,8,8,8" Click="BuyFullHelm_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-62" Canvas.Top="-63">Full Helm</TextBlock>
+
+                        <Image Source="Images/FullHelm.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 5</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyWizHat" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizHat_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-88" Canvas.Top="-65">Wizard Hat</TextBlock>
+                        <Image Source="Images/WizHat.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 6</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyCoif" Grid.Column="3" Margin="8,8,8,8" Click="BuyCoif_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-29" Canvas.Top="-64">Coif</TextBlock>
+                        <Image Source="Images/Coif.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 3</TextBlock>
+                    </Canvas>
+                </Button>
+
             </Grid>
 
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
+                <Canvas Grid.Column="0">
+                    <TextBlock Height="48" Width="150" FontSize="28" FontWeight="Bold" Canvas.Top="25" Canvas.Left="55">Chest Piece</TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill:</TextBlock>
+                    <Label x:Name="ChestSlotsLeft" FontSize="24" Content="{Binding Path=ChestSlots}" Canvas.Left="169" Canvas.Top="75" Height="40" Width="59"></Label>
+                    <Image x:Name="MidSlot" Source="Images/Ui-paperdoll-slot-chest.png" Canvas.Left="294" Canvas.Top="51"/>
+                </Canvas>
+
+                <Button x:Name="BuyBreastplate" Grid.Column="1" Margin="8,8,8,8" Click="BuyBreastplate_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-76" Canvas.Top="-61">Breastplate</TextBlock>
+                        <Image Source="Images/ChestPlate.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 6</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyWizTop" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizTop_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-100" Canvas.Top="-64">Wizard Robe</TextBlock>
+                        <Image Source="Images/WizTop.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 4</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyDragonHide" Grid.Column="3" Margin="8,8,8,8" Click="BuyDragonHide_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-99" Canvas.Top="-61">Dragon Hide</TextBlock>
+                        <Image Source="Images/RangeBody.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 4</TextBlock>
+                    </Canvas>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Grid.Column="0">
+                    <TextBlock Height="48" Width="100" FontSize="28" FontWeight="Bold" Canvas.Top="25" Canvas.Left="70">Bottom</TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill:</TextBlock>
+                    <Label x:Name="PantSlotsLeft" FontSize="24" Content="{Binding Path=PantsSlots}" Canvas.Left="169" Canvas.Top="75" Height="40" Width="59"></Label>
+                    <Image x:Name="BotSlot" Source="Images/Ui-paperdoll-slot-legs.png" Canvas.Left="294" Canvas.Top="51"/>
+                </Canvas>
+
+                <Button x:Name="BuyPlatelegs" Grid.Column="1" Margin="8,8,8,8" Click="BuyPlatelegs_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-79" Canvas.Top="-61">Plate Legs</TextBlock>
+                        <Image Source="Images/PlateLegs.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 4</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyWizBot" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizBot_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-88" Canvas.Top="-65">Wizard Skirt</TextBlock>
+                        <Image Source="Images/WizBot.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 4</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyDragonChaps" Grid.Column="3" Margin="8,8,8,8" Click="BuyDragonChaps_Click">
+                    <Canvas>
+                        <TextBlock FontSize="36" Canvas.Left="-113" Canvas.Top="-66">Dragon Chaps</TextBlock>
+                        <Image Source="Images/RangeChaps.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 2</TextBlock>
+                    </Canvas>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Grid.Column="0">
+                    <TextBlock Height="48" Width="150" FontSize="28" FontWeight="Bold" Canvas.Top="22" Canvas.Left="60">Amulets</TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill:</TextBlock>
+                    <Label x:Name="NeckSlotsLeft" FontSize="24" Content="{Binding Path=NeckSlots}" Canvas.Left="169" Canvas.Top="75" Height="40" Width="59"></Label>
+                    <Image x:Name="NecklaceSlot" Source="Images/Ui-paperdoll-slot-neck.png" Canvas.Left="294" Canvas.Top="51"/>
+                </Canvas>
+
+                <Button x:Name="BuyAmmyOfDef" Grid.Column="1" Margin="8,8,8,8" Click="BuyAmmyOfDef_Click">
+                    <Canvas>
+                        <TextBlock FontSize="34" Canvas.Left="-120" Canvas.Top="-68">Defence Amulet</TextBlock>
+                        <Image Source="Images/AmmyOfDef.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 3</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyAmmyOfPower" Grid.Column="2" Margin="8,8,8,8" Click="BuyAmmyOfPower_Click">
+                    <Canvas>
+                        <TextBlock FontSize="33" Canvas.Left="-120" Canvas.Top="-68">Amulet of Power</TextBlock>
+                        <Image Source="Images/AmmyOfPower.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="20">Increases Offense stat by 3</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyAmmyOfLife" Grid.Column="3" Margin="8,8,8,8" Click="BuyAmmyOfLife_Click">
+                    <Canvas>
+                        <TextBlock FontSize="34" Canvas.Left="-105" Canvas.Top="-68">Amulet of Life</TextBlock>
+                        <Image Source="Images/AmmyOfGlory.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="21">Increases Constitution by 3</TextBlock>
+                    </Canvas>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Grid.Column="0">
+                    <TextBlock Height="48" Width="80" FontSize="28" FontWeight="Bold" Canvas.Top="25" Canvas.Left="75">Rings</TextBlock>
+                    <TextBlock FontSize="24" Canvas.Left="10" Canvas.Top="78">Slots left to fill:</TextBlock>
+                    <Label x:Name="RingSlotsLeft" FontSize="24" Content="{Binding Path=RingsSlots}" Canvas.Left="169" Canvas.Top="75" Height="40" Width="59"></Label>
+                    <Image x:Name="RingSlot2" Source="Images/Ui-paperdoll-slot-finger.png" Canvas.Left="327" Canvas.Top="51"/>
+                    <Image x:Name="RingSlot1" Source="Images/Ui-paperdoll-slot-finger.png" Canvas.Left="263" Canvas.Top="51"/>
+                </Canvas>
+
+                <Button x:Name="BuyOnyxRing" Grid.Column="1" Margin="8,8,8,8" Click="BuyOnyxRing_Click">
+                    <Canvas>
+                        <TextBlock FontSize="34" Canvas.Left="-74" Canvas.Top="-68">Onyx Ring</TextBlock>
+                        <Image Source="Images/OnyxRing.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 2</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyZerkRing" Grid.Column="2" Margin="8,8,8,8" Click="BuyZerkRing_Click">
+                    <Canvas>
+                        <TextBlock FontSize="33" Canvas.Left="-100" Canvas.Top="-69">Beserker Ring</TextBlock>
+                        <Image Source="Images/ZerkRing.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="20">Increases Offense stat by 2</TextBlock>
+                    </Canvas>
+                </Button>
+
+                <Button x:Name="BuyRingOfLife" Grid.Column="3" Margin="8,8,8,8" Click="BuyRingOfLife_Click">
+                    <Canvas>
+                        <TextBlock FontSize="34" Canvas.Left="-83" Canvas.Top="-68">Ring of Life</TextBlock>
+                        <Image Source="Images/RingOfLife.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
+                        <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="21">Increases Constitution by 2</TextBlock>
+                    </Canvas>
+                </Button>
+            </Grid>
         </Grid>
 
 
