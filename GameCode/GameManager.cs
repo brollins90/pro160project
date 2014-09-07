@@ -43,13 +43,13 @@ namespace GameCode
             new Thread(LT.Start).Start();
 
             if (IsServer)
-        {
+            {
                 LoadWorld();
-        }
+            }
             else
-        {
+            {
                 SendInfo(MessageBuilder.RequestAllMessage());
-        }
+            }
             //new Thread(UT.Start).Start();
             UT.Start();
 
@@ -109,50 +109,50 @@ namespace GameCode
                 {
                     SendInfo(MessageBuilder.DeadMessage(o));
                 }
-                }
             }
+        }
 
         public void RemoveObject(int id)
-                {
+        {
             RemoveObjectThreadSafe(id);
-            }
+        }
 
         public void RemoveObject(GameObject o)
-                {
+        {
             RemoveObjectThreadSafe(o);
-            }
+        }
 
         private delegate void RemoveObjectThreadSafeDelegate(GameObject o);
         public void RemoveObjectThreadSafe(GameObject o)
-            {
+        {
             Application.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                World.RemoveObject(o);
-            }));
-            }
+                    World.RemoveObject(o);
+                }));
+        }
 
         private delegate void RemoveObjectThreadSafeDelegateInt(int id);
         public void RemoveObjectThreadSafe(int id)
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                World.RemoveObject(id);
-            }));
+                    World.RemoveObject(id);
+                }));
 
         }
 
         public void UpgradeStr(Character CurrentCharacter, int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Strength += StatIncrease;
-            
+
         }
 
-        public void UpgradeLife(Character CurrentCharacter,  int StatIncrease, int GoldAmount)
+        public void UpgradeLife(Character CurrentCharacter, int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Constitution += StatIncrease;
         }
 
-        public void UpgradeDef(Character CurrentCharacter,  int StatIncrease, int GoldAmount)
+        public void UpgradeDef(Character CurrentCharacter, int StatIncrease, int GoldAmount)
         {
             CurrentCharacter.Defense += StatIncrease;
         }

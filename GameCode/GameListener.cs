@@ -36,7 +36,7 @@ namespace GameCode
                 string line = "";
                 try
                 {
-                    line = NetClient.ReadLine(); 
+                    line = NetClient.ReadLine();
                     //Console.WriteLine("{0} GameListener - Receiving: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, line);
                     if (!string.IsNullOrEmpty(line))
                     {
@@ -49,47 +49,51 @@ namespace GameCode
                         //Console.WriteLine("messageType: {0}, objID: {1}, line: {2}:", messageType, objectID, line);
 
                         // Listen for client stuff
-                        if (messageType == GameConstants.MSG_ADD)// || messageType == GameConstants.MOVEMENT_ATTACK)
+                        switch (messageType)
                         {
-                            Add(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MOVEMENT_ATTACK)
-                        {
-                            int ownerID = int.Parse(data[11]);
-                            ((Character)World.Get(ownerID)).Weapon.Attack();
-                        }
-                        else if (messageType == GameConstants.MSG_UPDATE)
-                        {
-                            Update(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MSG_DEAD)
-                        {
-                            Remove(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MSG_REQUEST_ALL_DATA)
-                        {
-                            // send every object
-                            foreach (GameObject o in World.Objects)
-                            {
-                                if (o.Alive)
+                            case GameConstants.MSG_ADD:
+                                Add(objectID, data);
+                                break;
+                            case GameConstants.MSG_DEAD:
+                                Remove(objectID, data);
+                                break;
+                            case GameConstants.MSG_DECREASE_HP:
+                                DecreaseHealth(objectID, data);
+                                break;
+                            case GameConstants.MSG_GAMEOVER:
+                                Manager.EndGame();
+                                Running = false;
+                                break;
+                            case GameConstants.MSG_INCREASE_HP:
+                                IncreaseHealth(objectID, data);
+                                break;
+                            case GameConstants.MSG_INCREASE_STAT:
+                                IncreaseStat(objectID, data);
+                                break;
+                            case GameConstants.MSG_REQUEST_ALL_DATA:
+                                // send every object
+                                foreach (GameObject o in World.Objects)
                                 {
-                                    //Manager.SendInfo(msgString);
-                                    Manager.SendInfo(MessageBuilder.AddMessage(o));
+                                    if (o.Alive)
+                                    {
+                                        //Manager.SendInfo(msgString);
+                                        Manager.SendInfo(MessageBuilder.AddMessage(o));
+                                    }
                                 }
-                            }
+                                break;
+                            case GameConstants.MSG_STOP_LISTENING:
+                                break;
+                            case GameConstants.MSG_UPDATE:
+                                Update(objectID, data);
+                                break;
+                            case GameConstants.MOVEMENT_ATTACK:
+                                int ownerID = int.Parse(data[11]);
+                                ((Character)World.Get(ownerID)).Weapon.Attack();
+                                break;
+                            default:
+                                throw new ArgumentException(string.Format("Received bad input: {0}", messageType));
+                                break;
                         }
-                        else if (messageType == GameConstants.MSG_GAMEOVER)
-                        {
-                            Manager.EndGame();
-                            Running = false;
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("Received bad input: {0}", messageType));
-                        }
-
-
-                        // Listen for server stuff
                     }
                 }
                 catch (FormatException)
@@ -98,7 +102,7 @@ namespace GameCode
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error listening: {0}\n{1}",line,ex.Message);
+                    Console.WriteLine("Error listening: {0}\n{1}", line, ex.Message);
                 }
             }
         }
@@ -127,7 +131,7 @@ namespace GameCode
             else if (objectType > GameConstants.TYPE_CHARACTER_LOW && objectType < GameConstants.TYPE_CHARACTER_HIGH) // its a character
             {
                 //int damage = int.Parse(data[11]);
-                o = new Character(pos, Manager, null, objectType) 
+                o = new Character(pos, Manager, null, objectType)
                 {
                     Angle = ang,
                     Velocity = vel,
@@ -223,6 +227,71 @@ namespace GameCode
                 else
                 {
                     Add(objectID, data);
+                }
+            }
+        }
+
+        private void DecreaseHealth(int objectID, string[] data)
+        {
+            if (Manager.GetCurrentCharacter().ID != objectID)
+            {
+                //Console.WriteLine("{0} GameListener - IncreaseStat: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
+                //int statType = int.Parse(data[2]);
+                int amount = int.Parse(data[4]);
+
+                Bot o = (Bot)World.Get(objectID);
+                if (o != null)
+                {
+                    o.Health -= amount;
+                }
+                else
+                {
+                    //                    Add(objectID, data);
+                }
+            }
+        }
+
+        private void IncreaseHealth(int objectID, string[] data)
+        {
+            if (Manager.GetCurrentCharacter().ID != objectID)
+            {
+                //Console.WriteLine("{0} GameListener - IncreaseStat: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
+                //int statType = int.Parse(data[2]);
+                int amount = int.Parse(data[4]);
+
+                Bot o = (Bot)World.Get(objectID);
+                if (o != null)
+                {
+                    o.Health += amount;
+                }
+                else
+                {
+                    //                    Add(objectID, data);
+                }
+            }
+        }
+
+        private void IncreaseStat(int objectID, string[] data)
+        {
+            if (Manager.GetCurrentCharacter().ID != objectID)
+            {
+                //Console.WriteLine("{0} GameListener - IncreaseStat: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
+                int statType = int.Parse(data[2]);
+                int amount = int.Parse(data[4]);
+
+                Character o = (Character)World.Get(objectID);
+                if (o != null)
+                {
+                    switch (statType)
+                    {
+                        case GameConstants.STAT_XP:
+                            o.Experience += amount;
+                            break;
+                    }
+                }
+                else
+                {
+                    //                    Add(objectID, data);
                 }
             }
         }

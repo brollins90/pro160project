@@ -15,12 +15,15 @@ namespace GameCode
         public const int MSG_GAMEOVER = 4;
         public const int MSG_STOP_LISTENING = 5;
         public const int MSG_REQUEST_ALL_DATA = 6;
-        public const int MSG_INCREASE_XP = 7;
+        public const int MSG_INCREASE_STAT = 7;
         public const int MSG_DECREASE_HP = 8;
         public const int MSG_INCREASE_HP = 9;
         public const int MSG_HIGH = 31;
 
         public const int MOUSE_POS = 65;
+        public const int STAT_LOW = 66;
+        public const int STAT_XP = 67;
+        public const int STAT_HIGH = 99;
 
         public const int TEAM_INT_NONE = 100;
         public const int TEAM_INT_PLAYERS = 101;

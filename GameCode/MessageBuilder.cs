@@ -56,15 +56,15 @@ namespace GameCode
 
         internal static string IncreaseHPMessage(int objID, int amount)
         {
-            // Increase XP: MSG_INCREASE_XP, 0, ID, amount, 0,0,0,0,0,0
+            // Increase XP: MSG_INCREASE_HP, 0, ID, amount, 0,0,0,0,0,0
             string msgString = "" + GameConstants.MSG_INCREASE_HP + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
             return msgString;
         }
 
         internal static string IncreaseXPMessage(int objID, int amount)
         {
-            // Increase XP: MSG_INCREASE_XP, 0, ID, amount, 0,0,0,0,0,0
-            string msgString = "" + GameConstants.MSG_INCREASE_XP + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
+            // Increase XP: MSG_INCREASE_STAT, STAT_XP, ID, amount, 0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_INCREASE_STAT + "," + GameConstants.STAT_XP + "," + objID + "," + amount + ",0,0,0,0,0,0";
             return msgString;
         }
 

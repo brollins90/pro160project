@@ -58,7 +58,16 @@ namespace GameCode.Models
             }
         }
 
-        private int ExperienceNextLevel = 10;
+        private int _ExperienceNextLevel = 10;
+        public int ExperienceNextLevel
+        {
+            get { return _ExperienceNextLevel; }
+            set
+            {
+                _ExperienceNextLevel = value;
+                this.FirePropertyChanged("ExperienceNextLevel");
+            }
+        }
 
         private int _ExperienceCap;
         public int ExperienceCap
@@ -80,14 +89,14 @@ namespace GameCode.Models
             }
         }        
 
-        private double _ExpBarLength;
-        public double ExpBarLength
-        {
-            get { return _ExpBarLength; }
-            set { _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
-                FirePropertyChanged("ExpBarLength");
-            }
-        }
+        //private double _ExpBarLength;
+        //public double ExpBarLength
+        //{
+        //    get { return _ExpBarLength; }
+        //    set { _ExpBarLength = ((double)Experience / (double)ExperienceCap) * 580;
+        //        FirePropertyChanged("ExpBarLength");
+        //    }
+        //}
 
         private int _Level;
         public int Level
@@ -132,7 +141,7 @@ namespace GameCode.Models
                     Constitution = 5;
                     Defense = 5;
                     Experience = 0;
-                    ExperienceCap = 100;
+                    //ExperienceCap = 100;
                     Gold = 0;
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
@@ -151,7 +160,7 @@ namespace GameCode.Models
                     Constitution = 7;
                     Defense = 6;
                     Experience = 0;
-                    ExperienceCap = 100;
+                    //ExperienceCap = 100;
                     Gold = 0;
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
@@ -170,7 +179,7 @@ namespace GameCode.Models
                     Constitution = 4;
                     Defense = 4;
                     Experience = 0;
-                    ExperienceCap = 100;
+                    //ExperienceCap = 100;
                     Gold = 0;
                     Level = 1;
                     Size = new Vector3(32, 32, 0);
@@ -189,31 +198,31 @@ namespace GameCode.Models
             switch (killType)
             {
                 case GameConstants.TYPE_BOT_BOSS:
-                    amount = 20;
+                    amount = 400;
                     break;
                 case GameConstants.TYPE_BOT_MELEE:
                 default:
-                    amount = 10;
+                    amount = 20;
                     break;
                 case GameConstants.TYPE_BOT_MERCENARY:
-                    amount = 10;
+                    amount = 100;
                     break;
                 case GameConstants.TYPE_BOT_SHOOTER:
-                    amount = 10;
+                    amount = 30;
                     break;
                 case GameConstants.TYPE_BOT_TOWER:
-                    amount = 10;
+                    amount = 1000;
                     break;
                 case GameConstants.TYPE_BOT_TURRET:
-                    amount = 10;
+                    amount = 100;
                     break;
 
         }
 
             Experience += amount;
-            if (Experience > ExperienceCap) { 
-                Experience = ExperienceCap;
-            }
+            //if (Experience > ExperienceCap) { 
+            //    Experience = ExperienceCap;
+            //}
             return amount;
 
         }
@@ -223,8 +232,8 @@ namespace GameCode.Models
             this.Level += 1;
             this.Strength += 2;
             this.Constitution += 2;
-            this.Experience = 0;
-            this.ExperienceCap += 30;
+            //this.Experience = 0;
+            //this.ExperienceCap += 30;
             this.Damage = Strength * 2;
             this.MaxHealth = Constitution * 20;
             RestoreHealthToMax();
