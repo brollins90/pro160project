@@ -111,6 +111,7 @@ namespace GameCode.Models
             if (e.ChangedButton == MouseButton.Left)
             {
                 KeyAttack = true;
+                //Console.WriteLine(e.GetPosition((IInputElement)sender));
             }
             else if (e.ChangedButton == MouseButton.Right)
             {

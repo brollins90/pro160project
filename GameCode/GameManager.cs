@@ -170,12 +170,30 @@ namespace GameCode
 
         public void LoadWorld()
         {
-            AddObject(new Bot(new Vector3(930, 100, 0), this, GameConstants.TYPE_BOT_BOSS));
-            AddObject(new Bot(new Vector3(750, 100, 0), this, GameConstants.TYPE_BOT_MELEE));
-            AddObject(new Bot(new Vector3(945, 420, 0), this, GameConstants.TYPE_BOT_MERCENARY));
-            AddObject(new Bot(new Vector3(800, 400, 0), this, GameConstants.TYPE_BOT_SHOOTER));
-            AddObject(new Bot(new Vector3(930, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
-            AddObject(new Bot(new Vector3(910, -10, 0), this, GameConstants.TYPE_BOT_TOWER));
+            AddObject(new Bot(new Vector3(910, 0, 0), this, GameConstants.TYPE_BOT_TOWER));  // 942, 56
+            AddObject(new Bot(new Vector3(930, 100, 0), this, GameConstants.TYPE_BOT_BOSS)); // 941, 134
+
+            AddObject(new Bot(new Vector3(760, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
+            AddObject(new Bot(new Vector3(1120, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
+
+            AddObject(new Bot(new Vector3(760, 320, 0), this, GameConstants.TYPE_BOT_MERCENARY));
+            AddObject(new Bot(new Vector3(1120, 320, 0), this, GameConstants.TYPE_BOT_MERCENARY));
+
+            AddObject(new Bot(new Vector3(945, 200, 0), this, GameConstants.TYPE_BOT_MELEE));
+
+            AddObject(new Bot(new Vector3(545, 200, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(590, 265, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(545, 300, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(545, 350, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(645, 350, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(600, 400, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+
+            AddObject(new Bot(new Vector3(1305, 400, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(1260, 350, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(1360, 350, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(1360, 300, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(1315, 265, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            AddObject(new Bot(new Vector3(1360, 200, 0), this, GameConstants.TYPE_BOT_SHOOTER));
 
             //Left side of enemy castle
             AddObject(new Bushes(new Vector3(580, -30, 0), this, new Vector3(60, 60, 0)));

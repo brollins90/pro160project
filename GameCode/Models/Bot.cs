@@ -117,9 +117,9 @@ namespace GameCode.Models
                     this.ClassType = type;
                     this.Weapon = new CrossBow(this);
                     this.Damage = 7;
-                    this.Health = 10;
+                    this.Health = 30;
                     this.MaxHealth = Health;
-                    this.ExpYield = 10;
+                    this.ExpYield = 20;
                     Size = new Vector3(20, 20,0);
                     break;
                 case GameConstants.TYPE_BOT_TOWER: // Need to kill this to win

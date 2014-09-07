@@ -14,7 +14,8 @@ namespace GameClient.Converters
         {
             double d1 = (int)values[0];
             double d2 = (int)values[1];
-            return (double)(d1 / d2) * 60;
+            double result = (double)(d1 / d2) * 60;
+            return (result < 0) ? 0 : result;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
