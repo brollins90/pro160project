@@ -140,6 +140,7 @@ namespace GameCode
             if (sendMessage)
             {
                 SendInfo(MessageBuilder.DeadMessage(GetCurrentCharacter()));
+                SendInfo(MessageBuilder.GameOverMessage());
             }
             LT.Running = false;
             UT.Running = false;

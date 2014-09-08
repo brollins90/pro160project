@@ -95,5 +95,12 @@ namespace GameCode
             String msgString = "" + GameConstants.MSG_UPDATE + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
             return msgString;
         }
+
+        internal static string GameOverMessage()
+        {
+            // Need all data: MSG_GAMEOVER, 0,0,0,0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_GAMEOVER + ",0,0,0,0,0,0,0,0,0";
+            return msgString;
+        }
     }
 }
