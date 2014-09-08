@@ -550,6 +550,7 @@ namespace GameCode
                     Velocity = vel,
                     ID = objectID
                 };
+                
             }
             else if (objectType > GameConstants.TYPE_DEBRIS_LOW && objectType < GameConstants.TYPE_DEBRIS_HIGH) // its a debris
             {
@@ -614,6 +615,10 @@ namespace GameCode
                 }
             }
             this.AddObjectThreadSafe(o);
+            //if (o is Character)
+            //{
+            //    (o as Character).Acceleration = (o as Character).Acceleration * 20;
+            //}
             
             if (sendMessage)
             {
