@@ -17,7 +17,7 @@ namespace GameCode.Models
             set
             {
                 _AttackRadiusSquared = value;
-                this.FirePropertyChanged("AttackRadiusSquared");
+            this.FirePropertyChanged("AttackRadiusSquared");
             }
         }
 
@@ -32,7 +32,7 @@ namespace GameCode.Models
             {
                 _Damage = value;
                 this.FirePropertyChanged("Damage");
-            }
+        }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace GameCode.Models
             set
             {
                 _Weapon = value;
-                this.FirePropertyChanged("Weapon");
+                this.FirePropertyChanged("Weapon"); 
             }
         }
 
@@ -83,7 +83,7 @@ namespace GameCode.Models
         {
             Angle = 90;
             Team = GameConstants.TEAM_INT_BADDIES;
-            
+
             switch (type)
             {
                 case GameConstants.TYPE_BOT_BOSS:
@@ -211,7 +211,7 @@ namespace GameCode.Models
 
             // if there is an Enemy targeted, attack it / move toward it
             if (target != null)
-            {
+                {
                 RotateTowardPosition(target.Position);
                 //if () // If the bot is facing the target, returns true
                 //{
@@ -262,8 +262,14 @@ namespace GameCode.Models
             {
                 this.Position = previousPosition;
 
-                // To still make a change and avoid the same probelm next time, move left...
-                this.MoveLeft(deltaTime);
+                if (this.Position.y >= 384)
+                {
+                    this.RotateTowardPosition(new Vector3(950, 700, 0));
+                }
+                else
+                {
+                    this.RotateTowardPosition(new Vector3(950, 0, 0));
+                }
             }
         }
     }
