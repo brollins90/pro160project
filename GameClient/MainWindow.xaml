@@ -9,6 +9,7 @@
     <Window.Resources>
         <y:SpriteConverter x:Key="GameObjectToSpriteConverter"/>
         <y:PlayerHealthBarConverterWidth x:Key="PlayerHealthBarConverterWidth"/>
+        <y:PlayerXPBarConverterWidth x:Key="PlayerXPBarConverterWidth"/>
         <y:BotHealthBarConverterWidth x:Key="BotHealthBarConverterWidth"/>
         <y:BotHealthBarConverterX x:Key="BotHealthBarConverterX"/>
         <y:BotHealthBarConverterY x:Key="BotHealthBarConverterY"/>
@@ -75,7 +76,15 @@
         </ItemsControl>
 
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
-            <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
+            <Rectangle Width="580" Height="11" Fill="Bisque"/>
+            <Rectangle Height="11" Fill="Gold">
+                <Rectangle.Width>
+                    <MultiBinding Converter="{StaticResource PlayerXPBarConverterWidth}">
+                        <Binding Path="CurrentCharacter.Experience"/>
+                        <Binding Path="CurrentCharacter.ExperienceNextLevel"/>
+                    </MultiBinding>
+                </Rectangle.Width>
+            </Rectangle>
             <Label VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="256" Canvas.Top="-9">Experience</Label>
         </Canvas>
 

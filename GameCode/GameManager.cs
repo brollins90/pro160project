@@ -391,8 +391,8 @@ namespace GameCode
             AddObject(new Bot(new Vector3(760, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
             AddObject(new Bot(new Vector3(1120, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
 
-            AddObject(new Bot(new Vector3(760, 320, 0), this, GameConstants.TYPE_BOT_MERCENARY));
-            AddObject(new Bot(new Vector3(1120, 320, 0), this, GameConstants.TYPE_BOT_MERCENARY));
+            AddObject(new Bot(new Vector3(760, 340, 0), this, GameConstants.TYPE_BOT_MERCENARY));
+            AddObject(new Bot(new Vector3(1120, 340, 0), this, GameConstants.TYPE_BOT_MERCENARY));
 
             AddObject(new Bot(new Vector3(945, 200, 0), this, GameConstants.TYPE_BOT_MELEE));
 
@@ -555,6 +555,7 @@ namespace GameCode
                     Velocity = vel,
                     ID = objectID
                 };
+                
             }
             else if (objectType > GameConstants.TYPE_DEBRIS_LOW && objectType < GameConstants.TYPE_DEBRIS_HIGH) // its a debris
             {
@@ -619,6 +620,10 @@ namespace GameCode
                 }
             }
             this.AddObjectThreadSafe(o);
+            //if (o is Character)
+            //{
+            //    (o as Character).Acceleration = (o as Character).Acceleration * 20;
+            //}
             
             if (sendMessage)
             {
@@ -641,8 +646,10 @@ namespace GameCode
             GameObject o = World.Get(objectID);
             if (o != null)
             {
+                //Bot b = (Bot)o;
                 o.Angle = ang;
                 o.Position = pos;
+                //b.Velocity = vel;
             }
             else
             {

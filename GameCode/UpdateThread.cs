@@ -1,15 +1,14 @@
-﻿using GameCode.Helpers;
+﻿using System;
+using System.Windows.Threading;
+using GameCode.Helpers;
 using GameCode.Models;
 using GameCode.Models.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace GameCode
 {
+    /// <summary>
+    /// Thread to update the game state
+    /// </summary>
     public class UpdateThread
     {
         private DispatcherTimer Timer;
@@ -26,7 +25,6 @@ namespace GameCode
 
         public UpdateThread(GameManager manager, bool isServer, InputListener gl, int classChosen)
         {
-            Console.WriteLine("{0} UpdateThread - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Running = false;
             Manager = manager;
             World = Manager.World;
@@ -37,53 +35,53 @@ namespace GameCode
             Timer.Tick += Timer_Tick;
             Rand = new Random();
 
-            //int r1 = new Random().Next(10000, 100000);
-
+            // Create this instance's character here
             CurrentCharacter = new Character(new Vector3(820 + Rand.Next(0,200), 800, 0), Manager, GL, classChosen)
             {
                 ID = Rand.Next(10000, 100000)
             };
             Manager.AddObject(CurrentCharacter);
-            //Console.WriteLine("{0} UpdateThread - CreatedCharacter: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, CurrentCharacter.ID);
 
-            // i think this is already somewhere else...
-            //if (!isServer)
-            //{
-            //    Manager.SendInfo(MessageBuilder.AddMessage(CurrentCharacter));
-            //}
-
-
+            // If this is not the server, double the acceleration to compensate lag
+            if (!isServer)
+            {
+                CurrentCharacter.Acceleration = CurrentCharacter.Acceleration * 2;
+            }
         }
+
+        /// <summary>
+        /// Start the update timer
+        /// </summary>
         public void Start()
         {
-            Console.WriteLine("{0} UpdateThread - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Running = true;
             LastTimeMillis = GetCurrentTime();
             LastSpawnTimeMillis = LastTimeMillis;
             Timer.Start();
         }
 
+        /// <summary>
+        /// What happens when the timer ticks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Timer_Tick(object sender, EventArgs e)
         {
-            int currentTimeMillis = Environment.TickCount;
+            int currentTimeMillis = GetCurrentTime();
             int elapsedTimeMillis = currentTimeMillis - LastTimeMillis;
-            //Console.WriteLine("lastTime...: " + LastTimeMillis);
-            //Console.WriteLine("CurrentTime: " + currentTimeMillis);
-            //Console.WriteLine("elapsedTime: " + elapsedTimeMillis);
-            float elapsedTimeFloat = (float)elapsedTimeMillis / 10; // should me 1000
-            //Console.WriteLine(elapsedTimeFloat);
+            float elapsedTimeFloat = (float)elapsedTimeMillis / 10;
 
             Update(elapsedTimeFloat);
             LastTimeMillis = currentTimeMillis;
         }
 
+        /// <summary>
+        /// One update cycle
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public void Update(float deltaTime)
         {
-            
-
-            //Console.WriteLine("{0} UpdateThread - Update({1})", System.Threading.Thread.CurrentThread.ManagedThreadId, deltaTime);
-
-            // Spawn some bad guys
+            // Spawn the bad guys
             if ((LastTimeMillis - LastSpawnTimeMillis) > 10000) // spawn every 10 seconds
             {
                 LastSpawnTimeMillis = LastTimeMillis;
@@ -131,15 +129,6 @@ namespace GameCode
                         Manager.SendInfo(MessageBuilder.UpdateMessage(o));
                     }
                 }
-
-                // Update the Debris  (Right now we dont need to do this since debris will never change)
-                //foreach (Debris o in World.Debris)
-                //{
-                //    if (o.Alive)
-                //    {
-                //        o.Update(deltaTime);
-                //    }
-                //}
 
                 // Remove the dead
                 Manager.RemoveAllDead();

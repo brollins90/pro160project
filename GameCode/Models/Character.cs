@@ -139,32 +139,34 @@ namespace GameCode.Models
 
             switch (type)
             {
-                case GameConstants.TYPE_CHARACTER_ARCHER:
+                case GameConstants.TYPE_CHARACTER_ARCHER: //Average class, decent speed and average stats. Medium Range
                     Acceleration = new Vector3(5, 5, 0);
                     Constitution = 5;
                     Defense = 5;
                     Strength = 3;
                     Weapon = new CrossBow(this);
+                    SetDamage();
                     break;
 
-                case GameConstants.TYPE_CHARACTER_FIGHTER:
+                case GameConstants.TYPE_CHARACTER_FIGHTER: //Short Range, but quick movement. Also Tanky, small range
                     Acceleration = new Vector3(8, 8, 0);
                     Constitution = 7;
                     Defense = 6;
                     Strength = 3;
                     Weapon = new Sword(this);
+                    SetDamage();
                     break;
 
-                case GameConstants.TYPE_CHARACTER_MAGE:
+                case GameConstants.TYPE_CHARACTER_MAGE: //DPS class, slow, but has really high damage. longest range but the squishiest of all classes
                     Acceleration = new Vector3(3, 3, 0);
                     Constitution = 4;
-                    Defense = 4;
+                    Defense = 3;
                     Strength = 3;
                     Weapon = new Magic(this);
+                    Damage = Strength * 3; 
                     break;
             }
 
-            SetDamage();
             SetHealth();
             RestoreHealthToMax();
         }
@@ -209,6 +211,16 @@ namespace GameCode.Models
             this.Gold -= amount;
         }
 
+        internal override void DecreaseHealth(int val)
+        {
+            base.DecreaseHealth(val);
+
+            if (!Alive)
+            {
+                Manager.EndGame(true);
+            }
+        }
+
         /// <summary>
         /// Public way to increase experience
         /// </summary>
@@ -245,9 +257,12 @@ namespace GameCode.Models
             // If we need to level up, do it here
             if (Experience >= ExperienceNextLevel)
             {
-                ExperienceNextLevel += ExperienceNextLevel;
+                int leftovers = Experience - ExperienceNextLevel;
+
+                //ExperienceNextLevel += ExperienceNextLevel;
                 //LevelUp();
                 Manager.LevelUpCharacter(this.ID);
+                Experience = leftovers;
             }
             return amount;
         }
@@ -295,6 +310,7 @@ namespace GameCode.Models
         /// </summary>
         public void LevelUp()
         {
+            ExperienceNextLevel = ExperienceNextLevel + 40;
             IncreaseStat(GameConstants.STAT_LEVEL, 1);
             IncreaseStat(GameConstants.STAT_CONSTITUTION, 2);
             IncreaseGold(100);

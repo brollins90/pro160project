@@ -154,7 +154,7 @@ namespace GameCode.Models
         /// Called to lower the Health of the Bot
         /// </summary>
         /// <param name="val"></param>
-        internal void DecreaseHealth(int val)
+        internal virtual void DecreaseHealth(int val)
         {
             Health -= val;
             if (Health <= 0)
