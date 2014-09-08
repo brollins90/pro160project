@@ -90,6 +90,7 @@ namespace GameCode
                 Character c = (Character)World.Get(Attacker.ID);
                 int experienceAmount = c.IncreaseExperience(b.ClassType);
                 SendInfo(MessageBuilder.IncreaseStatMessage(c.ID, GameConstants.STAT_XP, experienceAmount));
+                
             }
         }
 
@@ -207,6 +208,7 @@ namespace GameCode
                 if (sendMessage)
                 {
                     SendInfo(MessageBuilder.IncreaseStatMessage(objectID, stat, amount));
+                    
                 }
             }
         }

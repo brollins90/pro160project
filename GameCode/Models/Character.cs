@@ -303,6 +303,8 @@ namespace GameCode.Models
                 default:
                     throw new Exception("Unknown stat");
             }
+            SetDamage();
+            SetHealth();
         }
 
         /// <summary>
