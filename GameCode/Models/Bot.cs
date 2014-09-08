@@ -271,6 +271,7 @@ namespace GameCode.Models
                     this.RotateTowardPosition(new Vector3(950, 0, 0));
                 }
             }
+            
         }
     }
 }
