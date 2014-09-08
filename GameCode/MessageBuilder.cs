@@ -47,6 +47,13 @@ namespace GameCode
             return msgString;
         }
 
+        internal static string DecreaseGoldMessage(int objID, int amount)
+        {
+            // Decrease HP: MSG_DECREASE_GOLD, 0, ID, amount, 0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_DECREASE_GOLD + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
+            return msgString;
+        }
+
         internal static string DecreaseHPMessage(int objID, int amount)
         {
             // Decrease HP: MSG_DECREASE_HP, 0, ID, amount, 0,0,0,0,0,0
@@ -56,15 +63,22 @@ namespace GameCode
 
         internal static string IncreaseHPMessage(int objID, int amount)
         {
-            // Increase XP: MSG_INCREASE_XP, 0, ID, amount, 0,0,0,0,0,0
+            // Increase XP: MSG_INCREASE_HP, 0, ID, amount, 0,0,0,0,0,0
             string msgString = "" + GameConstants.MSG_INCREASE_HP + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
             return msgString;
         }
 
-        internal static string IncreaseXPMessage(int objID, int amount)
+        internal static string IncreaseStatMessage(int objID, int stat, int amount)
         {
-            // Increase XP: MSG_INCREASE_XP, 0, ID, amount, 0,0,0,0,0,0
-            string msgString = "" + GameConstants.MSG_INCREASE_XP + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
+            // Increase XP: MSG_INCREASE_STAT, STAT_XP, ID, amount, 0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_INCREASE_STAT + "," + stat + "," + objID + "," + amount + ",0,0,0,0,0,0";
+            return msgString;
+        }
+
+        internal static string LevelUpMessage(Character c)
+        {
+            // Object Died: MSG_LEVEL_UP, 0, ID, 0,0,0,0,0,0,0
+            String msgString = "" + GameConstants.MSG_LEVEL_UP + ",0," + c.ID + ",0,0,0,0,0,0,0";
             return msgString;
         }
 
@@ -79,6 +93,13 @@ namespace GameCode
         {
             // Update position: MSG_UPDATE, ClassType, ID, PosX, PosY, PosZ, VelX, VelY, VelZ, Ang
             String msgString = "" + GameConstants.MSG_UPDATE + "," + o.ClassType + "," + o.ID + "," + o.Position.x + "," + o.Position.y + "," + o.Position.z + "," + o.Velocity.x + "," + o.Velocity.y + "," + o.Velocity.z + "," + o.Angle;
+            return msgString;
+        }
+
+        internal static string GameOverMessage()
+        {
+            // Need all data: MSG_GAMEOVER, 0,0,0,0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_GAMEOVER + ",0,0,0,0,0,0,0,0,0";
             return msgString;
         }
     }

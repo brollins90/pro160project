@@ -50,6 +50,11 @@ namespace GameServer
                 try
                 {
                     line = sr.ReadLine();
+
+                    //if (line.StartsWith("" + GameCode.GameConstants.MSG_GAMEOVER + ","))
+                    //{
+                    //    Running = false;
+                    //}
                     //Console.WriteLine("{0} ClientWorker - Read: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, line);
                     //Send data back to other clients
                     lock (AllClientWorkers) {
@@ -60,6 +65,7 @@ namespace GameServer
                                 try
                                 {
                                     cw.sw.WriteLine(Connection + "," + line);
+                                    cw.sw.Flush();
                                 }
                                 catch (Exception)
                                 {
@@ -67,7 +73,7 @@ namespace GameServer
                                     ErrorCount++;
                                     if (ErrorCount > 3)
                                     {
-                                        throw;
+                                        throw new IOException();
                                     }
                                 }
                             }
@@ -88,7 +94,8 @@ namespace GameServer
                             {
                                 if (cw != this)
                                 {
-                                    cw.sw.WriteLine(Connection + ",e");
+                                    cw.sw.WriteLine(Connection + "," + GameCode.GameConstants.MSG_GAMEOVER);
+                                    cw.sw.Flush();
                                 }
                             }
                             AllClientWorkers.Clear();

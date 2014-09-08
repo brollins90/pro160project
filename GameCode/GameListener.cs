@@ -1,20 +1,17 @@
-﻿using GameCode.Helpers;
+﻿using System;
+using GameCode.Helpers;
 using GameCode.Models;
 using GameCode.Models.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode
 {
+    /// <summary>
+    /// The code that will listen on the network for updates
+    /// </summary>
     public class GameListener
     {
         private NetworkClient NetClient;
         private GameManager Manager;
-        private GameWorld World;
         public bool Running { get; set; }
 
         public GameListener(NetworkClient netClient, GameManager manager)
@@ -22,74 +19,119 @@ namespace GameCode
             Console.WriteLine("{0} GameListener - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
             NetClient = netClient;
             Manager = manager;
-            World = Manager.World;
             Running = false;
         }
 
+        /// <summary>
+        /// The thread code
+        /// </summary>
         public void Start()
         {
             Running = true;
-            Console.WriteLine("{0} GameListener - Start", System.Threading.Thread.CurrentThread.ManagedThreadId);
             while (Running)
             {
-                //Console.WriteLine("{0} GameListener - Receiving", System.Threading.Thread.CurrentThread.ManagedThreadId);
                 string line = "";
                 try
                 {
-                    line = NetClient.ReadLine(); 
-                    //Console.WriteLine("{0} GameListener - Receiving: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, line);
+                    // read the message from the server
+                    line = NetClient.ReadLine();
                     if (!string.IsNullOrEmpty(line))
                     {
                         string[] data = line.Split(',');
                         int connectionID = int.Parse(data[0]);
                         int messageType = int.Parse(data[1]);
-                        //int objectType = int.Parse(data[2]);
+                        int objectType = int.Parse(data[2]);
                         int objectID = int.Parse(data[3]);
 
-                        //Console.WriteLine("messageType: {0}, objID: {1}, line: {2}:", messageType, objectID, line);
+                        int amount;
+                        double ang;
+                        Vector3 pos, vel;
 
-                        // Listen for client stuff
-                        if (messageType == GameConstants.MSG_ADD)// || messageType == GameConstants.MOVEMENT_ATTACK)
+                        // What does the message say?
+                        switch (messageType)
                         {
-                            Add(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MOVEMENT_ATTACK)
-                        {
-                            int ownerID = int.Parse(data[11]);
-                            ((Character)World.Get(ownerID)).Weapon.Attack();
-                        }
-                        else if (messageType == GameConstants.MSG_UPDATE)
-                        {
-                            Update(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MSG_DEAD)
-                        {
-                            Remove(objectID, data);
-                        }
-                        else if (messageType == GameConstants.MSG_REQUEST_ALL_DATA)
-                        {
-                            // send every object
-                            foreach (GameObject o in World.Objects)
-                            {
-                                if (o.Alive)
+                            case GameConstants.MSG_ADD:
+
+                                messageType = int.Parse(data[1]);
+                                objectType = int.Parse(data[2]);
+                                pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
+                                vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
+                                ang = double.Parse(data[10]);
+
+                                Manager.AddFromListener(objectID, messageType, objectType, pos, vel, ang, data, false);
+                                break;
+
+                            case GameConstants.MSG_DEAD:
+
+                                Manager.RemoveObject(objectID, false);
+                                break;
+
+                            case GameConstants.MSG_DECREASE_GOLD:
+
+                                amount = int.Parse(data[4]);
+                                Manager.DecreaseGold(objectID, amount, false);
+                                break;
+
+                            case GameConstants.MSG_DECREASE_HP:
+                                
+                                amount = int.Parse(data[4]);
+                                Manager.DecreaseHealth(objectID, amount, false);
+                                break;
+
+                            case GameConstants.MSG_GAMEOVER:
+
+                                Manager.EndGame(false);
+                                break;
+
+                            case GameConstants.MSG_INCREASE_HP:
+
+                                amount = int.Parse(data[4]);
+                                Manager.IncreaseHealth(objectID, amount, false);
+                                break;
+
+                            case GameConstants.MSG_INCREASE_STAT:
+
+                                int statType = int.Parse(data[2]);
+                                amount = int.Parse(data[4]);
+                                Manager.IncreaseStat(objectID, statType, amount, false);
+                                break;
+
+                            case GameConstants.MSG_LEVEL_UP:
+
+                                Manager.LevelUpCharacter(objectID, false);
+                                break;
+
+                            case GameConstants.MSG_REQUEST_ALL_DATA:
+
+                                Manager.SendAllObjects();
+                                break;
+
+                            //case GameConstants.MSG_STOP_LISTENING:
+                            //    ListenerRemove(objectID, data);
+                            //    break;
+
+                            case GameConstants.MSG_UPDATE:
+
+                                if (Manager.GetCurrentCharacter().ID != objectID) // if the character is from a different manager
                                 {
-                                    //Manager.SendInfo(msgString);
-                                    Manager.SendInfo(MessageBuilder.AddMessage(o));
+                                    messageType = int.Parse(data[1]);
+                                    objectType = int.Parse(data[2]);
+                                    pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
+                                    vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
+                                    ang = double.Parse(data[10]);
+
+                                    Manager.UpdateFromListener(objectID, messageType, objectType, pos, vel, ang, data);
                                 }
-                            }
-                        }
-                        else if (messageType == GameConstants.MSG_GAMEOVER)
-                        {
-                            Manager.EndGame();
-                            Running = false;
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("Received bad input: {0}", messageType));
-                        }
+                                break;
 
+                            case GameConstants.MOVEMENT_ATTACK:
+                                int ownerID = int.Parse(data[11]);
+                                Manager.SubmitBotAttack(ownerID);
+                                break;
 
-                        // Listen for server stuff
+                            default:
+                                throw new ArgumentException(string.Format("Received bad input: {0}", messageType));
+                        }
                     }
                 }
                 catch (FormatException)
@@ -98,135 +140,9 @@ namespace GameCode
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error listening: {0}\n{1}",line,ex.Message);
+                    Console.WriteLine("Error listening: {0}\n{1}", line, ex.Message);
                 }
             }
         }
-
-        private void Add(int objectID, string[] data)
-        {
-            //Console.WriteLine("{0} GameListener - Add: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
-            int messageType = int.Parse(data[1]);
-            int objectType = int.Parse(data[2]);
-            //Console.WriteLine("{0} GameListener - ObjType: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectType);
-            Vector3 pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
-            Vector3 vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
-            double ang = double.Parse(data[10]);
-
-            GameObject o = null;
-
-            if (objectType > GameConstants.TYPE_BOT_LOW && objectType < GameConstants.TYPE_BOT_HIGH) // its a bot
-            {
-                o = new Bot(pos, Manager, objectType)
-                {
-                    Angle = ang,
-                    Velocity = vel,
-                    ID = objectID
-                };
-            }
-            else if (objectType > GameConstants.TYPE_CHARACTER_LOW && objectType < GameConstants.TYPE_CHARACTER_HIGH) // its a character
-            {
-                //int damage = int.Parse(data[11]);
-                o = new Character(pos, Manager, null, objectType) 
-                {
-                    Angle = ang,
-                    Velocity = vel,
-                    ID = objectID
-                };
-            }
-            else if (objectType > GameConstants.TYPE_DEBRIS_LOW && objectType < GameConstants.TYPE_DEBRIS_HIGH) // its a debris
-            {
-                switch (objectType)
-                {
-                    case GameConstants.TYPE_DEBRIS_BUSH:
-                        o = new Bushes(pos, Manager, vel) // for Debris, velocity is the size
-                        {
-                            Position = pos,
-                            ID = objectID
-                        };
-                        break;
-                    case GameConstants.TYPE_DEBRIS_ROCK:
-                        o = new Rocks(pos, Manager, vel) // for Debris, velocity is the size
-                        {
-                            Position = pos,
-                            ID = objectID
-                        };
-                        break;
-                    case GameConstants.TYPE_DEBRIS_WALL:
-                        o = new CastleWalls(pos, Manager, vel) // for Debris, velocity is the size
-                        {
-                            Position = pos,
-                            ID = objectID
-                        };
-                        break;
-                }
-            }
-            else if (objectType > GameConstants.TYPE_PROJ_LOW && objectType < GameConstants.TYPE_PROJ_HIGH) // its a projectile
-            {
-                int ownerID = int.MaxValue;
-                if (messageType == GameConstants.MOVEMENT_ATTACK)
-                {
-                    ownerID = int.Parse(data[11]);
-                }
-                switch (objectType)
-                {
-                    case GameConstants.TYPE_PROJ_ARROW:
-                        o = new Arrow(ownerID, Manager, ang)
-                        {
-                            Position = pos,
-                            Velocity = vel,
-                            ID = objectID
-                        };
-                        break;
-                    case GameConstants.TYPE_PROJ_FIRE:
-                        o = new FireBall(ownerID, Manager, ang)
-                        {
-                            Position = pos,
-                            Velocity = vel,
-                            ID = objectID
-                        };
-                        break;
-                    case GameConstants.TYPE_PROJ_STAB:
-                        o = new StabAttack(ownerID, Manager, ang)
-                        {
-                            Position = pos,
-                            Velocity = vel,
-                            ID = objectID
-                        };
-                        break;
-                }
-            }
-            Manager.AddObjectThreadSafe(o);
-        }
-
-        private void Remove(int objectID, string[] data)
-        {
-            //Console.WriteLine("{0} GameListener - Remove: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
-            Manager.RemoveObject(objectID);
-        }
-
-        private void Update(int objectID, string[] data)
-        {
-            if (Manager.GetCurrentCharacter().ID != objectID)
-            {
-                //Console.WriteLine("{0} GameListener - Update: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, objectID);
-                Vector3 pos = new Vector3(double.Parse(data[4]), double.Parse(data[5]), double.Parse(data[6]));
-                Vector3 vel = new Vector3(double.Parse(data[7]), double.Parse(data[8]), double.Parse(data[9]));
-                double ang = double.Parse(data[10]);
-
-                GameObject o = World.Get(objectID);
-                if (o != null)
-                {
-                    o.Angle = ang;
-                    o.Position = pos;
-                }
-                else
-                {
-                    Add(objectID, data);
-                }
-            }
-        }
-
-
     }
 }

@@ -1,17 +1,20 @@
-﻿using GameCode.Models.Projectiles;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
+using GameCode.Models.Projectiles;
 
 namespace GameCode.Models
 {
+    /// <summary>
+    /// The basic model for holding the game objects
+    /// </summary>
     public class GameWorld
     {
+        /// <summary>
+        /// The primary collection for the objects.  Since we are using WPF, 
+        /// we have to make it observable... Since WPF sucks,
+        /// we have to manually make it thread safe
+        /// </summary>
         private MTObservableCollection<GameObject> _Objects;
         public MTObservableCollection<GameObject> Objects
         {
@@ -19,128 +22,140 @@ namespace GameCode.Models
             set { _Objects = value; }
         }
 
+
         public GameWorld()
         {
             Objects = new MTObservableCollection<GameObject>();
         }
 
+        /// <summary>
+        /// Adds an object to the world
+        /// </summary>
+        /// <param name="o"></param>
         public void AddObject(GameObject o)
         {
-            //Console.WriteLine("{0} GameWorld - Add: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
             lock (Objects)
             {
                 Objects.Add(o);
             }
         }
 
-        //public bool Contains(int id)
-        //{
-        //    return Get(id) != null;
-        //}
-
+        /// <summary>
+        /// Retreives an object from the world
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public GameObject Get(int id)
         {
-            //Console.WriteLine("{0} GameWorld - get: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, id);
             GameObject o = null;
             try
             {
                 lock (Objects)
                 {
                     o = Objects.FirstOrDefault((obj) => obj.ID == id);
-                    //o = Objects.FirstOrDefault((obj) => obj.ID == id);
                 }
             }
-            //catch (InvalidOperationException ex)
-            //{
-            //    //Console.WriteLine("OBJ doesnt exist: {0}", ex.ToString());
-            //}
             catch (Exception)
             {
-
+                // catch and do nothing
             }
             return o;
         }
 
+        /// <summary>
+        /// Remove the object with specified ID from the world
+        /// </summary>
+        /// <param name="objectID"></param>
         public void RemoveObject(int objectID)
         {
             RemoveObject(Get(objectID));
         }
 
+        /// <summary>
+        /// Removes the object from the world
+        /// </summary>
+        /// <param name="o"></param>
         public void RemoveObject(GameObject o)
         {
-            //Console.WriteLine("{0} GameWorld - remove: {1}, {2}", System.Threading.Thread.CurrentThread.ManagedThreadId, o.ID, o.ClassType);
             lock (Objects)
             {
                 Objects.Remove(o);
             }
         }
 
-        public MTObservableCollection<GameObject> Alive
+        /// <summary>
+        /// Returns all the bots
+        /// </summary>
+        public IEnumerable<GameObject> Bots
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive); }).ToList();
-                return new MTObservableCollection<GameObject>(retVal);
+                return Objects.Where(x => (x is Bot && x.Alive)).ToList();
             }
         }
 
-        public MTObservableCollection<GameObject> Bots
+        /// <summary>
+        /// Returns all the Characters
+        /// </summary>
+        public IEnumerable<GameObject> Characters
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Bot)); }).ToList();
-                return new MTObservableCollection<GameObject>(retVal);
+                return Objects.Where(x => (x is Character && x.Alive)).ToList();
             }
         }
 
-        public List<GameObject> Characters
+        /// <summary>
+        /// Returns anything not alive
+        /// </summary>
+        public IEnumerable<GameObject> Dead
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Character)); }).ToList();
-                return retVal;
+                return Objects.Where(x => (x.Alive == false)).ToList();
             }
         }
 
-        public List<GameObject> Collidables
+        /// <summary>
+        /// Returns all the debris
+        /// </summary>
+        public IEnumerable<GameObject> Debris
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() != typeof(GameProjectile) && obj.GetType() != typeof(Arrow) && obj.GetType() != typeof(StabAttack) && obj.GetType() != typeof(FireBall)); }).ToList();
-                return retVal;
+                return Objects.Where(x => (x is Debris && x.Alive)).ToList();
             }
         }
 
-        public List<GameObject> Dead
+        /// <summary>
+        /// Returns all the enemy bots
+        /// </summary>
+        /// <param name="currentTeam"></param>
+        /// <returns></returns>
+        public IEnumerable<GameObject> Enemies(int currentTeam)
+        {
+            return Objects.Where(x => (x is Bot && x.Alive && x.Team != currentTeam)).ToList();
+        }
+
+        /// <summary>
+        /// Returns anything that is alive and not a projectile
+        /// </summary>
+        public IEnumerable<GameObject> NotProjectiles
         {
             get
             {
-                var retVal = Objects.Where(obj => obj.Alive != true).ToList();
-                return retVal;
+                return Objects.Where(x => (!(x is GameProjectile) && x.Alive)).ToList();
             }
         }
 
-        public List<GameObject> Debris
+        /// <summary>
+        /// Returns any projectiles
+        /// </summary>
+        public IEnumerable<GameObject> Projectiles
         {
             get
             {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive && obj.GetType() == typeof(Debris) && obj.GetType() == typeof(CastleWalls) && obj.GetType() == typeof(Bushes) && obj.GetType() == typeof(Rocks)); }).ToList();
-                return retVal;
-            }
-        }
-
-        public List<GameObject> Enemies(int currentTeam)
-        {
-            var retVal = Objects.Where((obj, r) => { return (obj.Alive && (obj.GetType() == typeof(Bot) || obj.GetType() == typeof(Character)) && obj.Team != currentTeam); }).ToList();
-            return retVal;           
-        }
-
-        public List<GameObject> Projectiles
-        {
-            get
-            {
-                var retVal = Objects.Where((obj, r) => { return (obj.Alive && (obj.GetType() == typeof(GameProjectile) || obj.GetType() == typeof(Arrow) || obj.GetType() == typeof(StabAttack) || obj.GetType() == typeof(FireBall))); }).ToList();
-                return retVal;
+                return Objects.Where(x => (x is GameProjectile && x.Alive)).ToList();
             }
         }
     }

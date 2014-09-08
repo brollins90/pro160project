@@ -7,7 +7,8 @@
         xmlns:y="clr-namespace:GameClient.Converters">
 
     <Window.Resources>
-        <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
+        <y:SpriteConverter x:Key="GameObjectToSpriteConverter"/>
+        <y:PlayerHealthBarConverterWidth x:Key="PlayerHealthBarConverterWidth"/>
         <y:BotHealthBarConverterWidth x:Key="BotHealthBarConverterWidth"/>
         <y:BotHealthBarConverterX x:Key="BotHealthBarConverterX"/>
         <y:BotHealthBarConverterY x:Key="BotHealthBarConverterY"/>
@@ -18,7 +19,7 @@
         <ImageBrush ImageSource="Images\GameBackground.png"/>
     </Window.Background>
     <Grid x:Name="MainGrid">
-        <ItemsControl ItemsSource="{Binding Source={StaticResource ObjectsAlive}}" Margin="-10,10,10,-10">
+        <ItemsControl ItemsSource="{Binding Source={StaticResource ObjectsAlive}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -72,17 +73,7 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-
-        <!--<Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,400,27,167" Click="OpenShopButton" Focusable="False">Open Shop</Button>
-
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Margin="0,267,27,167" Click="LevelUpButton" Focusable="False">Level up!</Button>
-
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainExp" Margin="0,139,27,295" Focusable="False">Gain 10 Exp.</Button>
-
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainMoreExp" Margin="0,74,27,360" Focusable="False">Gain 20 Exp.</Button>
-
-        <Button Height="50" Width="200" HorizontalAlignment="Right" Click="GainGold" Margin="0,10,27,424" Focusable="False">Gain 10 Gold.</Button>-->
-
+        
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
             <Label VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="256" Canvas.Top="-9">Experience</Label>
@@ -115,10 +106,18 @@
                 <Label Canvas.Left="100" Canvas.Top="58" Width="50" Height="25">Exp:</Label>
                 <Label Content="{Binding Path=CurrentCharacter.Experience}" Canvas.Left="150" Canvas.Top="58" Height="25" Width="36"></Label>
                 <Label Canvas.Left="176" Canvas.Top="57">/</Label>
-                <Label Content="{Binding Path=CurrentCharacter.ExperienceCap}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
+                <Label Content="{Binding Path=CurrentCharacter.ExperienceNextLevel}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
 
-                <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentCharacter.HealthBarLength}" Fill="Green"/>
+                <Canvas x:Name="HealthBar" Height="26" Width="200" Canvas.Top="104">
+                    <Rectangle x:Name="redRect" Width="200" Height="26" Fill="Red"/>
+                    <Rectangle x:Name="greenRect" Height="26" Fill="Green">
+                        <Rectangle.Width>
+                            <MultiBinding Converter="{StaticResource PlayerHealthBarConverterWidth}">
+                                <Binding Path="CurrentCharacter.Health"/>
+                                <Binding Path="CurrentCharacter.MaxHealth"/>
+                            </MultiBinding>
+                        </Rectangle.Width>
+                    </Rectangle>
                 </Canvas>
             </Canvas>
         </ItemsControl>
@@ -154,7 +153,7 @@
                 <Button x:Name="BuyFullHelm" Grid.Column="1" Margin="8,8,8,8" Click="BuyFullHelm_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-62" Canvas.Top="-63">Full Helm</TextBlock>
-
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1250</TextBlock>
                         <Image Source="Images/FullHelm.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 5</TextBlock>
                     </Canvas>
@@ -163,6 +162,7 @@
                 <Button x:Name="BuyWizHat" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizHat_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-88" Canvas.Top="-65">Wizard Hat</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1250</TextBlock>
                         <Image Source="Images/WizHat.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 6</TextBlock>
                     </Canvas>
@@ -171,6 +171,7 @@
                 <Button x:Name="BuyCoif" Grid.Column="3" Margin="8,8,8,8" Click="BuyCoif_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-29" Canvas.Top="-64">Coif</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1250</TextBlock>
                         <Image Source="Images/Coif.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 3</TextBlock>
                     </Canvas>
@@ -196,6 +197,7 @@
                 <Button x:Name="BuyBreastplate" Grid.Column="1" Margin="8,8,8,8" Click="BuyBreastplate_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-76" Canvas.Top="-61">Breastplate</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1500</TextBlock>
                         <Image Source="Images/ChestPlate.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 6</TextBlock>
                     </Canvas>
@@ -204,6 +206,7 @@
                 <Button x:Name="BuyWizTop" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizTop_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-100" Canvas.Top="-64">Wizard Robe</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1500</TextBlock>
                         <Image Source="Images/WizTop.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 4</TextBlock>
                     </Canvas>
@@ -212,6 +215,7 @@
                 <Button x:Name="BuyDragonHide" Grid.Column="3" Margin="8,8,8,8" Click="BuyDragonHide_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-99" Canvas.Top="-61">Dragon Hide</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1500</TextBlock>
                         <Image Source="Images/RangeBody.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 4</TextBlock>
                     </Canvas>
@@ -236,6 +240,7 @@
                 <Button x:Name="BuyPlatelegs" Grid.Column="1" Margin="8,8,8,8" Click="BuyPlatelegs_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-79" Canvas.Top="-61">Plate Legs</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1000</TextBlock>
                         <Image Source="Images/PlateLegs.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 4</TextBlock>
                     </Canvas>
@@ -244,6 +249,7 @@
                 <Button x:Name="BuyWizBot" Grid.Column="2" Margin="8,8,8,8" Click="BuyWizBot_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-88" Canvas.Top="-65">Wizard Skirt</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1000</TextBlock>
                         <Image Source="Images/WizBot.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-119" Canvas.Top="16">Increases Intelligence by 4</TextBlock>
                     </Canvas>
@@ -252,6 +258,7 @@
                 <Button x:Name="BuyDragonChaps" Grid.Column="3" Margin="8,8,8,8" Click="BuyDragonChaps_Click">
                     <Canvas>
                         <TextBlock FontSize="36" Canvas.Left="-113" Canvas.Top="-66">Dragon Chaps</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 1000</TextBlock>
                         <Image Source="Images/RangeChaps.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="19">Increases Dex/Def by 2</TextBlock>
                     </Canvas>
@@ -276,6 +283,7 @@
                 <Button x:Name="BuyAmmyOfDef" Grid.Column="1" Margin="8,8,8,8" Click="BuyAmmyOfDef_Click">
                     <Canvas>
                         <TextBlock FontSize="34" Canvas.Left="-120" Canvas.Top="-68">Defence Amulet</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 500</TextBlock>
                         <Image Source="Images/AmmyOfDef.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 3</TextBlock>
                     </Canvas>
@@ -284,6 +292,7 @@
                 <Button x:Name="BuyAmmyOfPower" Grid.Column="2" Margin="8,8,8,8" Click="BuyAmmyOfPower_Click">
                     <Canvas>
                         <TextBlock FontSize="33" Canvas.Left="-120" Canvas.Top="-68">Amulet of Power</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 500</TextBlock>
                         <Image Source="Images/AmmyOfPower.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="20">Increases Offense stat by 3</TextBlock>
                     </Canvas>
@@ -292,6 +301,7 @@
                 <Button x:Name="BuyAmmyOfLife" Grid.Column="3" Margin="8,8,8,8" Click="BuyAmmyOfLife_Click">
                     <Canvas>
                         <TextBlock FontSize="34" Canvas.Left="-105" Canvas.Top="-68">Amulet of Life</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 500</TextBlock>
                         <Image Source="Images/AmmyOfGlory.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="21">Increases Constitution by 3</TextBlock>
                     </Canvas>
@@ -317,6 +327,7 @@
                 <Button x:Name="BuyOnyxRing" Grid.Column="1" Margin="8,8,8,8" Click="BuyOnyxRing_Click">
                     <Canvas>
                         <TextBlock FontSize="34" Canvas.Left="-74" Canvas.Top="-68">Onyx Ring</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 300</TextBlock>
                         <Image Source="Images/OnyxRing.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="24" Canvas.Left="-119" Canvas.Top="18">Increases Defense by 2</TextBlock>
                     </Canvas>
@@ -325,6 +336,7 @@
                 <Button x:Name="BuyZerkRing" Grid.Column="2" Margin="8,8,8,8" Click="BuyZerkRing_Click">
                     <Canvas>
                         <TextBlock FontSize="33" Canvas.Left="-100" Canvas.Top="-69">Beserker Ring</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 300</TextBlock>
                         <Image Source="Images/ZerkRing.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="20">Increases Offense stat by 2</TextBlock>
                     </Canvas>
@@ -333,6 +345,7 @@
                 <Button x:Name="BuyRingOfLife" Grid.Column="3" Margin="8,8,8,8" Click="BuyRingOfLife_Click">
                     <Canvas>
                         <TextBlock FontSize="34" Canvas.Left="-83" Canvas.Top="-68">Ring of Life</TextBlock>
+                        <TextBlock FontSize="14" Canvas.Left="-27" Canvas.Top="-15">Gold: 300</TextBlock>
                         <Image Source="Images/RingOfLife.png" Height="110" Width="204" Canvas.Left="-266" Canvas.Top="-44"/>
                         <TextBlock FontSize="21" Canvas.Left="-124" Canvas.Top="21">Increases Constitution by 2</TextBlock>
                     </Canvas>

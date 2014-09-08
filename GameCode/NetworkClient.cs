@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode
 {
+    /// <summary>
+    /// Handles the network communication for the game
+    /// </summary>
     public class NetworkClient
     {
         private NetworkStream Stream;
@@ -21,6 +20,10 @@ namespace GameCode
             SW = new StreamWriter(Stream);
         }
 
+        /// <summary>
+        /// Write a line to the network
+        /// </summary>
+        /// <param name="toWrite"></param>
         public void WriteLine(string toWrite)
         {
             try 
@@ -34,22 +37,21 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Read a line from the network
+        /// </summary>
+        /// <returns></returns>
         public string ReadLine()
         {
-            return SR.ReadLine();
-            //bool trying = true;
-            //while (trying)
-            //{
-            //    if (Stream.DataAvailable)
-            //    {
-            //        return SR.ReadLine();
-            //    }
-            //    else
-            //    {
-            //        //Thread.
-            //    }
-            //}
-            //return "";
+            try
+            {
+                return SR.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to read: {0}", ex.Message);
+                return null;
+            }
         }
     }
 }

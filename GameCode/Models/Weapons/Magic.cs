@@ -1,16 +1,12 @@
 ﻿using GameCode.Helpers;
 using GameCode.Models.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode.Models.Weapons
 {
     public class Magic : Weapon
     {
-        public Magic(Bot owner) : base(owner)
+        public Magic(Bot owner)
+            : base(owner)
         {
             this.Projectile = new Arrow(owner.ID, owner.Manager, Owner.Angle, Owner.Damage, 125)
             {

@@ -21,17 +21,29 @@ namespace GameClient
 {
     public static class DisplayExtensions
     {
-        public static int HealthBarHeight(this Bot b)
+        public static int BotHealthBarHeight(this Bot b)
         {
             return 6;
         }
-        public static int HealthBarWidthFull(this Bot b)
+        public static int BotHealthBarWidthFull(this Bot b)
         {
             return 60;
         }
-        public static int HealthBarWidth(this Bot b)
+        public static int BotHealthBarWidth(this Bot b)
         {
-            return (b.Health / b.MaxHealth) * b.HealthBarWidthFull();
+            return (b.Health / b.MaxHealth) * b.BotHealthBarWidthFull();
+        }
+        public static int PlayerHealthBarHeight(this Bot b)
+        {
+            return 26;
+        }
+        public static int PlayerHealthBarWidthFull(this Bot b)
+        {
+            return 200;
+        }
+        public static int PlayerHealthBarWidth(this Bot b)
+        {
+            return (b.Health / b.MaxHealth) * b.PlayerHealthBarWidthFull();
         }
     }
 
@@ -66,7 +78,7 @@ namespace GameClient
             RingsSlots = 2;
             NeckSlots = 1;
 
-            
+
 
             GL = new InputListener();
 
@@ -94,14 +106,14 @@ namespace GameClient
             MainGrid.Focus();
 
             // create some objects to bind the HUD portion of the UI to
-            CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceCap) * ExperienceBar.Width;
+            //CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
+            //CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceNextLevel) * ExperienceBar.Width;
 
-            if (CurrentCharacter.ClassType == 238)
+            if (CurrentCharacter.ClassType == GameConstants.TYPE_CHARACTER_MAGE)
             {
                 StrLabel.Content = "Int: ";
             }
-            else if (CurrentCharacter.ClassType == 237)
+            else if (CurrentCharacter.ClassType == GameConstants.TYPE_CHARACTER_ARCHER)
             {
                 StrLabel.Content = "Dex: ";
             }
@@ -115,7 +127,12 @@ namespace GameClient
         }
         private void BotsFilter(object sender, FilterEventArgs e)
         {
-            e.Accepted = (e.Item as GameObject).Alive && (e.Item as GameObject).ClassType > GameConstants.TYPE_BOT_LOW && (e.Item as GameObject).ClassType < GameConstants.TYPE_BOT_HIGH;
+            e.Accepted = (e.Item as GameObject).Alive && 
+                ((e.Item as GameObject).ClassType > GameConstants.TYPE_BOT_LOW &&
+                (e.Item as GameObject).ClassType < GameConstants.TYPE_BOT_HIGH) ||
+                ((e.Item as GameObject).ClassType > GameConstants.TYPE_CHARACTER_LOW &&
+                (e.Item as GameObject).ClassType < GameConstants.TYPE_CHARACTER_HIGH &&
+                (e.Item as GameObject).ID != CurrentCharacter.ID);
         }
 
 
@@ -124,9 +141,12 @@ namespace GameClient
             switch (e.Key)
             {
                 case Key.Escape:
-                    if (ShopMenu.Visibility == Visibility.Visible) {
+                    if (ShopMenu.Visibility == Visibility.Visible)
+                    {
                         CloseShop();
-                    } else {
+                    }
+                    else
+                    {
                         QuitMenu.Visibility = Visibility.Visible;
                     }
                     break;
@@ -139,7 +159,7 @@ namespace GameClient
         }
 
         private void CloseShop()
-        {            
+        {
             ShopMenu.Visibility = Visibility.Collapsed;
         }
 
@@ -151,8 +171,8 @@ namespace GameClient
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-                    Application.Current.Shutdown();
-            }
+            Application.Current.Shutdown();
+        }
 
         //Close shop
         private void CloseShopClick(object sender, RoutedEventArgs e)
@@ -176,17 +196,24 @@ namespace GameClient
 
         private void BuyOnyxRing_Click(object sender, RoutedEventArgs e)
         {
-            if (RingsSlots == 2)
+            int StatIncrease = 2;
+            int GoldAmount = 300;
+
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if(RingsSlots == 1)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -196,17 +223,24 @@ namespace GameClient
 
         private void BuyZerkRing_Click(object sender, RoutedEventArgs e)
         {
-            if (RingsSlots == 2)
+            int StatIncrease = 2;
+            int GoldAmount = 300;
+
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if (RingsSlots == 1)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -216,17 +250,24 @@ namespace GameClient
 
         private void BuyRingOfLife_Click(object sender, RoutedEventArgs e)
         {
-            if (RingsSlots == 2)
+            int StatIncrease = 2;
+            int GoldAmount = 300;
+
+            if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
-            else if (RingsSlots == 1)
+            else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
+                RingSlot2.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -234,16 +275,21 @@ namespace GameClient
             }
         }
 
-#endregion
+        #endregion
 
         #region Amulets
         private void BuyAmmyOfLife_Click(object sender, RoutedEventArgs e)
         {
-            if (NeckSlots > 0)
+            int StatIncrease = 3;
+            int GoldAmount = 500;
+
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfGlory.png", UriKind.RelativeOrAbsolute)); ;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfGlory.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -253,11 +299,16 @@ namespace GameClient
 
         private void BuyAmmyOfPower_Click(object sender, RoutedEventArgs e)
         {
-            if (NeckSlots > 0)
+            int StatIncrease = 3;
+            int GoldAmount = 500;
+
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfPower.png", UriKind.RelativeOrAbsolute)); ;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfPower.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -267,11 +318,16 @@ namespace GameClient
 
         private void BuyAmmyOfDef_Click(object sender, RoutedEventArgs e)
         {
-            if (NeckSlots > 0)
+            int StatIncrease = 3;
+            int GoldAmount = 500;
+
+            if (NeckSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfDef.png", UriKind.RelativeOrAbsolute)); ;
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfDef.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -284,25 +340,37 @@ namespace GameClient
         #region Bottom
         private void BuyDragonChaps_Click(object sender, RoutedEventArgs e)
         {
-            if (PantsSlots > 0)
+            int StatIncrease = 2;
+            int GoldAmount = 1000;
+
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/RangeChaps.png", UriKind.RelativeOrAbsolute)); ;
+                BotSlot.Source = new BitmapImage(new Uri("Images/RangeChaps.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
-                 
+
             }
         }
 
         private void BuyWizBot_Click(object sender, RoutedEventArgs e)
         {
-            if (PantsSlots > 0)
+            int StatIncrease = 4;
+            int GoldAmount = 1000;
+
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/WizBot.png", UriKind.RelativeOrAbsolute)); ;
+                BotSlot.Source = new BitmapImage(new Uri("Images/WizBot.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -312,13 +380,18 @@ namespace GameClient
 
         private void BuyPlatelegs_Click(object sender, RoutedEventArgs e)
         {
-            if (PantsSlots > 0)
+            int StatIncrease = 4;
+            int GoldAmount = 1000;
+
+            if (PantsSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/PlateLegs.png", UriKind.RelativeOrAbsolute)); ;
+                BotSlot.Source = new BitmapImage(new Uri("Images/PlateLegs.png", UriKind.RelativeOrAbsolute));
                 BotSlot.Height = 100;
                 BotSlot.Width = 100;
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -332,25 +405,37 @@ namespace GameClient
         #region Chest
         private void BuyDragonHide_Click(object sender, RoutedEventArgs e)
         {
-            if (ChestSlots > 0)
+            int StatIncrease = 4;
+            int GoldAmount = 1500;
+
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
-                MidSlot.Source = new BitmapImage(new Uri("Images/RangeBody.png", UriKind.RelativeOrAbsolute)); ;
+                MidSlot.Source = new BitmapImage(new Uri("Images/RangeBody.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
-                
+
             }
         }
 
         private void BuyWizTop_Click(object sender, RoutedEventArgs e)
         {
-            if (ChestSlots > 0)
+            int StatIncrease = 4;
+            int GoldAmount = 1500;
+
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
-                MidSlot.Source = new BitmapImage(new Uri("Images/Wiztop.png", UriKind.RelativeOrAbsolute)); ;
+                MidSlot.Source = new BitmapImage(new Uri("Images/Wiztop.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -360,19 +445,26 @@ namespace GameClient
 
         private void BuyBreastplate_Click(object sender, RoutedEventArgs e)
         {
-            if (ChestSlots > 0)
+            int StatIncrease = 6;
+            int GoldAmount = 1500;
+
+            if (ChestSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
                 MidSlot.Source = new BitmapImage(new Uri("Images/Chestplate.png", UriKind.RelativeOrAbsolute)); ;
                 MidSlot.Height = 100;
                 MidSlot.Width = 100;
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
 
             }
         }
+
+
 
         #endregion
 
@@ -380,25 +472,38 @@ namespace GameClient
 
         private void BuyCoif_Click(object sender, RoutedEventArgs e)
         {
-            if (HeadSlots > 0)
+            int StatIncrease = 3;
+            int GoldAmount = 1250;
+
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
-                TopSlot.Source = new BitmapImage(new Uri("Images/Coif.png", UriKind.RelativeOrAbsolute)); ;
+                TopSlot.Source = new BitmapImage(new Uri("Images/Coif.png", UriKind.RelativeOrAbsolute));
+
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
-                
+
             }
         }
 
         private void BuyWizHat_Click(object sender, RoutedEventArgs e)
         {
-            if (HeadSlots > 0)
+            int StatIncrease = 6;
+            int GoldAmount = 1250;
+
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
-                TopSlot.Source = new BitmapImage(new Uri("Images/WizHat.png", UriKind.RelativeOrAbsolute)); ;
+                TopSlot.Source = new BitmapImage(new Uri("Images/WizHat.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -408,13 +513,18 @@ namespace GameClient
 
         private void BuyFullHelm_Click(object sender, RoutedEventArgs e)
         {
-            if (HeadSlots > 0)
+            int StatIncrease = 5;
+            int GoldAmount = 1250;
+
+            if (HeadSlots > 0 && CurrentCharacter.Gold >= GoldAmount)
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
                 TopSlot.Source = new BitmapImage(new Uri("Images/FullHelm.png", UriKind.RelativeOrAbsolute)); ;
                 TopSlot.Height = 100;
                 TopSlot.Width = 100;
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -423,199 +533,7 @@ namespace GameClient
         }
 
         #endregion
-
         #endregion
-
-        ////ends game if player is dead
-        //public void CheckIfDead()
-        //{
-        //    if (CurrentController.CurrentCharacter.Health <= 0)
-        //    {
-        //        CurrentHealth.Width = 0;
-        //        GameOver.Visibility = Visibility.Visible;
-        //        MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
-        //        MainMenu mainmenu = new MainMenu();
-        //        mainmenu.Show();
-        //        this.Hide();
-        //    }
-        //    else
-        //    {
-        //        CurrentHealth.Width = CurrentController.CurrentCharacter.Health;
-        //    }
-        //}
-
-        //private void LevelUpButton(object sender, RoutedEventArgs e)
-        //{
-        //    (CurrentController.CurrentCharacter as Character).LevelUp();
-        //    CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-        //    CheckIfDead();
-        //}
-
-        //private void TakeDamage(object sender, RoutedEventArgs e)
-        //{
-        //    Random rand = new Random();
-
-        //    (CurrentController.CurrentCharacter as Character).Health = (CurrentController.CurrentCharacter as Character).Health - rand.Next(10) + 1;
-
-        //    double healthleft = (double)((double)(CurrentController.CurrentCharacter as Character).Health / (double)(CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-
-        //    if (healthleft <= 0)
-        //    {
-        //        CurrentHealth.Width = 0;
-        //        GameOver.Visibility = Visibility.Visible;
-        //        MessageBox.Show("Game Over. You were level " + (CurrentController.CurrentCharacter as Character).Level + ", when you died");
-        //        MainMenu mainmenu = new MainMenu();
-        //        mainmenu.Show();
-        //        this.Hide();
-        //    }
-        //    else
-        //    {
-        //        CurrentHealth.Width = healthleft;
-        //    }
-        //    CheckIfDead();
-        //}
-
-        //private void GainExp(object sender, RoutedEventArgs e)
-        //{
-        //    (CurrentController.CurrentCharacter as Character).Experience += 10;
-
-        //    if ((CurrentController.CurrentCharacter as Character).Experience == (CurrentController.CurrentCharacter as Character).ExperienceCap)
-        //    {
-        //        (CurrentController.CurrentCharacter as Character).LevelUp();
-        //        CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-        //    }
-        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-        //    CheckIfDead();
-        //}
-
-        //private void GainMoreExp(object sender, RoutedEventArgs e)
-        //{
-        //    (CurrentController.CurrentCharacter as Character).Experience += 20;
-
-        //    if ((CurrentController.CurrentCharacter as Character).Experience >= (CurrentController.CurrentCharacter as Character).ExperienceCap)
-        //    {
-        //        int expleft = (CurrentController.CurrentCharacter as Character).Experience - (CurrentController.CurrentCharacter as Character).ExperienceCap;
-        //        (CurrentController.CurrentCharacter as Character).LevelUp();
-        //        (CurrentController.CurrentCharacter as Character).Experience = expleft;
-        //        CurrentHealth.Width = ((CurrentController.CurrentCharacter as Character).Health / (CurrentController.CurrentCharacter as Character).MaxHealth) * 100;
-        //    }
-        //    CurrentExperienceBar.Width = (double)((double)(CurrentController.CurrentCharacter as Character).Experience / (double)(CurrentController.CurrentCharacter as Character).ExperienceCap) * ExperienceBar.Width;
-        //    CheckIfDead();
-        //}
-
-        //private void GainGold(object sender, RoutedEventArgs e)
-        //{
-        //    (CurrentController.CurrentCharacter as Character).Gold += 10;
-        //    CheckIfDead();
-        //}
-
-
-//        private void Grid_KeyDown(object sender, KeyEventArgs e)
-//        {
-//            GameCommands keyPressed = GameCommands.None;
-//            switch (e.Key)
-//            {
-//                case Key.Up:
-//                case Key.W:
-//                    keyPressed = GameCommands.Up;
-//                    CurrentController.InputListener.KeyForward = true;
-//                    break;
-
-//                case Key.Down:
-//                case Key.S:
-//                    keyPressed = GameCommands.Down;
-//                    CurrentController.InputListener.KeyBackward = true;
-//                    break;
-
-//                case Key.Left:
-//                case Key.A:
-//                    keyPressed = GameCommands.Left;
-//                    CurrentController.InputListener.KeyLeft = true;
-//                    break;
-
-//                case Key.Right:
-//                case Key.D:
-//                    keyPressed = GameCommands.Right;
-//                    CurrentController.InputListener.KeyRight = true;
-//                    break;
-//                case Key.Escape:
-//                    Application.Current.Shutdown();
-//                    break;
-//                case Key.Space:
-//                case Key.T:
-//                    keyPressed = GameCommands.Space;
-//                    CurrentController.InputListener.KeyAttack = true;
-//                    break;
-//            }
-//            //Console.WriteLine("{0} {1} KeyDown: {2}", (int)AppDomain.GetCurrentThreadId(), Environment.TickCount, keyPressed);
-////            Console.WriteLine("KeyDown: {0}", keyPressed);
-//            Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, keyPressed, Environment.TickCount));
-//            //CurrentController.KeyDown(keyPressed);
-//            CheckIfDead();
-//        }
-
-        //private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    Console.WriteLine("down");
-        //    if (e.ChangedButton == MouseButton.Left)
-        //    {
-        //        Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.LeftClick, Environment.TickCount, e.GetPosition(this)));
-        //    }
-        //    else if (e.ChangedButton == MouseButton.Right)
-        //    {
-        //        Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.RightClick, Environment.TickCount, e.GetPosition(this)));
-        //    }
-        //    CheckIfDead();
-        //}
-
-        //private void MainGrid_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    Console.WriteLine("move");
-        //    Manager.SubmitMove(new GameCommand(CurrentController.GameObjectID, GameCommands.MouseMove, Environment.TickCount, e.GetPosition(this)));
-        //    CheckIfDead();
-        //}
-
-        //private void Window_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    switch (e.Key)
-        //    {
-        //        case Key.Up:
-        //        case Key.W:
-        //            //keyPressed = GameCommands.Up;
-        //            CurrentController.InputListener.KeyForward = false;
-        //            break;
-
-        //        case Key.Down:
-        //        case Key.S:
-        //            //keyPressed = GameCommands.Down;
-        //            CurrentController.InputListener.KeyBackward = false;
-        //            break;
-
-        //        case Key.Left:
-        //        case Key.A:
-        //            //keyPressed = GameCommands.Left;
-        //            CurrentController.InputListener.KeyLeft = false;
-        //            break;
-
-        //        case Key.Right:
-        //        case Key.D:
-        //            //keyPressed = GameCommands.Right;
-        //            CurrentController.InputListener.KeyRight = false;
-        //            break;
-        //        case Key.Escape:
-        //            Application.Current.Shutdown();
-        //            break;
-        //        case Key.Space:
-        //        case Key.T:
-        //            //keyPressed = GameCommands.Space;
-        //            CurrentController.InputListener.KeyAttack = false;
-        //            break;
-        //    }
-        //    ShopMenu.Visibility = Visibility.Collapsed;
-        //    NotEnoughGold.Visibility = Visibility.Collapsed;
-        //    CheckIfDead();
-        //}
 
     }
 }

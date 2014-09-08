@@ -1,14 +1,10 @@
 ﻿using GameCode.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GameCode.Models
 {
+    /// <summary>
+    /// A Rock is a grey debris that is no different than the other debris
+    /// </summary>
     public class Rocks : Debris
     {
         public Rocks(Vector3 position, GameManager manager, Vector3 size)
