@@ -391,6 +391,23 @@
                 </Button>
             </UniformGrid>
         </UniformGrid>
+
+
+        <UniformGrid x:Name="WinMenu" Columns="1" Visibility="Collapsed">
+            <UniformGrid.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </UniformGrid.Background>
+            <Label FontSize="80" FontWeight="ExtraBold" HorizontalAlignment="Center">You Win!!!</Label>
+            <Canvas Margin="0,-140,0,-256" Height="652" VerticalAlignment="Top">
+                <Canvas.Background>
+                    <ImageBrush ImageSource = "Images\Victory.jpg" Stretch="None"/>
+                </Canvas.Background>
+            </Canvas>
+            <UniformGrid Rows="2" Columns="1">
+            </UniformGrid>
+        </UniformGrid>
+
+
         <StackPanel x:Name="GameOver" Visibility="Collapsed">
             <StackPanel.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
