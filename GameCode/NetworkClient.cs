@@ -36,7 +36,15 @@ namespace GameCode
 
         public string ReadLine()
         {
-            return SR.ReadLine();
+            try
+            {
+                return SR.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to read: {0}", ex.Message);
+                return null;
+            }
         }
     }
 }

@@ -7,6 +7,9 @@ using GameCode.Models.Projectiles;
 
 namespace GameCode
 {
+    /// <summary>
+    /// The manager controls the game.  Everything passes through the gamemanager
+    /// </summary>
     public class GameManager
     {
         private GameWorld _World;
@@ -24,8 +27,6 @@ namespace GameCode
 
         public GameManager(bool isServer, NetworkClient netClient, InputListener gl, int classChosen)
         {
-            Console.WriteLine("{0} GameManager - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
-
             IsServer = isServer;
             NetClient = netClient;
             World = new GameWorld();
@@ -33,25 +34,36 @@ namespace GameCode
             UT = new UpdateThread(this, IsServer, gl, classChosen);
 
             LT = new GameListener(NetClient, this);
+            // Start the listener thread
             new Thread(LT.Start).Start();
 
             if (IsServer)
             {
+                // If this is the server, then load the world
                 LoadWorld();
             }
             else
             {
+                // If it is not the server then request the data
                 SendInfo(MessageBuilder.RequestAllMessage());
             }
+            // Go into the update thread code
             UT.Start();
         }
 
-
+        /// <summary>
+        /// Add an object to the world
+        /// </summary>
+        /// <param name="o"></param>
         public void AddObject(GameObject o)
         {
             AddObjectThreadSafe(o);
         }
 
+        /// <summary>
+        /// Add delegate to make WPF happy
+        /// </summary>
+        /// <param name="o"></param>
         private delegate void AddObjectThreadSafeDelegate(GameObject o);
         public void AddObjectThreadSafe(GameObject o)
         {
@@ -61,6 +73,12 @@ namespace GameCode
             }));
         }
 
+        /// <summary>
+        /// Damage the bot with the specified ID
+        /// </summary>
+        /// <param name="botID"></param>
+        /// <param name="Damage"></param>
+        /// <param name="Attacker"></param>
         internal void DamageBot(int botID, int Damage, Bot Attacker)
         {
             Bot b = (Bot)World.Get(botID);
@@ -75,6 +93,12 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Decrease the amount of Gold for the specified Character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="amount"></param>
+        /// <param name="sendMessage"></param>
         internal void DecreaseGold(int objectID, int amount, bool sendMessage = true)
         {
             Character o = (Character)World.Get(objectID);
@@ -88,6 +112,12 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Decrease the health for the specified Character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="amount"></param>
+        /// <param name="sendMessage"></param>
         internal void DecreaseHealth(int objectID, int amount, bool sendMessage = true)
         {
             Bot o = (Bot)World.Get(objectID);
@@ -101,6 +131,10 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Send a dead message for this character and stop all the threads
+        /// </summary>
+        /// <param name="sendMessage"></param>
         public void EndGame(bool sendMessage = true)
         {
             if (sendMessage)
@@ -113,11 +147,20 @@ namespace GameCode
             Environment.Exit(0);
         }
 
+        /// <summary>
+        /// Get the Character associated with this Manager
+        /// </summary>
+        /// <returns></returns>
         public Character GetCurrentCharacter()
         {
             return UT.CurrentCharacter;
         }
 
+        /// <summary>
+        /// Increase the gold for the specified character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="amount"></param>
         internal void IncreaseGold(int objectID, int amount)
         {
             Character o = (Character)World.Get(objectID);
@@ -128,6 +171,12 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Increase the health of the specified character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="amount"></param>
+        /// <param name="sendMessage"></param>
         internal void IncreaseHealth(int objectID, int amount, bool sendMessage = true)
         {
             Bot o = (Bot)World.Get(objectID);
@@ -141,6 +190,13 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Increase a stat for the specified character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="stat"></param>
+        /// <param name="amount"></param>
+        /// <param name="sendMessage"></param>
         public void IncreaseStat(int objectID, int stat, int amount, bool sendMessage = true)
         {
             Character o = (Character)World.Get(objectID);
@@ -154,6 +210,11 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Level up the specified character
+        /// </summary>
+        /// <param name="characterID"></param>
+        /// <param name="sendMessage"></param>
         public void LevelUpCharacter(int characterID, bool sendMessage = true)
         {
             Character c = (Character)World.Get(characterID);
@@ -164,6 +225,9 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Remove all the dead objects in the world
+        /// </summary>
         public void RemoveAllDead()
         {
             foreach (GameObject o in World.Dead)
@@ -176,11 +240,21 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Remove the object from the world
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sendMessage"></param>
         public void RemoveObject(int id, bool sendMessage = false)
         {
             RemoveObject(World.Get(id), sendMessage);
         }
 
+        /// <summary>
+        /// Remove the object from the world
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="sendMessage"></param>
         public void RemoveObject(GameObject o, bool sendMessage = false)
         {
             RemoveObjectThreadSafe(o);
@@ -190,6 +264,10 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Remove delegate to make WPF happy
+        /// </summary>
+        /// <param name="o"></param>
         private delegate void RemoveObjectThreadSafeDelegate(GameObject o);
         public void RemoveObjectThreadSafe(GameObject o)
         {
@@ -199,34 +277,33 @@ namespace GameCode
                 }));
         }
 
-        private delegate void RemoveObjectThreadSafeDelegateInt(int id);
-        public void RemoveObjectThreadSafe(int id)
-        {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    World.RemoveObject(id);
-                }));
-        }
-
+        /// <summary>
+        /// Sends an Add message for every object (for a new client)
+        /// </summary>
         internal void SendAllObjects()
         {
-            // send every object
             foreach (GameObject o in World.Objects)
             {
                 if (o.Alive)
                 {
-                    //Manager.SendInfo(msgString);
                     this.SendInfo(MessageBuilder.AddMessage(o));
                 }
             }
         }
 
+        /// <summary>
+        /// Sends a message to the other clients
+        /// </summary>
+        /// <param name="toSend"></param>
         internal void SendInfo(string toSend)
         {
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
         }
 
+        /// <summary>
+        /// Spawn an enemy unit
+        /// </summary>
         public void SpawnEnemy()
         {
             if (random.Next(0, 2) == 0)
@@ -239,6 +316,11 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Spawn a specific enemy unit
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
         public void SpawnEnemy(Vector3 position, int type)
         {
             Bot b = new Bot(position, this, type);
@@ -261,6 +343,30 @@ namespace GameCode
             ((Bot)World.Get(ownerID)).Weapon.Attack();
         }
 
+        ///// <summary>
+        ///// Submit an attack from another client
+        ///// </summary>
+        ///// <param name="ownerID"></param>
+        //internal void SubmitBotAttack(int ownerID, bool sendMessage = true)
+        //{
+        //    Character c = (Character)World.Get(ownerID);
+        //    if (sendMessage)
+        //    {
+        //        this.SendInfo(MessageBuilder.AttackMessage(c, 0));
+        //    }
+        //    else
+        //    {
+        //        c.Weapon.Attack();
+        //    }
+        //}
+
+        /// <summary>
+        /// Upgrade a stat for the specified character
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="stat"></param>
+        /// <param name="amount"></param>
+        /// <param name="cost"></param>
         public void UpgradeStat(int objectID, int stat, int amount, int cost)
         {
             Character c = (Character)World.Get(objectID);
@@ -268,22 +374,9 @@ namespace GameCode
             DecreaseGold(objectID, cost);
         }
 
-        //public void UpgradeStr(Character CurrentCharacter, int StatIncrease, int GoldAmount)
-        //{
-        //    CurrentCharacter.Strength += StatIncrease;
-
-        //}
-
-        //public void UpgradeLife(Character CurrentCharacter, int StatIncrease, int GoldAmount)
-        //{
-        //    CurrentCharacter.Constitution += StatIncrease;
-        //}
-
-        //public void UpgradeDef(Character CurrentCharacter, int StatIncrease, int GoldAmount)
-        //{
-        //    CurrentCharacter.Defense += StatIncrease;
-        //}
-
+        /// <summary>
+        /// Load the world
+        /// </summary>
         public void LoadWorld()
         {
             SpawnEnemy(new Vector3(910, 0, 0), GameConstants.TYPE_BOT_TOWER);
@@ -419,7 +512,17 @@ namespace GameCode
         }
 
 
-
+        /// <summary>
+        /// Add a unit from the listener thread
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="messageType"></param>
+        /// <param name="objectType"></param>
+        /// <param name="pos"></param>
+        /// <param name="vel"></param>
+        /// <param name="ang"></param>
+        /// <param name="data"></param>
+        /// <param name="sendMessage"></param>
         internal void AddFromListener(int objectID, int messageType, int objectType, Vector3 pos, Vector3 vel, double ang, string[] data, bool sendMessage = false)
         {
             GameObject o = World.Get(objectID);
@@ -517,6 +620,16 @@ namespace GameCode
             }
         }
 
+        /// <summary>
+        /// Update a unit from the listener thread
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="messageType"></param>
+        /// <param name="objectType"></param>
+        /// <param name="pos"></param>
+        /// <param name="vel"></param>
+        /// <param name="ang"></param>
+        /// <param name="data"></param>
         internal void UpdateFromListener(int objectID, int messageType, int objectType, Vector3 pos, Vector3 vel, double ang, string[] data)
         {
             GameObject o = World.Get(objectID);
