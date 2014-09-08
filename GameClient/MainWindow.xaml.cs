@@ -63,8 +63,6 @@ namespace GameClient
             RingsSlots = 2;
             NeckSlots = 1;
 
-
-
             GL = new InputListener();
 
             this.KeyDown += GL.Gui_KeyDown;
