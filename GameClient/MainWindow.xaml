@@ -73,7 +73,7 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-        
+
         <Canvas x:Name="ExperienceBar" Height="11" Width="580" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="224,0,220,0" Background="Bisque" >
             <Rectangle x:Name="CurrentExperienceBar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323" Height="11" Fill="Gold"></Rectangle>
             <Label VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="256" Canvas.Top="-9">Experience</Label>
@@ -382,6 +382,23 @@
                 </Button>
             </UniformGrid>
         </UniformGrid>
+
+
+        <UniformGrid x:Name="WinMenu" Columns="1" Visibility="Collapsed">
+            <UniformGrid.Background>
+                <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
+            </UniformGrid.Background>
+            <Label FontSize="80" FontWeight="ExtraBold" HorizontalAlignment="Center">You Win!!!</Label>
+            <Canvas Margin="0,-140,0,-256" Height="652" VerticalAlignment="Top">
+                <Canvas.Background>
+                    <ImageBrush ImageSource = "Images\Victory.jpg" Stretch="None"/>
+                </Canvas.Background>
+            </Canvas>
+            <UniformGrid Rows="2" Columns="1">
+            </UniformGrid>
+        </UniformGrid>
+
+
         <StackPanel x:Name="GameOver" Visibility="Collapsed">
             <StackPanel.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>

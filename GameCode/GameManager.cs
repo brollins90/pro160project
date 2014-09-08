@@ -12,6 +12,8 @@ namespace GameCode
     /// </summary>
     public class GameManager
     {
+        public Bot tower;
+
         private GameWorld _World;
         public GameWorld World
         {
@@ -380,7 +382,10 @@ namespace GameCode
         /// </summary>
         public void LoadWorld()
         {
-            SpawnEnemy(new Vector3(910, 0, 0), GameConstants.TYPE_BOT_TOWER);
+            tower = new Bot(new Vector3(910, 0, 0), this, GameConstants.TYPE_BOT_TOWER);
+
+            AddObject(tower);
+
             SpawnEnemy(new Vector3(930, 100, 0), GameConstants.TYPE_BOT_BOSS);
 
             AddObject(new Bot(new Vector3(760, 260, 0), this, GameConstants.TYPE_BOT_TURRET));

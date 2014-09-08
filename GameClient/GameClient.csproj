@@ -145,6 +145,7 @@
     <Content Include="Images\Coif.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\ms-persist.xml" />
     <Content Include="Images\RangeChaps.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -163,6 +164,7 @@
     <Content Include="Images\Ui-paperdoll-slot-neck.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\Victory.jpg" />
     <Content Include="Images\WizBot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
