@@ -21,30 +21,15 @@ namespace GameClient
 {
     public static class DisplayExtensions
     {
-        public static int BotHealthBarHeight(this Bot b)
-        {
-            return 6;
-        }
-        public static int BotHealthBarWidthFull(this Bot b)
-        {
-            return 60;
-        }
-        public static int BotHealthBarWidth(this Bot b)
-        {
-            return (b.Health / b.MaxHealth) * b.BotHealthBarWidthFull();
-        }
-        public static int PlayerHealthBarHeight(this Bot b)
-        {
-            return 26;
-        }
-        public static int PlayerHealthBarWidthFull(this Bot b)
-        {
-            return 200;
-        }
-        public static int PlayerHealthBarWidth(this Bot b)
-        {
-            return (b.Health / b.MaxHealth) * b.PlayerHealthBarWidthFull();
-        }
+        public static int BotHealthBarHeight(this Bot b) { return 6; }
+        public static int BotHealthBarWidthFull(this Bot b) { return 60; }
+        public static int BotHealthBarWidth(this Bot b) { return (b.Health / b.MaxHealth) * b.BotHealthBarWidthFull(); }
+        public static int PlayerHealthBarHeight(this Bot b) { return 26; }
+        public static int PlayerHealthBarWidthFull(this Bot b) { return 200; }
+        public static int PlayerHealthBarWidth(this Bot b) { return (b.Health / b.MaxHealth) * b.PlayerHealthBarWidthFull(); }
+        public static int PlayerXPBarHeight(this Character c) { return 11; }
+        public static int PlayerXPBarWidthFull(this Character c) { return 580; }
+        public static int PlayerXPBarWidth(this Character c) { return (c.Experience / c.ExperienceNextLevel) * c.PlayerXPBarWidthFull(); }
     }
 
     /// <summary>

@@ -26,7 +26,6 @@ namespace GameCode
 
         public UpdateThread(GameManager manager, bool isServer, InputListener gl, int classChosen)
         {
-            Console.WriteLine("{0} UpdateThread - Create", System.Threading.Thread.CurrentThread.ManagedThreadId);
             Running = false;
             Manager = manager;
             World = Manager.World;
@@ -37,22 +36,16 @@ namespace GameCode
             Timer.Tick += Timer_Tick;
             Rand = new Random();
 
-            //int r1 = new Random().Next(10000, 100000);
-
             CurrentCharacter = new Character(new Vector3(820 + Rand.Next(0,200), 800, 0), Manager, GL, classChosen)
             {
                 ID = Rand.Next(10000, 100000)
             };
             Manager.AddObject(CurrentCharacter);
-            //Console.WriteLine("{0} UpdateThread - CreatedCharacter: {1}", System.Threading.Thread.CurrentThread.ManagedThreadId, CurrentCharacter.ID);
 
-            // i think this is already somewhere else...
             //if (!isServer)
             //{
-            //    Manager.SendInfo(MessageBuilder.AddMessage(CurrentCharacter));
+            //    CurrentCharacter.Acceleration = new Vector3((double)CurrentCharacter.Acceleration.x / 4, (double)CurrentCharacter.Acceleration.y / 4, 0);
             //}
-
-
         }
         public void Start()
         {

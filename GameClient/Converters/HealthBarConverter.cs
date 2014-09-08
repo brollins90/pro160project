@@ -22,6 +22,21 @@ namespace GameClient.Converters
             throw new NotImplementedException();
         }
     }
+    public class PlayerXPBarConverterWidth : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            double d1 = (int)values[0];
+            double d2 = (int)values[1];
+            double result = (double)(d1 / d2) * 580;
+            return (result < 0) ? 0 : result;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class BotHealthBarConverterWidth : IMultiValueConverter
     {
