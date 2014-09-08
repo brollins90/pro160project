@@ -84,7 +84,7 @@ namespace GameCode
             //Console.WriteLine("{0} UpdateThread - Update({1})", System.Threading.Thread.CurrentThread.ManagedThreadId, deltaTime);
 
             // Spawn some bad guys
-            if ((LastTimeMillis - LastSpawnTimeMillis) > 30000) // spawn every 30 seconds
+            if ((LastTimeMillis - LastSpawnTimeMillis) > 10000) // spawn every 10 seconds
             {
                 LastSpawnTimeMillis = LastTimeMillis;
                 Manager.SpawnEnemy();
@@ -142,7 +142,7 @@ namespace GameCode
                 //}
 
                 // Remove the dead
-                Manager.RemoveDead();
+                Manager.RemoveAllDead();
 
                 // Check if the attack was pressed for the Current Character
                 if (CurrentCharacter.IL.KeyAttack)

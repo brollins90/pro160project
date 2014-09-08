@@ -37,19 +37,6 @@ namespace GameCode
         public string ReadLine()
         {
             return SR.ReadLine();
-            //bool trying = true;
-            //while (trying)
-            //{
-            //    if (Stream.DataAvailable)
-            //    {
-            //        return SR.ReadLine();
-            //    }
-            //    else
-            //    {
-            //        //Thread.
-            //    }
-            //}
-            //return "";
         }
     }
 }

@@ -56,7 +56,7 @@ namespace GameCode.Models
         /// <summary>
         /// The amount of Experience required to Level Up
         /// </summary>
-        private int _ExperienceNextLevel = 10;
+        private int _ExperienceNextLevel;
         public int ExperienceNextLevel
         {
             get { return _ExperienceNextLevel; }
@@ -131,7 +131,7 @@ namespace GameCode.Models
             ClassType = type;
             Experience = 0;
             ExperienceNextLevel = 10;
-            Gold = 0;
+            Gold = 10000;
             IL = il;
             Level = 1;
             Size = new Vector3(32, 32, 0);

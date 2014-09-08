@@ -78,7 +78,7 @@ namespace GameClient
             RingsSlots = 2;
             NeckSlots = 1;
 
-            
+
 
             GL = new InputListener();
 
@@ -109,11 +109,11 @@ namespace GameClient
             //CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
             //CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceNextLevel) * ExperienceBar.Width;
 
-            if (CurrentCharacter.ClassType == 238)
+            if (CurrentCharacter.ClassType == GameConstants.TYPE_CHARACTER_MAGE)
             {
                 StrLabel.Content = "Int: ";
             }
-            else if (CurrentCharacter.ClassType == 237)
+            else if (CurrentCharacter.ClassType == GameConstants.TYPE_CHARACTER_ARCHER)
             {
                 StrLabel.Content = "Dex: ";
             }
@@ -127,7 +127,12 @@ namespace GameClient
         }
         private void BotsFilter(object sender, FilterEventArgs e)
         {
-            e.Accepted = (e.Item as GameObject).Alive && (e.Item as GameObject).ClassType > GameConstants.TYPE_BOT_LOW && (e.Item as GameObject).ClassType < GameConstants.TYPE_BOT_HIGH;
+            e.Accepted = (e.Item as GameObject).Alive && 
+                ((e.Item as GameObject).ClassType > GameConstants.TYPE_BOT_LOW &&
+                (e.Item as GameObject).ClassType < GameConstants.TYPE_BOT_HIGH) ||
+                ((e.Item as GameObject).ClassType > GameConstants.TYPE_CHARACTER_LOW &&
+                (e.Item as GameObject).ClassType < GameConstants.TYPE_CHARACTER_HIGH &&
+                (e.Item as GameObject).ID != CurrentCharacter.ID);
         }
 
 
@@ -136,9 +141,12 @@ namespace GameClient
             switch (e.Key)
             {
                 case Key.Escape:
-                    if (ShopMenu.Visibility == Visibility.Visible) {
+                    if (ShopMenu.Visibility == Visibility.Visible)
+                    {
                         CloseShop();
-                    } else {
+                    }
+                    else
+                    {
                         QuitMenu.Visibility = Visibility.Visible;
                     }
                     break;
@@ -151,7 +159,7 @@ namespace GameClient
         }
 
         private void CloseShop()
-        {            
+        {
             ShopMenu.Visibility = Visibility.Collapsed;
         }
 
@@ -163,8 +171,8 @@ namespace GameClient
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-                    Application.Current.Shutdown();
-            }
+            Application.Current.Shutdown();
+        }
 
         //Close shop
         private void CloseShopClick(object sender, RoutedEventArgs e)
@@ -195,15 +203,17 @@ namespace GameClient
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot1.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot2.Source = new BitmapImage(new Uri("Images/OnyxRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -214,21 +224,23 @@ namespace GameClient
         private void BuyZerkRing_Click(object sender, RoutedEventArgs e)
         {
             int StatIncrease = 2;
-            int GoldAmount = 300; 
+            int GoldAmount = 300;
 
             if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot1.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot2.Source = new BitmapImage(new Uri("Images/ZerkRing.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -239,21 +251,23 @@ namespace GameClient
         private void BuyRingOfLife_Click(object sender, RoutedEventArgs e)
         {
             int StatIncrease = 2;
-            int GoldAmount = 300; 
+            int GoldAmount = 300;
 
             if (RingsSlots == 2 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot1.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else if (RingsSlots == 1 && CurrentCharacter.Gold >= GoldAmount)
             {
                 RingsSlots -= 1;
                 RingSlotsLeft.Content = "" + RingsSlots;
-                RingSlot2.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
+                RingSlot2.Source = new BitmapImage(new Uri("Images/RingOfLife.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -261,7 +275,7 @@ namespace GameClient
             }
         }
 
-#endregion
+        #endregion
 
         #region Amulets
         private void BuyAmmyOfLife_Click(object sender, RoutedEventArgs e)
@@ -273,8 +287,9 @@ namespace GameClient
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfGlory.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfGlory.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_CONSTITUTION, StatIncrease, GoldAmount);
+                //Manager.UpgradeLife(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -291,8 +306,9 @@ namespace GameClient
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfPower.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfPower.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -309,8 +325,9 @@ namespace GameClient
             {
                 NeckSlots -= 1;
                 NeckSlotsLeft.Content = "" + NeckSlots;
-                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfDef.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                NecklaceSlot.Source = new BitmapImage(new Uri("Images/AmmyOfDef.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -330,13 +347,15 @@ namespace GameClient
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/RangeChaps.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                BotSlot.Source = new BitmapImage(new Uri("Images/RangeChaps.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
-                 
+
             }
         }
 
@@ -349,8 +368,9 @@ namespace GameClient
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/WizBot.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                BotSlot.Source = new BitmapImage(new Uri("Images/WizBot.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -367,10 +387,11 @@ namespace GameClient
             {
                 PantsSlots -= 1;
                 PantSlotsLeft.Content = "" + PantsSlots;
-                BotSlot.Source = new BitmapImage(new Uri("Images/PlateLegs.png", UriKind.RelativeOrAbsolute)); ;
+                BotSlot.Source = new BitmapImage(new Uri("Images/PlateLegs.png", UriKind.RelativeOrAbsolute));
                 BotSlot.Height = 100;
                 BotSlot.Width = 100;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -391,13 +412,15 @@ namespace GameClient
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
-                MidSlot.Source = new BitmapImage(new Uri("Images/RangeBody.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                MidSlot.Source = new BitmapImage(new Uri("Images/RangeBody.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
-                
+
             }
         }
 
@@ -410,8 +433,9 @@ namespace GameClient
             {
                 ChestSlots -= 1;
                 ChestSlotsLeft.Content = "" + ChestSlots;
-                MidSlot.Source = new BitmapImage(new Uri("Images/Wiztop.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                MidSlot.Source = new BitmapImage(new Uri("Images/Wiztop.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -431,15 +455,16 @@ namespace GameClient
                 MidSlot.Source = new BitmapImage(new Uri("Images/Chestplate.png", UriKind.RelativeOrAbsolute)); ;
                 MidSlot.Height = 100;
                 MidSlot.Width = 100;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
 
             }
         }
-        
-        
+
+
 
         #endregion
 
@@ -454,10 +479,12 @@ namespace GameClient
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
-                TopSlot.Source = new BitmapImage(new Uri("Images/Coif.png", UriKind.RelativeOrAbsolute)); ;
+                TopSlot.Source = new BitmapImage(new Uri("Images/Coif.png", UriKind.RelativeOrAbsolute));
 
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -474,8 +501,9 @@ namespace GameClient
             {
                 HeadSlots -= 1;
                 HeadSlotsLeft.Content = "" + HeadSlots;
-                TopSlot.Source = new BitmapImage(new Uri("Images/WizHat.png", UriKind.RelativeOrAbsolute)); ;
-                Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
+                TopSlot.Source = new BitmapImage(new Uri("Images/WizHat.png", UriKind.RelativeOrAbsolute));
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_STRENGTH, StatIncrease, GoldAmount);
+                //Manager.UpgradeStr(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {
@@ -495,7 +523,8 @@ namespace GameClient
                 TopSlot.Source = new BitmapImage(new Uri("Images/FullHelm.png", UriKind.RelativeOrAbsolute)); ;
                 TopSlot.Height = 100;
                 TopSlot.Width = 100;
-                Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
+                Manager.UpgradeStat(CurrentCharacter.ID, GameConstants.STAT_DEFENSE, StatIncrease, GoldAmount);
+                //Manager.UpgradeDef(CurrentCharacter, StatIncrease, GoldAmount);
             }
             else
             {

@@ -12,7 +12,6 @@ namespace GameCode.Models
 {
     public class InputListener
     {
-        //private NetworkClient NetClient;
         public bool KeyForward;
         public bool KeyBackward;
         public bool KeyLeft;

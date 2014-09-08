@@ -5,15 +5,16 @@ namespace GameCode
     {
         public const int MSG_LOW = 0;
         public const int MSG_ADD = 1;
-        public const int MSG_UPDATE = 2;
-        public const int MSG_DEAD = 3;
+        public const int MSG_DEAD = 2;
+        public const int MSG_DECREASE_GOLD = 3;
+        public const int MSG_DECREASE_HP = 5;
         public const int MSG_GAMEOVER = 4;
-        public const int MSG_STOP_LISTENING = 5;
-        public const int MSG_REQUEST_ALL_DATA = 6;
+        public const int MSG_INCREASE_HP = 6;
         public const int MSG_INCREASE_STAT = 7;
-        public const int MSG_DECREASE_HP = 8;
-        public const int MSG_INCREASE_HP = 9;
-        public const int MSG_LEVEL_UP = 10;
+        public const int MSG_LEVEL_UP = 8;
+        public const int MSG_REQUEST_ALL_DATA = 9;
+        public const int MSG_STOP_LISTENING = 10;
+        public const int MSG_UPDATE = 11;
         public const int MSG_HIGH = 31;
 
         public const int MOUSE_POS = 65;

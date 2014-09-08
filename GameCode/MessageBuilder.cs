@@ -47,6 +47,13 @@ namespace GameCode
             return msgString;
         }
 
+        internal static string DecreaseGoldMessage(int objID, int amount)
+        {
+            // Decrease HP: MSG_DECREASE_GOLD, 0, ID, amount, 0,0,0,0,0,0
+            string msgString = "" + GameConstants.MSG_DECREASE_GOLD + ",0," + objID + "," + amount + ",0,0,0,0,0,0";
+            return msgString;
+        }
+
         internal static string DecreaseHPMessage(int objID, int amount)
         {
             // Decrease HP: MSG_DECREASE_HP, 0, ID, amount, 0,0,0,0,0,0
@@ -61,10 +68,10 @@ namespace GameCode
             return msgString;
         }
 
-        internal static string IncreaseXPMessage(int objID, int amount)
+        internal static string IncreaseStatMessage(int objID, int stat, int amount)
         {
             // Increase XP: MSG_INCREASE_STAT, STAT_XP, ID, amount, 0,0,0,0,0,0
-            string msgString = "" + GameConstants.MSG_INCREASE_STAT + "," + GameConstants.STAT_XP + "," + objID + "," + amount + ",0,0,0,0,0,0";
+            string msgString = "" + GameConstants.MSG_INCREASE_STAT + "," + stat + "," + objID + "," + amount + ",0,0,0,0,0,0";
             return msgString;
         }
 

@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Threading;
-using System.Threading.Tasks;
-using GameCode.Models;
+using System.Threading;
 using System.Windows;
 using GameCode.Helpers;
+using GameCode.Models;
 using GameCode.Models.Projectiles;
-using System.Net.Sockets;
-using System.IO;
-using System.Threading;
 
 namespace GameCode
 {
@@ -28,6 +20,7 @@ namespace GameCode
         private bool IsServer;
         private UpdateThread UT;
         private GameListener LT;
+        private Random random = new Random();
 
         public GameManager(bool isServer, NetworkClient netClient, InputListener gl, int classChosen)
         {
@@ -50,9 +43,7 @@ namespace GameCode
             {
                 SendInfo(MessageBuilder.RequestAllMessage());
             }
-            //new Thread(UT.Start).Start();
             UT.Start();
-
         }
 
 
@@ -80,15 +71,42 @@ namespace GameCode
             {
                 Character c = (Character)World.Get(Attacker.ID);
                 int experienceAmount = c.IncreaseExperience(b.ClassType);
-                SendInfo(MessageBuilder.IncreaseXPMessage(c.ID, experienceAmount));
+                SendInfo(MessageBuilder.IncreaseStatMessage(c.ID, GameConstants.STAT_XP, experienceAmount));
             }
-
-
         }
 
-        public void EndGame()
+        internal void DecreaseGold(int objectID, int amount, bool sendMessage = true)
         {
-            // Called from listen thread, so LT is already stopped
+            Character o = (Character)World.Get(objectID);
+            if (o != null)
+            {
+                o.DecreaseGold(amount);
+                if (sendMessage)
+                {
+                    SendInfo(MessageBuilder.DecreaseGoldMessage(objectID, amount));
+                }
+            }
+        }
+
+        internal void DecreaseHealth(int objectID, int amount, bool sendMessage = true)
+        {
+            Bot o = (Bot)World.Get(objectID);
+            if (o != null)
+            {
+                o.DecreaseHealth(amount);
+                if (sendMessage)
+                {
+                    SendInfo(MessageBuilder.DecreaseHPMessage(objectID, amount));
+                }
+            }
+        }
+
+        public void EndGame(bool sendMessage = true)
+        {
+            if (sendMessage)
+            {
+                SendInfo(MessageBuilder.DeadMessage(GetCurrentCharacter()));
+            }
             LT.Running = false;
             UT.Running = false;
             Application.Current.Shutdown();
@@ -100,14 +118,53 @@ namespace GameCode
             return UT.CurrentCharacter;
         }
 
-        public void LevelUpCharacter(int characterID)
+        internal void IncreaseGold(int objectID, int amount)
+        {
+            Character o = (Character)World.Get(objectID);
+            if (o != null)
+            {
+                o.IncreaseGold(amount);
+                SendInfo(MessageBuilder.IncreaseStatMessage(objectID, GameConstants.STAT_GOLD, amount));
+            }
+        }
+
+        internal void IncreaseHealth(int objectID, int amount, bool sendMessage = true)
+        {
+            Bot o = (Bot)World.Get(objectID);
+            if (o != null)
+            {
+                o.IncreaseHealth(amount);
+                if (sendMessage)
+                {
+                    SendInfo(MessageBuilder.IncreaseHPMessage(objectID, amount));
+                }
+            }
+        }
+
+        public void IncreaseStat(int objectID, int stat, int amount, bool sendMessage = true)
+        {
+            Character o = (Character)World.Get(objectID);
+            if (o != null)
+            {
+                o.IncreaseStat(stat, amount);
+                if (sendMessage)
+                {
+                    SendInfo(MessageBuilder.IncreaseStatMessage(objectID, stat, amount));
+                }
+            }
+        }
+
+        public void LevelUpCharacter(int characterID, bool sendMessage = true)
         {
             Character c = (Character)World.Get(characterID);
             c.LevelUp();
-            SendInfo(MessageBuilder.LevelUpMessage(c));
+            if (sendMessage)
+            {
+                SendInfo(MessageBuilder.LevelUpMessage(c));
+            }
         }
 
-        public void RemoveDead()
+        public void RemoveAllDead()
         {
             foreach (GameObject o in World.Dead)
             {
@@ -119,14 +176,18 @@ namespace GameCode
             }
         }
 
-        public void RemoveObject(int id)
+        public void RemoveObject(int id, bool sendMessage = false)
         {
-            RemoveObjectThreadSafe(id);
+            RemoveObject(World.Get(id), sendMessage);
         }
 
-        public void RemoveObject(GameObject o)
+        public void RemoveObject(GameObject o, bool sendMessage = false)
         {
             RemoveObjectThreadSafe(o);
+            if (sendMessage)
+            {
+                SendInfo(MessageBuilder.DeadMessage(o));
+            }
         }
 
         private delegate void RemoveObjectThreadSafeDelegate(GameObject o);
@@ -145,26 +206,22 @@ namespace GameCode
                 {
                     World.RemoveObject(id);
                 }));
-
         }
 
-        public void UpgradeStr(Character CurrentCharacter, int StatIncrease, int GoldAmount)
+        internal void SendAllObjects()
         {
-            CurrentCharacter.Strength += StatIncrease;
-
+            // send every object
+            foreach (GameObject o in World.Objects)
+            {
+                if (o.Alive)
+                {
+                    //Manager.SendInfo(msgString);
+                    this.SendInfo(MessageBuilder.AddMessage(o));
+                }
+            }
         }
 
-        public void UpgradeLife(Character CurrentCharacter, int StatIncrease, int GoldAmount)
-        {
-            CurrentCharacter.Constitution += StatIncrease;
-        }
-
-        public void UpgradeDef(Character CurrentCharacter, int StatIncrease, int GoldAmount)
-        {
-            CurrentCharacter.Defense += StatIncrease;
-        }
-
-        internal void SendInfo(String toSend)
+        internal void SendInfo(string toSend)
         {
             //Console.WriteLine(toSend);
             NetClient.WriteLine(toSend);
@@ -172,13 +229,65 @@ namespace GameCode
 
         public void SpawnEnemy()
         {
-            AddObject(new Bot(new Vector3(950, 200, 0), this, GameConstants.TYPE_BOT_SHOOTER));
+            if (random.Next(0, 2) == 0)
+            {
+                SpawnEnemy(new Vector3(950, 240, 0), GameConstants.TYPE_BOT_MELEE);
+            }
+            else
+            {
+                SpawnEnemy(new Vector3(950, 200, 0), GameConstants.TYPE_BOT_SHOOTER);
+            }
         }
+
+        public void SpawnEnemy(Vector3 position, int type)
+        {
+            Bot b = new Bot(position, this, type);
+            bool collides = false;
+            foreach (GameObject o in World.Objects)
+            {
+                if (b.CollidesWith(o))
+                {
+                    collides = true;
+                }
+            }
+            if (!collides)
+            {
+                AddObject(b);
+            }
+        }
+
+        internal void SubmitBotAttack(int ownerID)
+        {
+            ((Bot)World.Get(ownerID)).Weapon.Attack();
+        }
+
+        public void UpgradeStat(int objectID, int stat, int amount, int cost)
+        {
+            Character c = (Character)World.Get(objectID);
+            IncreaseStat(objectID, stat, amount);
+            DecreaseGold(objectID, cost);
+        }
+
+        //public void UpgradeStr(Character CurrentCharacter, int StatIncrease, int GoldAmount)
+        //{
+        //    CurrentCharacter.Strength += StatIncrease;
+
+        //}
+
+        //public void UpgradeLife(Character CurrentCharacter, int StatIncrease, int GoldAmount)
+        //{
+        //    CurrentCharacter.Constitution += StatIncrease;
+        //}
+
+        //public void UpgradeDef(Character CurrentCharacter, int StatIncrease, int GoldAmount)
+        //{
+        //    CurrentCharacter.Defense += StatIncrease;
+        //}
 
         public void LoadWorld()
         {
-            AddObject(new Bot(new Vector3(910, 0, 0), this, GameConstants.TYPE_BOT_TOWER));  // 942, 56
-            AddObject(new Bot(new Vector3(930, 100, 0), this, GameConstants.TYPE_BOT_BOSS)); // 941, 134
+            SpawnEnemy(new Vector3(910, 0, 0), GameConstants.TYPE_BOT_TOWER);
+            SpawnEnemy(new Vector3(930, 100, 0), GameConstants.TYPE_BOT_BOSS);
 
             AddObject(new Bot(new Vector3(760, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
             AddObject(new Bot(new Vector3(1120, 260, 0), this, GameConstants.TYPE_BOT_TURRET));
@@ -307,6 +416,119 @@ namespace GameCode
             AddObject(new CastleWalls(new Vector3(1030, 150, 0), this, new Vector3(250, 40, 0)));
             //Enemy backwall
             AddObject(new CastleWalls(new Vector3(680, -50, 0), this, new Vector3(600, 40, 0)));
+        }
+
+
+
+        internal void AddFromListener(int objectID, int messageType, int objectType, Vector3 pos, Vector3 vel, double ang, string[] data, bool sendMessage = false)
+        {
+            GameObject o = World.Get(objectID);
+            if (o != null)
+            {
+                return;
+            }
+
+            if (objectType > GameConstants.TYPE_BOT_LOW && objectType < GameConstants.TYPE_BOT_HIGH) // its a bot
+            {
+                o = new Bot(pos, this, objectType)
+                {
+                    Angle = ang,
+                    Velocity = vel,
+                    ID = objectID
+                };
+            }
+            else if (objectType > GameConstants.TYPE_CHARACTER_LOW && objectType < GameConstants.TYPE_CHARACTER_HIGH) // its a character
+            {
+                //int damage = int.Parse(data[11]);
+                o = new Character(pos, this, null, objectType)
+                {
+                    Angle = ang,
+                    Velocity = vel,
+                    ID = objectID
+                };
+            }
+            else if (objectType > GameConstants.TYPE_DEBRIS_LOW && objectType < GameConstants.TYPE_DEBRIS_HIGH) // its a debris
+            {
+                switch (objectType)
+                {
+                    case GameConstants.TYPE_DEBRIS_BUSH:
+                        o = new Bushes(pos, this, vel) // for Debris, velocity is the size
+                        {
+                            Position = pos,
+                            ID = objectID
+                        };
+                        break;
+                    case GameConstants.TYPE_DEBRIS_ROCK:
+                        o = new Rocks(pos, this, vel) // for Debris, velocity is the size
+                        {
+                            Position = pos,
+                            ID = objectID
+                        };
+                        break;
+                    case GameConstants.TYPE_DEBRIS_WALL:
+                        o = new CastleWalls(pos, this, vel) // for Debris, velocity is the size
+                        {
+                            Position = pos,
+                            ID = objectID
+                        };
+                        break;
+                }
+            }
+            else if (objectType > GameConstants.TYPE_PROJ_LOW && objectType < GameConstants.TYPE_PROJ_HIGH) // its a projectile
+            {
+                int ownerID = int.MaxValue;
+                if (messageType == GameConstants.MOVEMENT_ATTACK)
+                {
+                    ownerID = int.Parse(data[11]);
+                }
+                switch (objectType)
+                {
+                    case GameConstants.TYPE_PROJ_ARROW:
+                        o = new Arrow(ownerID, this, ang)
+                        {
+                            Position = pos,
+                            Velocity = vel,
+                            ID = objectID
+                        };
+                        break;
+                    case GameConstants.TYPE_PROJ_FIRE:
+                        o = new FireBall(ownerID, this, ang)
+                        {
+                            Position = pos,
+                            Velocity = vel,
+                            ID = objectID
+                        };
+                        break;
+                    case GameConstants.TYPE_PROJ_STAB:
+                        o = new StabAttack(ownerID, this, ang)
+                        {
+                            Position = pos,
+                            Velocity = vel,
+                            ID = objectID
+                        };
+                        break;
+                }
+            }
+            this.AddObjectThreadSafe(o);
+            
+            if (sendMessage)
+            {
+                // neveer true
+            }
+        }
+
+        internal void UpdateFromListener(int objectID, int messageType, int objectType, Vector3 pos, Vector3 vel, double ang, string[] data)
+        {
+            GameObject o = World.Get(objectID);
+            if (o != null)
+            {
+                o.Angle = ang;
+                o.Position = pos;
+            }
+            else
+            {
+                AddFromListener(objectID, messageType, objectType, pos, vel, ang, data);
+            }
         }
     }
 }

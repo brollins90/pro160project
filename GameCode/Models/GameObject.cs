@@ -146,7 +146,7 @@ namespace GameCode.Models
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        protected bool CollidesWith(GameObject o)
+        public bool CollidesWith(GameObject o)
         {
             Rectangle r1 = new Rectangle((int)Position.x, (int)Position.y, (int)Size.x, (int)Size.y);
             Rectangle r2 = new Rectangle((int)o.Position.x, (int)o.Position.y, (int)o.Size.x, (int)o.Size.y);
