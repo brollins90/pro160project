@@ -79,7 +79,7 @@ namespace GameCode
                                 break;
 
                             case GameConstants.MSG_GAMEOVER:
-
+                                
                                 Manager.EndGame(false);
                                 break;
 
