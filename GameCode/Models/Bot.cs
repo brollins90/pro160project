@@ -242,6 +242,14 @@ namespace GameCode.Models
             if (collided)
             {
                 this.Position = previousPosition;
+                if (this.Position.y >= 384)
+                {
+                    this.RotateTowardPosition(new Vector3(950, 700, 0));
+                }
+                else
+                {
+                    this.RotateTowardPosition(new Vector3(950, 0, 0));
+                }
             }
 
         }
