@@ -257,9 +257,12 @@ namespace GameCode.Models
             // If we need to level up, do it here
             if (Experience >= ExperienceNextLevel)
             {
+                int leftovers = Experience - ExperienceNextLevel;
+
                 //ExperienceNextLevel += ExperienceNextLevel;
                 //LevelUp();
                 Manager.LevelUpCharacter(this.ID);
+                Experience = leftovers;
             }
             return amount;
         }
@@ -307,7 +310,7 @@ namespace GameCode.Models
         /// </summary>
         public void LevelUp()
         {
-            ExperienceNextLevel += ExperienceNextLevel;
+            ExperienceNextLevel = ExperienceNextLevel + 40;
             IncreaseStat(GameConstants.STAT_LEVEL, 1);
             IncreaseStat(GameConstants.STAT_CONSTITUTION, 2);
             IncreaseGold(100);
