@@ -211,6 +211,16 @@ namespace GameCode.Models
             this.Gold -= amount;
         }
 
+        internal override void DecreaseHealth(int val)
+        {
+            base.DecreaseHealth(val);
+
+            if (!Alive)
+            {
+                Manager.EndGame(true);
+            }
+        }
+
         /// <summary>
         /// Public way to increase experience
         /// </summary>
@@ -247,7 +257,7 @@ namespace GameCode.Models
             // If we need to level up, do it here
             if (Experience >= ExperienceNextLevel)
             {
-                ExperienceNextLevel += ExperienceNextLevel;
+                //ExperienceNextLevel += ExperienceNextLevel;
                 //LevelUp();
                 Manager.LevelUpCharacter(this.ID);
             }
@@ -297,6 +307,7 @@ namespace GameCode.Models
         /// </summary>
         public void LevelUp()
         {
+            ExperienceNextLevel += ExperienceNextLevel;
             IncreaseStat(GameConstants.STAT_LEVEL, 1);
             IncreaseStat(GameConstants.STAT_CONSTITUTION, 2);
             IncreaseGold(100);
