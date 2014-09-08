@@ -1,11 +1,4 @@
 ﻿using GameCode.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GameCode.Models.Projectiles
 {
@@ -43,7 +36,7 @@ namespace GameCode.Models.Projectiles
 
         
         public GameProjectile(int ownerID, GameManager manager, Vector3 size, double angle, int damage, double range)
-            : base(new Vector3(0,0,0), manager, size)
+            : base(new Vector3(0, 0, 0), manager, size)
         {
             this.Angle = angle;
             this.Damage = damage;
@@ -51,6 +44,11 @@ namespace GameCode.Models.Projectiles
             this.Owner = (Bot)manager.World.Get(OwnerID);
             this.Range = range;
             this.ClassType = GameConstants.TYPE_PROJ_ARROW;
+
+            if (Owner != null)
+            {
+                this.Team = Owner.Team;
+            }
         }
 
         /// <summary>
@@ -77,14 +75,12 @@ namespace GameCode.Models.Projectiles
                 foreach (GameObject o in Manager.World.Objects)
                 {
                     // Dont check for collisions with Team, self, owner
-                    // TODO or team
                     if (o.Team != this.Team && o.ID != this.ID && o.ID != Owner.ID && this.CollidesWith(o))
                     {
                         // Only apply damage if collision is with a bot (cannot hurt walls)
                         if (o.GetType() == typeof(Bot) || o.GetType() == typeof(Character))
                         {
-                            Owner.Manager.DamageBot((Bot)o,Damage, Owner);
-                            //((Bot)o).TakeDamage(Damage, Owner);
+                            Owner.Manager.DamageBot(o.ID, Damage, Owner);
                         }
                         // After collision, remove from play
                         Alive = false;

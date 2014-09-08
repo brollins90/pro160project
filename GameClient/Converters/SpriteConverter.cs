@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace GameClient.Converters
 {
-    public class GameObjectToSpriteConverter : IValueConverter
+    public class SpriteConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -1,14 +1,10 @@
 ﻿using GameCode.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GameCode.Models
 {
+    /// <summary>
+    /// A Wall is a debris that surrounds a castle
+    /// </summary>
     public class CastleWalls : Debris
     {
         public CastleWalls(Vector3 position, GameManager manager, Vector3 size)

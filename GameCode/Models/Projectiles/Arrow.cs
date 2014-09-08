@@ -1,16 +1,12 @@
 ﻿using GameCode.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode.Models.Projectiles
 {
     public class Arrow : GameProjectile
     {
-        public Arrow(int ownerID, GameManager manager, double angle, int damage = 10, double range = 100) :
-            base(ownerID,           // The ID of the Attacker
+        public Arrow(int ownerID, GameManager manager, double angle, int damage = 10, double range = 100) 
+            : base(
+            ownerID,                // The ID of the Attacker
             manager,                // A reference to the GameManager
             new Vector3(17, 8, 0),  // Size of an projectile (always the same)
             angle,                  // Angle the projectile is moving

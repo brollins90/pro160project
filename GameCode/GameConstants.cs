@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GameCode
 {
     public static class GameConstants
@@ -18,11 +13,18 @@ namespace GameCode
         public const int MSG_INCREASE_STAT = 7;
         public const int MSG_DECREASE_HP = 8;
         public const int MSG_INCREASE_HP = 9;
+        public const int MSG_LEVEL_UP = 10;
         public const int MSG_HIGH = 31;
 
         public const int MOUSE_POS = 65;
+
         public const int STAT_LOW = 66;
-        public const int STAT_XP = 67;
+        public const int STAT_CONSTITUTION = 67;
+        public const int STAT_DEFENSE = 68;
+        public const int STAT_GOLD = 69;
+        public const int STAT_LEVEL = 70;
+        public const int STAT_STRENGTH = 71;
+        public const int STAT_XP = 72;
         public const int STAT_HIGH = 99;
 
         public const int TEAM_INT_NONE = 100;

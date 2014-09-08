@@ -55,7 +55,6 @@
     <Compile Include="GameListener.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Helpers\Vector3.cs" />
-    <Compile Include="Helpers\VectorHelpers.cs" />
     <Compile Include="Models\Bushes.cs" />
     <Compile Include="Models\CastleWalls.cs" />
     <Compile Include="InputListener.cs" />

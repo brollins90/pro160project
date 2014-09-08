@@ -1,11 +1,6 @@
 ﻿using GameCode.Helpers;
 using GameCode.Models.Projectiles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GameCode.Models.Weapons
 {
@@ -37,11 +32,6 @@ namespace GameCode.Models.Weapons
         public Weapon(Bot owner, double rateOfFire = 1.0, double distance = 100.0, double speed = 20)
         {
             this.Owner = owner;
-            //this.Projectile = new Arrow(Owner.ID, Owner.Manager, 0)
-            //{
-            //    Range = distance,
-            //    Acceleration = new Vector3(speed, speed,0)
-            //};
             this.RateOfFire = rateOfFire;
             this.TimeNextAvailable = Environment.TickCount;
         }

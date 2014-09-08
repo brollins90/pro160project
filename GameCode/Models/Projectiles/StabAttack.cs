@@ -1,16 +1,12 @@
 ﻿using GameCode.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode.Models.Projectiles
 {
     public class StabAttack : GameProjectile
     {
-        public StabAttack(int ownerID, GameManager manager, double angle, int damage = 10, double range = 25) :
-            base(ownerID,           // The ID of the Attacker
+        public StabAttack(int ownerID, GameManager manager, double angle, int damage = 10, double range = 25)
+            : base(
+            ownerID,                // The ID of the Attacker
             manager,                // A reference to the GameManager
             new Vector3(25, 12, 0), // Size of an projectile (always the same)
             angle,                  // Angle the projectile is moving

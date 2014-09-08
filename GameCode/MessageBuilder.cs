@@ -68,6 +68,13 @@ namespace GameCode
             return msgString;
         }
 
+        internal static string LevelUpMessage(Character c)
+        {
+            // Object Died: MSG_LEVEL_UP, 0, ID, 0,0,0,0,0,0,0
+            String msgString = "" + GameConstants.MSG_LEVEL_UP + ",0," + c.ID + ",0,0,0,0,0,0,0";
+            return msgString;
+        }
+
         internal static string RequestAllMessage()
         {
             // Need all data: MSG_REQUEST_ALL_DATA, 0,0,0,0,0,0,0,0,0

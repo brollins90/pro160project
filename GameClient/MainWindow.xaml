@@ -7,7 +7,8 @@
         xmlns:y="clr-namespace:GameClient.Converters">
 
     <Window.Resources>
-        <y:GameObjectToSpriteConverter x:Key="GameObjectToSpriteConverter"/>
+        <y:SpriteConverter x:Key="GameObjectToSpriteConverter"/>
+        <y:PlayerHealthBarConverterWidth x:Key="PlayerHealthBarConverterWidth"/>
         <y:BotHealthBarConverterWidth x:Key="BotHealthBarConverterWidth"/>
         <y:BotHealthBarConverterX x:Key="BotHealthBarConverterX"/>
         <y:BotHealthBarConverterY x:Key="BotHealthBarConverterY"/>
@@ -107,8 +108,16 @@
                 <Label Canvas.Left="176" Canvas.Top="57">/</Label>
                 <Label Content="{Binding Path=CurrentCharacter.ExperienceNextLevel}" Canvas.Left="186" Canvas.Top="59" Height="24" Width="35"></Label>
 
-                <Canvas x:Name="HealthBar" Height="26" Width="100" Canvas.Top="104" Background="Red">
-                    <Rectangle x:Name="CurrentHealth"  Height="26" Width="{Binding Path=CurrentCharacter.HealthBarLength}" Fill="Green"/>
+                <Canvas x:Name="HealthBar" Height="26" Width="200" Canvas.Top="104">
+                    <Rectangle x:Name="redRect" Width="200" Height="26" Fill="Red"/>
+                    <Rectangle x:Name="greenRect" Height="26" Fill="Green">
+                        <Rectangle.Width>
+                            <MultiBinding Converter="{StaticResource PlayerHealthBarConverterWidth}">
+                                <Binding Path="CurrentCharacter.Health"/>
+                                <Binding Path="CurrentCharacter.MaxHealth"/>
+                            </MultiBinding>
+                        </Rectangle.Width>
+                    </Rectangle>
                 </Canvas>
             </Canvas>
         </ItemsControl>

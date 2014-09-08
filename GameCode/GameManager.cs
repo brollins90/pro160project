@@ -23,7 +23,7 @@ namespace GameCode
             get { return _World; }
             set { _World = value; }
         }
-        //public string Name;        
+
         private NetworkClient NetClient;
         private bool IsServer;
         private UpdateThread UT;
@@ -70,9 +70,9 @@ namespace GameCode
             }));
         }
 
-        internal void DamageBot(Bot bot, int Damage, Bot Attacker)
+        internal void DamageBot(int botID, int Damage, Bot Attacker)
         {
-            Bot b = bot;// (Bot)World.Get(bot.ID);
+            Bot b = (Bot)World.Get(botID);
             int damageAmount = b.TakeDamage(Damage);
             SendInfo(MessageBuilder.DecreaseHPMessage(b.ID, damageAmount));
 
@@ -98,6 +98,13 @@ namespace GameCode
         public Character GetCurrentCharacter()
         {
             return UT.CurrentCharacter;
+        }
+
+        public void LevelUpCharacter(int characterID)
+        {
+            Character c = (Character)World.Get(characterID);
+            c.LevelUp();
+            SendInfo(MessageBuilder.LevelUpMessage(c));
         }
 
         public void RemoveDead()

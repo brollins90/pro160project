@@ -92,7 +92,6 @@ namespace GameCode
                                 break;
                             default:
                                 throw new ArgumentException(string.Format("Received bad input: {0}", messageType));
-                                break;
                         }
                     }
                 }

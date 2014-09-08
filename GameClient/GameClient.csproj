@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\BotHealthBarConverter.cs" />
+    <Compile Include="Converters\HealthBarConverter.cs" />
     <Compile Include="Setup.cs" />
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
@@ -71,7 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\GameObjectToSpriteConverter.cs" />
+    <Compile Include="Converters\SpriteConverter.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>

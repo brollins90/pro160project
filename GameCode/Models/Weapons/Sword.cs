@@ -1,16 +1,12 @@
 ﻿using GameCode.Helpers;
 using GameCode.Models.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameCode.Models.Weapons
 {
     public class Sword : Weapon
     {
-        public Sword(Bot owner) : base(owner)
+        public Sword(Bot owner)
+            : base(owner)
         {
             this.Projectile = new StabAttack(owner.ID, owner.Manager, Owner.Angle, Owner.Damage, 25)
             {

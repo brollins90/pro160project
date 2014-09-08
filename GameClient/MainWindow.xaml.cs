@@ -21,17 +21,29 @@ namespace GameClient
 {
     public static class DisplayExtensions
     {
-        public static int HealthBarHeight(this Bot b)
+        public static int BotHealthBarHeight(this Bot b)
         {
             return 6;
         }
-        public static int HealthBarWidthFull(this Bot b)
+        public static int BotHealthBarWidthFull(this Bot b)
         {
             return 60;
         }
-        public static int HealthBarWidth(this Bot b)
+        public static int BotHealthBarWidth(this Bot b)
         {
-            return (b.Health / b.MaxHealth) * b.HealthBarWidthFull();
+            return (b.Health / b.MaxHealth) * b.BotHealthBarWidthFull();
+        }
+        public static int PlayerHealthBarHeight(this Bot b)
+        {
+            return 26;
+        }
+        public static int PlayerHealthBarWidthFull(this Bot b)
+        {
+            return 200;
+        }
+        public static int PlayerHealthBarWidth(this Bot b)
+        {
+            return (b.Health / b.MaxHealth) * b.PlayerHealthBarWidthFull();
         }
     }
 
@@ -94,8 +106,8 @@ namespace GameClient
             MainGrid.Focus();
 
             // create some objects to bind the HUD portion of the UI to
-            CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
-            CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceNextLevel) * ExperienceBar.Width;
+            //CurrentHealth.Width = (CurrentCharacter.Health / CurrentCharacter.MaxHealth) * 100;
+            //CurrentExperienceBar.Width = (double)(CurrentCharacter.Experience / CurrentCharacter.ExperienceNextLevel) * ExperienceBar.Width;
 
             if (CurrentCharacter.ClassType == 238)
             {
