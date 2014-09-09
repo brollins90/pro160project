@@ -20,26 +20,19 @@ using System.Windows.Shapes;
 namespace GameClient
 {
     /// <summary>
-    /// Interaction logic for MainMenu.xaml
+    /// Setup window.  Select the options for the game
     /// </summary>
     /// 
     public partial class MainMenu : Window
     {
-        //private NetworkClient NetClient;
-        //private Setup setup;
         private bool online;
         private string serverName;
         private int serverPort;
         private int classChosen;
 
-        public MainMenu()
-        {
-            InitializeComponent();
-        }
-
         public MainMenu(ref bool online, ref string serverName, ref int serverPort, ref int classType)
         {
-            //this.setup = setup;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             this.online = online;
             this.serverName = serverName;
             this.serverPort = serverPort;
@@ -48,11 +41,21 @@ namespace GameClient
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Exit the game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitGameButton(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Play a game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayGameButton(object sender, RoutedEventArgs e)
         {
             PlayGame.Visibility = Visibility.Hidden;
@@ -61,78 +64,88 @@ namespace GameClient
             PlayOnline.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Play alone or host a server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayVsAIButton(object sender, RoutedEventArgs e)
         {
             PlayVsAI.Visibility = Visibility.Hidden;
             PlayOnline.Visibility = Visibility.Hidden;
-            Archer.Visibility = Visibility.Visible;
-            Mage.Visibility = Visibility.Visible;
-            Fighter.Visibility = Visibility.Visible;
+            ArcherButton.Visibility = Visibility.Visible;
+            MageButton.Visibility = Visibility.Visible;
+            FighterButton.Visibility = Visibility.Visible;
             online = false;
 
         }
 
+        /// <summary>
+        /// Play as a client on another server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayOnlineButton(object sender, RoutedEventArgs e)
         {
             PlayVsAI.Visibility = Visibility.Hidden;
             PlayOnline.Visibility = Visibility.Hidden;
-            Archer.Visibility = Visibility.Hidden;
-            Mage.Visibility = Visibility.Hidden;
-            Fighter.Visibility = Visibility.Hidden;
+            ArcherButton.Visibility = Visibility.Hidden;
+            MageButton.Visibility = Visibility.Hidden;
+            FighterButton.Visibility = Visibility.Hidden;
             ServerNameText.Visibility = Visibility.Visible;
             ConnectToServer.Visibility = Visibility.Visible;
             online = true;
 
         }
 
+        /// <summary>
+        /// Connect to a server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConnectToServerButton(object sender, RoutedEventArgs e)
         {
-            //ServerNameText.Visibility = Visibility.Hidden;
-            //ConnectToServer.Visibility = Visibility.Hidden;
-            //ServerInfoText.Visibility = Visibility.Visible;
-            ////ServerSend.Visibility = Visibility.Visible;
-            //ServerSendText.Visibility = Visibility.Visible;
-
             PlayVsAI.Visibility = Visibility.Hidden;
             PlayOnline.Visibility = Visibility.Hidden;
-            Archer.Visibility = Visibility.Visible;
-            Mage.Visibility = Visibility.Visible;
-            Fighter.Visibility = Visibility.Visible;
+            ArcherButton.Visibility = Visibility.Visible;
+            MageButton.Visibility = Visibility.Visible;
+            FighterButton.Visibility = Visibility.Visible;
 
             serverName = ServerNameText.Text;
             serverPort = SimpleServer.ServerPort;
         }
         
-
+        /// <summary>
+        /// What to do on closing
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            //Application.Current.Shutdown();
+            // We are not far enough in to the game, so just kill it
             Environment.Exit(0);
         }
 
-        private void Mage_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Start a game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChooseClass_Click(object sender, RoutedEventArgs e)
         {
-            this.classChosen = GameConstants.TYPE_CHARACTER_MAGE;
+            if (sender.Equals(MageButton))
+            {
+                this.classChosen = GameConstants.TYPE_CHARACTER_MAGE;
+            }
+            else if (sender.Equals(ArcherButton))
+            {
+                this.classChosen = GameConstants.TYPE_CHARACTER_ARCHER;
+            }
+            else if (sender.Equals(FighterButton))
+            {
+                this.classChosen = GameConstants.TYPE_CHARACTER_FIGHTER;
+            }
             Setup.Main_Connect(!online, serverName, serverPort, this, classChosen);
-        }
-
-        private void Archer_Click(object sender, RoutedEventArgs e)
-        {
-            this.classChosen = GameConstants.TYPE_CHARACTER_ARCHER;
-            Setup.Main_Connect(!online, serverName, serverPort, this, classChosen);
-            //MainWindow gamewindow = new MainWindow(true, NetClient, GameConstants.TYPE_CHARACTER_ARCHER);            
-            //gamewindow.Show();
-            //this.Hide();
-        }
-
-        private void Fighter_Click(object sender, RoutedEventArgs e)
-        {
-            this.classChosen = GameConstants.TYPE_CHARACTER_FIGHTER;
-            Setup.Main_Connect(!online, serverName, serverPort, this, classChosen);
-            //MainWindow gamewindow = new MainWindow(true, NetClient, GameConstants.TYPE_CHARACTER_FIGHTER);
-            //gamewindow.Show();
-            //this.Hide();
         }
     }
 }

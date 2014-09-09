@@ -2,7 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="The World We Don't Know" Height="505" Width="830" ResizeMode="NoResize">
-    <Grid Background="CornflowerBlue">
+    <Window.Background>
+        <ImageBrush ImageSource="Images\SplashScreen.jpg"/>
+    </Window.Background>
+    <Grid>
         <Button x:Name="PlayGame" Width="250" Height="63" Margin="277,245,276,165" Click="PlayGameButton" Visibility="Visible">
             Play Game!
         </Button>
@@ -34,21 +37,21 @@
 
 
 
-        <Button x:Name="Mage" Width="250" Height="180" Click="Mage_Click" Visibility="Hidden" Margin="29,211,538,79">
+        <Button x:Name="MageButton" Width="250" Height="180" Click="ChooseClass_Click" Visibility="Hidden" Margin="29,211,538,79">
             <Canvas>
                 <TextBlock FontSize="24" Canvas.Left="-114" Canvas.Top="-56">You're a Wizard Harry</TextBlock>
                 <Image Source="Images/FireBall.png" Height="58" Width="168" Canvas.Left="-90" Canvas.Top="-1"/>
             </Canvas>
         </Button>
 
-        <Button x:Name="Fighter" Width="250" Height="180" Margin="539,211,28,79" Click="Fighter_Click" Visibility="Hidden">
+        <Button x:Name="FighterButton" Width="250" Height="180" Margin="539,211,28,79" Click="ChooseClass_Click" Visibility="Hidden">
             <Canvas>
                 <TextBlock FontSize="24" Canvas.Left="-57" Canvas.Top="-53">Hey, Listen</TextBlock>
                 <Image Source="Images/MasterSwordReplica.png" Height="154" Width="607" Canvas.Left="-288" Canvas.Top="-53"/>
             </Canvas>
         </Button>
 
-        <Button x:Name="Archer" Width="250" Height="180" Margin="284,211,283,79" Click="Archer_Click" Visibility="Hidden">
+        <Button x:Name="ArcherButton" Width="250" Height="180" Margin="284,211,283,79" Click="ChooseClass_Click" Visibility="Hidden">
             <Canvas>
                 <TextBlock FontSize="24" Canvas.Left="-88" Canvas.Top="-87">What do your elf</TextBlock>
                 <TextBlock FontSize="24" Canvas.Left="-48" Canvas.Top="-53">eyes see?</TextBlock>

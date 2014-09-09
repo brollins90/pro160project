@@ -73,8 +73,8 @@ namespace GameClient.Converters
         {
             if (value is double)
             {
-                double yval = (double)value;
-                return yval + 10;
+                double xval = (double)value;
+                return xval + 10;
             }
             return 0;
         }
@@ -90,7 +90,12 @@ namespace GameClient.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double yval = (double)value;
-            return yval - 20;
+
+            if (yval > 30)
+            {
+                return yval - 20;
+            }
+            return yval + 10;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
