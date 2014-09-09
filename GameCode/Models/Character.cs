@@ -145,28 +145,25 @@ namespace GameCode.Models
                     Defense = 5;
                     Strength = 3;
                     Weapon = new CrossBow(this);
-                    SetDamage();
                     break;
 
                 case GameConstants.TYPE_CHARACTER_FIGHTER: //Short Range, but quick movement. Also Tanky, small range
                     Acceleration = new Vector3(8, 8, 0);
                     Constitution = 7;
                     Defense = 6;
-                    Strength = 3;
+                    Strength = 2;
                     Weapon = new Sword(this);
-                    SetDamage();
                     break;
 
                 case GameConstants.TYPE_CHARACTER_MAGE: //DPS class, slow, but has really high damage. longest range but the squishiest of all classes
                     Acceleration = new Vector3(3, 3, 0);
                     Constitution = 4;
                     Defense = 3;
-                    Strength = 3;
-                    Weapon = new Magic(this);
-                    Damage = Strength * 3; 
+                    Strength = 6;
+                    Weapon = new Magic(this); 
                     break;
             }
-
+            SetDamage();
             SetHealth();
             RestoreHealthToMax();
         }

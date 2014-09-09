@@ -4,7 +4,7 @@
         Title="The World We Don't Know" Height="768" Width="1024"
         WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        xmlns:y="clr-namespace:GameClient.Converters">
+        xmlns:y="clr-namespace:GameClient.Converters" Icon="Images/splash.png" IsEnabled="False">
 
     <Window.Resources>
         <y:SpriteConverter x:Key="GameObjectToSpriteConverter"/>
@@ -397,7 +397,7 @@
             <UniformGrid.Background>
                 <ImageBrush ImageSource="Images\GameOverlay.jpg"/>
             </UniformGrid.Background>
-            <Label FontSize="80" FontWeight="ExtraBold" HorizontalAlignment="Center">You Win!!!</Label>
+            <Label FontSize="80" FontWeight="ExtraBold" HorizontalAlignment="Center">Praise the Sun</Label>
             <Canvas Margin="0,-140,0,-256" Height="652" VerticalAlignment="Top">
                 <Canvas.Background>
                     <ImageBrush ImageSource = "Images\Victory.jpg" Stretch="None"/>
