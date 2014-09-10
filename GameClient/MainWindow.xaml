@@ -54,8 +54,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Canvas>
-                        <Rectangle x:Name="redRect" Width="60" Height="6" Fill="Red"/>
+                    <Canvas Width="60" Height="6" Background="Red">
                         <Rectangle x:Name="greenRect" Height="6" Fill="Green">
                             <Rectangle.Width>
                                 <MultiBinding Converter="{StaticResource BotHealthBarConverterWidth}">
@@ -64,6 +63,7 @@
                                 </MultiBinding>
                             </Rectangle.Width>
                         </Rectangle>
+                        <Border BorderBrush="Black" BorderThickness=".5" Width="60" Height="6"/>
                     </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

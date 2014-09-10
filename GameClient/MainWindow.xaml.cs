@@ -108,11 +108,11 @@ namespace GameClient
         {
             e.Accepted = (e.Item as GameObject).Alive;
 
-            //Check if game is won
-            if (!Manager.tower.Alive)
-            {
-                WinMenu.Visibility = Visibility.Visible;
-            }
+            ////Check if game is won
+            //if (!Manager.tower.Alive)
+            //{
+            //    WinMenu.Visibility = Visibility.Visible;
+            //}
         }
         private void BotsFilter(object sender, FilterEventArgs e)
         {

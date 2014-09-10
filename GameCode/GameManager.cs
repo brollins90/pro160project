@@ -12,7 +12,7 @@ namespace GameCode
     /// </summary>
     public class GameManager
     {
-        public Bot tower;
+        //public Bot tower;
 
         private GameWorld _World;
         public GameWorld World
@@ -347,24 +347,7 @@ namespace GameCode
         {
             ((Bot)World.Get(ownerID)).Weapon.Attack();
         }
-
-        ///// <summary>
-        ///// Submit an attack from another client
-        ///// </summary>
-        ///// <param name="ownerID"></param>
-        //internal void SubmitBotAttack(int ownerID, bool sendMessage = true)
-        //{
-        //    Character c = (Character)World.Get(ownerID);
-        //    if (sendMessage)
-        //    {
-        //        this.SendInfo(MessageBuilder.AttackMessage(c, 0));
-        //    }
-        //    else
-        //    {
-        //        c.Weapon.Attack();
-        //    }
-        //}
-
+        
         /// <summary>
         /// Upgrade a stat for the specified character
         /// </summary>
@@ -384,9 +367,10 @@ namespace GameCode
         /// </summary>
         public void LoadWorld()
         {
-            tower = new Bot(new Vector3(910, 0, 0), this, GameConstants.TYPE_BOT_TOWER);
+            SpawnEnemy(new Vector3(910, 0, 0), GameConstants.TYPE_BOT_TOWER);
+        //    tower = new Bot(new Vector3(910, 0, 0), this, GameConstants.TYPE_BOT_TOWER);
 
-            AddObject(tower);
+        //    AddObject(tower);
 
             SpawnEnemy(new Vector3(930, 100, 0), GameConstants.TYPE_BOT_BOSS);
 
